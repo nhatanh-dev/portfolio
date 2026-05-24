@@ -21,11 +21,18 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: "Inter", system-ui, sans-serif;
+    font-family: var(--font-archivo), system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden; /* Prevent horizontal scroll from decorative elements */
     width: 100%;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-mono {
+    font-family: var(--font-space-grotesk), var(--font-archivo), system-ui, sans-serif;
   }
 
   /* Custom scrollbar */
@@ -50,6 +57,26 @@
 }
 
 @layer utilities {
+  .skip-link {
+    position: fixed;
+    left: 1rem;
+    top: 1rem;
+    z-index: 999;
+    transform: translateY(-150%);
+    border-radius: 0.75rem;
+    background: #e2e8f0;
+    color: #050c1a;
+    padding: 0.7rem 1rem;
+    font-weight: 700;
+    transition: transform 0.2s ease;
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+    outline: 2px solid #38bdf8;
+    outline-offset: 3px;
+  }
+
   .text-gradient {
     background: linear-gradient(135deg, #38bdf8 0%, #f97316 100%);
     -webkit-background-clip: text;
@@ -80,6 +107,47 @@
     transform: translateY(-4px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(56, 189, 248, 0.1);
     border-color: rgba(56, 189, 248, 0.35);
+  }
+
+  .tech-stack-card {
+    border-color: color-mix(in srgb, var(--accent) 24%, rgba(255, 255, 255, 0.08));
+    background:
+      linear-gradient(145deg, color-mix(in srgb, var(--accent) 10%, transparent), transparent 38%),
+      rgba(11, 20, 38, 0.84);
+  }
+
+  .tech-stack-card:hover,
+  .tech-stack-card:focus-within {
+    border-color: color-mix(in srgb, var(--accent) 58%, rgba(255, 255, 255, 0.16));
+    background:
+      linear-gradient(145deg, color-mix(in srgb, var(--accent) 16%, transparent), transparent 42%),
+      #0e1a31;
+    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.28), 0 0 28px color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+
+  .tech-skill-pill {
+    border-color: color-mix(in srgb, var(--accent) 22%, rgba(255, 255, 255, 0.08));
+    background: rgba(255, 255, 255, 0.035);
+    color: #cbd5e1;
+  }
+
+  .tech-skill-pill:hover,
+  .tech-skill-pill:focus-visible {
+    border-color: color-mix(in srgb, var(--accent) 70%, rgba(255, 255, 255, 0.2));
+    background: color-mix(in srgb, var(--accent) 15%, rgba(255, 255, 255, 0.035));
+    color: #ffffff;
+    outline-color: var(--accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 
   .noise-overlay {

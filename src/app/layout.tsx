@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Archivo, Space_Grotesk } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -76,10 +79,57 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden w-full`}
+        className={`${archivo.variable} ${spaceGrotesk.variable} antialiased overflow-x-hidden w-full`}
+        suppressHydrationWarning
       >
+        <Script
+          id="remove-extension-hydration-attrs"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function () {
+                var attr = "bis_skin_checked";
+                function clean(root) {
+                  if (!root || root.nodeType !== 1) return;
+                  if (root.hasAttribute && root.hasAttribute(attr)) {
+                    root.removeAttribute(attr);
+                  }
+                  if (root.querySelectorAll) {
+                    root.querySelectorAll("[" + attr + "]").forEach(function (node) {
+                      node.removeAttribute(attr);
+                    });
+                  }
+                }
+                clean(document.documentElement);
+                var observer = new MutationObserver(function (mutations) {
+                  mutations.forEach(function (mutation) {
+                    if (mutation.type === "attributes" && mutation.attributeName === attr) {
+                      mutation.target.removeAttribute(attr);
+                    }
+                    mutation.addedNodes.forEach(clean);
+                  });
+                });
+                observer.observe(document.documentElement, {
+                  subtree: true,
+                  childList: true,
+                  attributes: true,
+                  attributeFilter: [attr]
+                });
+                window.addEventListener("load", function () {
+                  window.setTimeout(function () {
+                    clean(document.documentElement);
+                    observer.disconnect();
+                  }, 1500);
+                });
+              })();
+            `,
+          }}
+        />
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         <div className="noise-overlay" aria-hidden="true" />
         {children}
       </body>
