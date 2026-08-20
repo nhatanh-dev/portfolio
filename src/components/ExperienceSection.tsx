@@ -1,113 +1,82 @@
-"use client";
+import { Award, BriefcaseBusiness, CalendarDays, Check } from "lucide-react";
+import ScrollReveal from "./ScrollReveal";
+import SpotlightCard from "./SpotlightCard";
 
-import { useInView } from "react-intersection-observer";
-import { motion } from "framer-motion";
-import { Briefcase, Calendar, Award } from "lucide-react";
+const contributions = [
+  "Completed an intensive three-month on-the-job cloud program through AWS Study Bootcamp.",
+  "Applied EC2, S3, ECS, ALB, and CloudWatch in collaborative, project-based infrastructure work.",
+  "Worked with the FCAJ Challenger group to review solutions, share progress, and deliver as a team.",
+];
 
 export default function ExperienceSection() {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
-
   return (
-    <section id="experience" ref={ref} className="py-24 relative">
-      {/* Background accent */}
-      <div
-        className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 w-[40rem] max-w-full h-[40rem] rounded-full opacity-[0.04] overflow-hidden"
-        style={{ background: "radial-gradient(circle, #f97316, transparent 70%)" }}
-      />
+    <section
+      id="experience"
+      aria-labelledby="experience-title"
+      className="relative border-y border-[var(--border)] bg-[var(--background-deep)] py-20 sm:py-24 lg:pt-24 lg:pb-16"
+    >
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <header className="max-w-3xl">
+          <ScrollReveal>
+            <h2 id="experience-title" className="text-4xl leading-[1.02] font-bold tracking-[-0.045em] text-[var(--foreground)] sm:text-5xl lg:text-[3.5rem] lg:leading-[1.04] lg:tracking-[-0.04em]">
+              Cloud experience, applied.
+            </h2>
+            <p className="mt-5 max-w-[58ch] text-base leading-7 text-[var(--muted-strong)] sm:text-lg sm:leading-8">
+              Hands-on infrastructure work shaped how I think about deployment, observability, and
+              reliable delivery beyond local development.
+            </p>
+          </ScrollReveal>
+        </header>
 
-      <div className="max-w-6xl mx-auto px-6">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="mb-16"
-        >
-          <p className="font-mono text-[#38bdf8] text-sm mb-2 tracking-widest">03. EXPERIENCE</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white">
-            Where I&apos;ve <span className="text-gradient">Worked</span>
-          </h2>
-        </motion.div>
+        <SpotlightCard className="mt-12 border-t border-[var(--border-strong)] rounded-[var(--radius-surface)] p-1">
+          <article className="grid lg:grid-cols-12 lg:gap-12 relative z-10">
+            <div className="border-b border-[var(--border)] py-7 lg:col-span-3 lg:border-r lg:border-b-0 lg:py-8 lg:px-4">
+              <ScrollReveal delay={0.1}>
+                <div className="flex h-11 w-11 items-center justify-center rounded-[var(--radius-control)] border border-[var(--border-strong)] bg-[rgba(98,198,223,0.06)] text-[var(--accent)]">
+                  <BriefcaseBusiness size={19} aria-hidden="true" />
+                </div>
+                <div className="mt-6 flex items-center gap-2 text-sm font-semibold text-[var(--foreground-soft)]">
+                  <CalendarDays size={15} className="text-[var(--accent)]" aria-hidden="true" />
+                  Three-month OJT
+                </div>
+                <p className="mt-2 text-sm text-[var(--muted)]">AWS Study Bootcamp</p>
+              </ScrollReveal>
+            </div>
 
-        {/* Timeline card */}
-        <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={inView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="relative timeline-line"
-        >
-          {/* Dot */}
-          <div className="absolute left-0 top-0 w-10 h-10 rounded-full bg-[rgba(56,189,248,0.12)] border border-[rgba(56,189,248,0.35)] flex items-center justify-center glow-blue">
-            <Briefcase size={16} className="text-[#38bdf8]" />
-          </div>
-
-          {/* Content */}
-          <div className="ml-16 gradient-border rounded-2xl p-6 card-hover">
-            <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
-              <div>
-                <h3 className="text-lg font-bold text-white">
-                  First Cloud AI Journey (FCAJ) Member / Intern
+            <div className="py-8 lg:col-span-9 lg:px-4">
+              <ScrollReveal delay={0.2}>
+                <p className="text-sm font-bold tracking-[0.06em] text-[var(--accent)] uppercase">
+                  First Cloud AI Journey
+                </p>
+                <h3 className="mt-3 max-w-3xl text-2xl leading-tight font-bold tracking-[-0.03em] text-[var(--foreground)] sm:text-3xl">
+                  FCAJ member and cloud intern
                 </h3>
-                <p className="text-[#f97316] font-semibold mt-0.5">AWS Study Bootcamp</p>
-              </div>
-              <div className="flex items-center gap-1.5 text-xs font-mono text-slate-500 bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.07)] px-3 py-1.5 rounded-full">
-                <Calendar size={11} />
-                3-Month OJT Program
-              </div>
+
+                <ul className="mt-7 grid max-w-4xl gap-4">
+                  {contributions.map((item) => (
+                    <li
+                      key={item}
+                      className="grid grid-cols-[1.5rem_minmax(0,1fr)] gap-3 text-base leading-7 text-[var(--foreground-soft)]"
+                    >
+                      <span className="mt-0.5 flex h-6 w-6 items-center justify-center rounded-md bg-[rgba(98,198,223,0.08)] text-[var(--accent)]">
+                        <Check size={14} aria-hidden="true" />
+                      </span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-8 flex max-w-3xl items-start gap-3 border-t border-[var(--border)] pt-6">
+                  <Award size={18} className="mt-1 shrink-0 text-[var(--accent)]" aria-hidden="true" />
+                  <p className="text-sm leading-6 text-[var(--muted-strong)]">
+                    Recognised as an <span className="font-semibold text-[var(--foreground)]">FCAJ Challenger</span>{" "}
+                    for active contribution within the cohort.
+                  </p>
+                </div>
+              </ScrollReveal>
             </div>
-
-            <ul className="space-y-3 text-sm text-slate-400">
-              <li className="flex gap-3">
-                <span className="text-[#38bdf8] mt-0.5 flex-shrink-0">▹</span>
-                <span>
-                  Completed a 3-month on-the-job training (OJT) internship within an intensive
-                  cloud learning bootcamp.
-                </span>
-              </li>
-              <li className="flex gap-3">
-                <span className="text-[#38bdf8] mt-0.5 flex-shrink-0">▹</span>
-                <span>
-                  Active member of the{" "}
-                  <span className="text-slate-200 font-medium">FCAJ Challenger Group</span>,
-                  collaborating on hands-on team projects.
-                </span>
-              </li>
-              <li className="flex gap-3">
-                <span className="text-[#38bdf8] mt-0.5 flex-shrink-0">▹</span>
-                <span>
-                  Directly studied and applied AWS infrastructure services — including EC2, S3,
-                  ECS, ALB, and CloudWatch — in real group-based project scenarios.
-                </span>
-              </li>
-            </ul>
-
-            {/* Badge */}
-            <div className="mt-5 flex flex-wrap gap-2">
-              {["AWS", "Cloud Infrastructure", "OJT", "Team Collaboration"].map((tag) => (
-                <span
-                  key={tag}
-                  className="px-2.5 py-1 rounded-md text-xs bg-[rgba(249,115,22,0.08)] border border-[rgba(249,115,22,0.2)] text-[#f97316]"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Achievement card below */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.45 }}
-          className="mt-6 ml-16 flex items-center gap-3 px-5 py-3 rounded-xl bg-[rgba(56,189,248,0.04)] border border-[rgba(56,189,248,0.12)] w-fit"
-        >
-          <Award size={16} className="text-[#38bdf8] flex-shrink-0" />
-          <p className="text-sm text-slate-400">
-            <span className="text-slate-200 font-medium">FCAJ Challenger</span> — recognised as an
-            active contributor in the bootcamp cohort.
-          </p>
-        </motion.div>
+          </article>
+        </SpotlightCard>
       </div>
     </section>
   );

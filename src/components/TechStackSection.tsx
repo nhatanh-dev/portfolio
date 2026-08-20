@@ -1,128 +1,87 @@
-"use client";
-
-import type { CSSProperties } from "react";
-import { useInView } from "react-intersection-observer";
-import { motion } from "framer-motion";
 import { Cloud, Code2, Database, GitBranch, type LucideIcon } from "lucide-react";
-
-interface Skill {
-  name: string;
-}
+import ScrollReveal from "./ScrollReveal";
+import SpotlightCard from "./SpotlightCard";
 
 interface Category {
   title: string;
+  description: string;
   icon: LucideIcon;
-  accent: string;
-  skills: Skill[];
+  skills: string[];
 }
 
 const categories: Category[] = [
   {
-    title: "Backend & Database",
+    title: "Backend systems",
+    description: "APIs, data access, and real-time application flows.",
     icon: Database,
-    accent: "#38bdf8",
-    skills: [
-      { name: "C#" },
-      { name: ".NET Core" },
-      { name: "Java" },
-      { name: "SQL Server" },
-      { name: "PostgreSQL" },
-    ],
+    skills: ["C#", ".NET 9", "EF Core", "SignalR", "REST APIs", "Java"],
   },
   {
-    title: "Cloud & DevOps",
+    title: "Data and cloud",
+    description: "Containerization and deployment foundations on AWS.",
     icon: Cloud,
-    accent: "#f97316",
-    skills: [{ name: "AWS" }, { name: "Docker" }],
+    skills: ["PostgreSQL", "SQL Server", "AWS", "Docker", "ECS", "S3"],
   },
   {
-    title: "Frontend & Mobile",
+    title: "Product surfaces",
+    description: "Enough frontend fluency to ship complete product features.",
     icon: Code2,
-    accent: "#818cf8",
-    skills: [
-      { name: "React" },
-      { name: "Angular" },
-      { name: "Flutter" },
-      { name: "JavaScript" },
-      { name: "TypeScript" },
-    ],
+    skills: ["React", "TypeScript", "Angular", "Flutter", "Tailwind CSS"],
   },
   {
-    title: "Tools & Workflow",
+    title: "Delivery workflow",
+    description: "Practical tools for collaboration, testing, and release work.",
     icon: GitBranch,
-    accent: "#34d399",
-    skills: [{ name: "GitHub" }, { name: "Jira" }, { name: "Postman" }],
+    skills: ["Git", "GitHub Actions", "Postman", "Jira"],
   },
 ];
 
-function SkillBadge({ name, accent }: { name: string; accent: string }) {
-  return (
-    <button
-      type="button"
-      className="tech-skill-pill inline-flex min-h-10 cursor-pointer items-center rounded-lg border px-3 py-1.5 text-sm font-semibold transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-      style={{ "--accent": accent } as CSSProperties}
-      aria-label={`${name} skill`}
-    >
-      {name}
-    </button>
-  );
-}
-
 export default function TechStackSection() {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
-
   return (
-    <section id="stack" ref={ref} className="relative py-24">
-      <div className="mx-auto max-w-6xl px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="mb-16"
-        >
-          <p className="mb-2 font-mono text-sm tracking-widest text-[#38bdf8]">02. SKILLS</p>
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
-            Tech <span className="text-gradient">stack</span>
-          </h2>
-          <p className="mt-3 max-w-md text-slate-400">
-            Technologies I have worked with, from building APIs to deploying cloud infrastructure.
-          </p>
-        </motion.div>
+    <section id="stack" aria-labelledby="stack-title" className="relative py-20 sm:py-24 lg:pt-24 lg:pb-14">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:gap-16">
+        <header className="max-w-2xl lg:col-span-4 lg:pt-2">
+          <ScrollReveal>
+            <h2 id="stack-title" className="text-4xl leading-[1.02] font-bold tracking-[-0.045em] text-[var(--foreground)] sm:text-5xl lg:text-[3.5rem] lg:leading-[1.04] lg:tracking-[-0.04em]">
+              A backend-first toolkit.
+            </h2>
+            <p className="mt-5 max-w-[42ch] text-base leading-7 text-[var(--muted-strong)] sm:text-lg sm:leading-8">
+              I use the frontend when the product needs it, but backend reliability and cloud delivery
+              are where I go deepest.
+            </p>
+          </ScrollReveal>
+        </header>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {categories.map((cat, i) => {
-            const Icon = cat.icon;
-
-            return (
-              <motion.article
-                key={cat.title}
-                initial={{ opacity: 0, y: 30 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.1 + i * 0.1 }}
-                className="tech-stack-card group relative overflow-hidden rounded-2xl border p-6 shadow-lg shadow-black/15 transition-all duration-300 hover:-translate-y-1 focus-within:-translate-y-1"
-                style={{ "--accent": cat.accent } as CSSProperties}
-              >
-                <div className="absolute inset-x-0 top-0 h-1 bg-[var(--accent)] opacity-80" />
-                <div className="absolute -right-10 -top-10 h-28 w-28 rounded-full bg-[var(--accent)] opacity-[0.08] blur-2xl transition-opacity duration-300 group-hover:opacity-[0.16]" />
-                <div className="mb-5 flex items-center gap-3">
-                  <span
-                    className="flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-300 group-hover:scale-105"
-                    style={{ background: `${cat.accent}10`, borderColor: `${cat.accent}24` }}
-                  >
-                    <Icon size={18} style={{ color: cat.accent }} aria-hidden="true" />
+        <div className="border-t border-[var(--border)] lg:col-span-8">
+          {categories.map(({ title, description, icon: Icon, skills }, index) => (
+            <ScrollReveal key={title} delay={index * 0.1}>
+              <SpotlightCard className="stack-row grid gap-5 border-b border-[var(--border)] px-4 py-7 sm:grid-cols-[15rem_minmax(0,1fr)] sm:gap-8 sm:px-5 sm:py-7">
+                <div className="flex items-start gap-3.5 relative z-10">
+                  <span className="stack-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-control)] border border-[var(--border-strong)] bg-[rgba(98,198,223,0.06)] text-[var(--accent)] transition-transform duration-300">
+                    <Icon size={18} aria-hidden="true" />
                   </span>
-                  <h3 className="text-sm font-semibold tracking-wide text-slate-200 transition-colors duration-300 group-hover:text-white">
-                    {cat.title}
-                  </h3>
+                  <div>
+                    <h3 className="text-base font-bold tracking-[-0.015em] text-[var(--foreground)]">
+                      {title}
+                    </h3>
+                    <p className="mt-1 text-sm leading-6 text-[var(--muted)]">{description}</p>
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {cat.skills.map((skill) => (
-                    <SkillBadge key={skill.name} name={skill.name} accent={cat.accent} />
+
+                <ul className="flex flex-wrap content-start gap-2 sm:justify-end relative z-10">
+                  {skills.map((skill) => (
+                    <li
+                      key={skill}
+                      className="tech-chip inline-flex min-h-9 items-center gap-2 rounded-[var(--radius-control)] border border-[var(--border)] bg-white/[0.018] px-3 text-sm font-semibold text-[var(--foreground-soft)]"
+                    >
+                      <span aria-hidden="true" className="tech-dot h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+                      {skill}
+                    </li>
                   ))}
-                </div>
-              </motion.article>
-            );
-          })}
+                </ul>
+              </SpotlightCard>
+            </ScrollReveal>
+          ))}
         </div>
       </div>
     </section>

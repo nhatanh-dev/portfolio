@@ -1,211 +1,135 @@
-"use client";
-
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { Code2, Mail, Phone, Link2, ArrowDown, ExternalLink } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Code2, Link2, Mail } from "lucide-react";
+import avatarImage from "../../public/avt.jpg";
+import NetworkBackground from "./NetworkBackground";
+import ScrambleText from "./ScrambleText";
+import ScrollReveal from "./ScrollReveal";
 
-const contactLinks = [
-  {
-    icon: Code2,
-    label: "GitHub",
-    href: "https://github.com/nhatanh-dev",
-    display: "nhatanh-dev",
-  },
-  {
-    icon: Mail,
-    label: "Email",
-    href: "mailto:anhnguyenphamnhat@gmail.com",
-    display: "anhnguyenphamnhat@gmail.com",
-  },
-  {
-    icon: Phone,
-    label: "Phone",
-    href: "tel:+84559371255",
-    display: "0559 371 255",
-  },
-  {
-    icon: Link2,
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/anhnguyen2505/",
-    display: "LinkedIn",
-  },
+const quickFacts = [
+  { label: "Primary focus", value: ".NET + AWS" },
+  { label: "Availability", value: "Internship / Part-time" },
+  { label: "Graduation", value: "June 2027" },
 ];
 
-const fadeUp = (delay: number) => ({
-  initial: { opacity: 0, y: 28 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] as const },
-});
+const profileLinks = [
+  {
+    label: "GitHub",
+    href: "https://github.com/nhatanh-dev",
+    icon: Code2,
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/anhnguyen2505/",
+    icon: Link2,
+  },
+];
 
 export default function HeroSection() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden overflow-x-hidden"
+      className="relative overflow-hidden"
     >
-      {/* Background radial glows */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 55% at 50% -5%, rgba(56,189,248,0.14) 0%, transparent 65%), radial-gradient(ellipse 55% 50% at 90% 90%, rgba(249,115,22,0.08) 0%, transparent 60%)",
-        }}
-      />
+      <div className="hero-backdrop pointer-events-none absolute inset-0" aria-hidden="true" />
+      
+      {/* 3D Network Particle Effect */}
+      <NetworkBackground />
 
-      {/* Animated grid dots */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage: "radial-gradient(circle, #38bdf8 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
-        }}
-      />
+      <div className="relative mx-auto w-full max-w-7xl px-5 pt-28 pb-16 sm:px-8 sm:pt-32 sm:pb-20 lg:pt-24 lg:pb-16 z-10">
+        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14 xl:gap-20">
+          <div className="max-w-3xl lg:col-span-7">
+            <ScrollReveal delay={0.05}>
+              <p className="mb-5 text-xs font-bold tracking-[0.16em] text-[var(--accent)] uppercase">
+                Nguyen Pham Nhat Anh
+              </p>
+            </ScrollReveal>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6 py-32 w-full">
-        {/* 2-column grid on large screens */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <h1 className="text-[clamp(2.55rem,6.4vw,5.75rem)] leading-[0.94] font-bold tracking-[-0.06em] text-[var(--foreground)]">
+              <ScrollReveal delay={0.15}>
+                <span className="block whitespace-nowrap"><ScrambleText text="Backend systems." /></span>
+              </ScrollReveal>
+              <ScrollReveal delay={0.25}>
+                <span className="block whitespace-nowrap text-[var(--accent)]"><ScrambleText text="Cloud-ready." /></span>
+              </ScrollReveal>
+            </h1>
 
-          {/* ── LEFT COLUMN ── */}
-          <div>
-            {/* Badge */}
-            <motion.div {...fadeUp(0.1)} className="mb-6">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-[rgba(56,189,248,0.08)] border border-[rgba(56,189,248,0.2)] text-[#38bdf8] tracking-wider">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8] animate-pulse-slow" />
-                Available for Internship / Part-time
-              </span>
-            </motion.div>
+            <ScrollReveal delay={0.35}>
+              <p className="mt-7 max-w-[56ch] text-lg leading-8 text-[var(--foreground-soft)] sm:text-xl sm:leading-9">
+                Software Engineering student focused on .NET, real-time workflows, and AWS
+                infrastructure for production-minded teams.
+              </p>
+            </ScrollReveal>
 
-            {/* Name */}
-            <motion.h1
-              {...fadeUp(0.2)}
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight mb-4"
-            >
-              Nguyen Pham
-              <br />
-              <span className="text-gradient">Nhat Anh</span>
-            </motion.h1>
-
-            {/* Title */}
-            <motion.p
-              {...fadeUp(0.3)}
-              className="text-base sm:text-lg font-mono text-slate-400 mb-8 tracking-wide"
-            >
-              <span className="text-[#38bdf8]">&gt;</span>{" "}
-              Software Engineering Student
-              <span className="text-[#f97316] mx-2">|</span>
-              Cloud &amp; Backend Enthusiast
-            </motion.p>
-
-            {/* Bio */}
-            <motion.p
-              {...fadeUp(0.4)}
-              className="text-base text-slate-400 leading-relaxed max-w-xl mb-10 border-l-2 border-[rgba(56,189,248,0.3)] pl-4"
-            >
-              Motivated 3rd-year Software Engineering student. I am passionate about{" "}
-              <span className="text-slate-200">backend development</span>,{" "}
-              <span className="text-slate-200">cloud infrastructure</span>, and{" "}
-              <span className="text-slate-200">software architecture</span>. Currently focusing on
-              building scalable systems and expanding my knowledge in modern cloud technologies.
-            </motion.p>
-
-            {/* Contact links */}
-            <motion.div {...fadeUp(0.5)} className="flex flex-wrap gap-3 mb-12">
-              {contactLinks.map(({ icon: Icon, label, href, display }) => (
+            <ScrollReveal delay={0.45}>
+              <div className="mt-9 flex flex-wrap gap-3">
                 <a
-                  key={label}
-                  href={href}
-                  target={href.startsWith("http") ? "_blank" : undefined}
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="group inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.07)] text-slate-300 hover:text-[#38bdf8] hover:border-[rgba(56,189,248,0.3)] hover:bg-[rgba(56,189,248,0.06)] transition-all duration-200"
+                  href="#projects"
+                  className="interactive-control inline-flex min-h-12 items-center gap-2 rounded-[var(--radius-control)] border border-[var(--accent)] bg-[var(--accent)] px-5 text-sm font-bold whitespace-nowrap text-[var(--accent-ink)] hover:bg-[var(--accent-strong)] active:scale-[0.98]"
                 >
-                  <Icon size={15} className="text-[#38bdf8] group-hover:scale-110 transition-transform" />
-                  <span>{display}</span>
-                  {href.startsWith("http") && <ExternalLink size={11} className="opacity-40" />}
+                  View projects
+                  <ArrowRight size={16} className="control-arrow" aria-hidden="true" />
                 </a>
-              ))}
-            </motion.div>
-
-            {/* CTA Buttons */}
-            <motion.div {...fadeUp(0.6)} className="flex flex-wrap gap-4">
-              <a
-                href="#projects"
-                className="inline-flex items-center gap-2 px-7 py-3 rounded-full font-semibold text-sm bg-gradient-to-r from-[#38bdf8] to-[#0ea5e9] text-[#050c1a] hover:shadow-lg hover:shadow-[rgba(56,189,248,0.35)] transition-all duration-300 hover:-translate-y-0.5"
-              >
-                View Projects
-              </a>
-              <a
-                href="mailto:anhnguyenphamnhat@gmail.com"
-                className="inline-flex items-center gap-2 px-7 py-3 rounded-full font-semibold text-sm border border-[rgba(56,189,248,0.3)] text-slate-200 hover:bg-[rgba(56,189,248,0.08)] transition-all duration-300 hover:-translate-y-0.5"
-              >
-                Contact Me
-              </a>
-            </motion.div>
+                <a
+                  href="mailto:anhnguyenphamnhat@gmail.com"
+                  className="interactive-control inline-flex min-h-12 items-center gap-2 rounded-[var(--radius-control)] border border-[var(--border-strong)] px-5 text-sm font-bold whitespace-nowrap text-[var(--foreground)] hover:border-[var(--accent)] hover:bg-[rgba(98,198,223,0.08)] active:scale-[0.98]"
+                >
+                  <Mail size={16} aria-hidden="true" />
+                  Email me
+                </a>
+              </div>
+            </ScrollReveal>
           </div>
 
-          {/* ── RIGHT COLUMN — Avatar ── */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.88, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.35, ease: [0.22, 1, 0.36, 1] as const }}
-            className="flex justify-center lg:justify-end"
-          >
-            {/* Outer glow ring */}
-            <div className="relative">
-              {/* Rotating gradient ring */}
-              <div
-                className="absolute -inset-[3px] rounded-full opacity-70"
-                style={{
-                  background:
-                    "conic-gradient(from 0deg, #38bdf8, #0ea5e9, #f97316, #38bdf8)",
-                  animation: "spin 8s linear infinite",
-                  filter: "blur(2px)",
-                }}
+          <ScrollReveal delay={0.2} className="relative mx-auto w-full max-w-[15rem] sm:max-w-[19rem] lg:col-span-5 lg:mr-0 lg:max-w-[22rem]">
+            <figure className="portrait-frame relative aspect-[4/5] overflow-hidden rounded-[var(--radius-surface)] border border-[var(--border-strong)] bg-[var(--surface)]">
+              <Image
+                src={avatarImage}
+                alt="Portrait of Nguyen Pham Nhat Anh wearing an AWS shirt"
+                fill
+                className="object-cover object-[center_78%] saturate-[0.9] contrast-[1.02] transition-transform duration-700 hover:scale-105"
+                loading="eager"
+                placeholder="blur"
+                sizes="(max-width: 640px) 240px, (max-width: 1024px) 304px, 352px"
               />
-              {/* Glow pulse behind avatar — clipped to parent to prevent overflow */}
               <div
-                className="absolute -inset-6 rounded-full opacity-20 blur-2xl overflow-hidden"
-                style={{ background: "radial-gradient(circle, #38bdf8 0%, transparent 70%)" }}
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(4,10,16,0.18),transparent_35%)]"
               />
-              {/* Avatar frame */}
-              <div className="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden border-2 border-[rgba(56,189,248,0.25)] bg-[#0d1630]">
-                {/*
-                  ─────────────────────────────────────────────────────
-                  Replace the src below with your real photo:
-                    src="/avatar.jpg"   ← put your file in /public/avatar.jpg
-                  ─────────────────────────────────────────────────────
-                */}
-                <Image
-                  src="/avt.jpg"
-                  alt="Nguyen Pham Nhat Anh — profile photo"
-                  fill
-                  className="object-cover object-[center_90%]"
-                  priority
-                  unoptimized
-                  sizes="(max-width: 640px) 256px, (max-width: 1024px) 288px, 320px"
-                />
-              </div>
-            </div>
-          </motion.div>
-
+            </figure>
+          </ScrollReveal>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-slate-600"
-      >
-        <span className="text-[10px] tracking-widest uppercase font-mono">Scroll</span>
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
-        >
-          <ArrowDown size={14} />
-        </motion.div>
-      </motion.div>
+      <aside aria-label="Quick portfolio facts" className="relative border-y border-[var(--border)] bg-[rgba(4,10,16,0.22)] z-10">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 px-5 sm:grid-cols-2 sm:px-8 lg:grid-cols-[1fr_1fr_1fr_1.45fr]">
+          {quickFacts.map((fact, i) => (
+            <ScrollReveal key={fact.label} delay={0.1 * i} className="border-b border-[var(--border)] py-5 sm:border-r sm:px-5 sm:first:pl-0 sm:[&:nth-child(2)]:border-r-0 lg:border-b-0 lg:[&:nth-child(2)]:border-r">
+              <p className="text-xs font-semibold tracking-[0.08em] text-[var(--muted)] uppercase">
+                {fact.label}
+              </p>
+              <p className="mt-1.5 text-sm font-semibold text-[var(--foreground)] sm:text-base">
+                {fact.value}
+              </p>
+            </ScrollReveal>
+          ))}
+
+          <ScrollReveal delay={0.4} className="flex flex-wrap items-center gap-2 py-4 sm:px-5 lg:justify-end lg:pr-0">
+            {profileLinks.map(({ label, href, icon: Icon }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-control group inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-control)] border border-[var(--border)] bg-white/[0.018] px-3 text-sm font-semibold text-[var(--foreground-soft)] active:scale-[0.98]"
+              >
+                <Icon size={15} className="text-[var(--accent)]" aria-hidden="true" />
+                {label}
+                <ArrowUpRight size={14} className="social-arrow text-[var(--muted)]" aria-hidden="true" />
+              </a>
+            ))}
+          </ScrollReveal>
+        </div>
+      </aside>
     </section>
   );
 }

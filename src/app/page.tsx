@@ -5,39 +5,47 @@ import ExperienceSection from "@/components/ExperienceSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import EducationSection from "@/components/EducationSection";
 import Footer from "@/components/Footer";
+import Script from "next/script";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Nguyen Pham Nhat Anh",
+  url: "https://npna.dev",
+  image: "https://npna.dev/avt.jpg",
+  jobTitle: "Backend and Cloud Developer",
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "FPT University HCM",
+  },
+  sameAs: [
+    "https://github.com/nhatanh-dev",
+    "https://www.linkedin.com/in/anhnguyen2505/",
+  ],
+};
 
 export default function Home() {
   return (
-    <main id="main-content" className="min-h-screen bg-[#050c1a] text-slate-200 overflow-x-hidden w-full">
+    <>
+      <Script
+        id="json-ld"
+        type="application/ld+json"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <Navbar />
-      <HeroSection />
+      <main
+        id="main-content"
+        className="min-h-[100dvh] w-full overflow-x-clip bg-[var(--background)] text-[var(--foreground)]"
+      >
+        <HeroSection />
 
-      {/* Section dividers */}
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="h-px bg-gradient-to-r from-transparent via-[rgba(56,189,248,0.15)] to-transparent" />
-      </div>
-
-      <TechStackSection />
-
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="h-px bg-gradient-to-r from-transparent via-[rgba(56,189,248,0.15)] to-transparent" />
-      </div>
-
-      <ExperienceSection />
-
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="h-px bg-gradient-to-r from-transparent via-[rgba(249,115,22,0.12)] to-transparent" />
-      </div>
-
-      <ProjectsSection />
-
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="h-px bg-gradient-to-r from-transparent via-[rgba(56,189,248,0.15)] to-transparent" />
-      </div>
-
-      <EducationSection />
-
+        <TechStackSection />
+        <ExperienceSection />
+        <ProjectsSection />
+        <EducationSection />
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }

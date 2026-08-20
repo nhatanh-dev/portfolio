@@ -1,8 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+} from "framer-motion";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 
 const navLinks = [
   { label: "Home", href: "#hero" },
@@ -15,98 +22,220 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("#hero");
+  const [isMounted, setIsMounted] = useState(false);
+  
+  const scrolledRef = useRef(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  
+  const rawReduceMotion = useReducedMotion();
+  const reduceMotion = isMounted ? rawReduceMotion : false;
+  
+  const { scrollY, scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    setIsMounted(true);
   }, []);
 
-  const handleMobileNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault(); // Chặn hành vi nhảy link chớp nhoáng của trình duyệt
-    setMobileOpen(false); // Ra lệnh đóng menu
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const next = latest > 20;
+    if (next !== scrolledRef.current) {
+      scrolledRef.current = next;
+      setScrolled(next);
+    }
+  });
 
-    // Đợi 300ms cho hiệu ứng đóng menu chạy mượt rồi mới bắt đầu cuộn
-    setTimeout(() => {
-      const targetId = href.replace("#", "");
-      const elem = document.getElementById(targetId);
-      if (elem) {
-        elem.scrollIntoView({ behavior: "smooth" });
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        let maxVisible = 0;
+        let mostVisibleSection = "";
+
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (entry.intersectionRatio > maxVisible) {
+              maxVisible = entry.intersectionRatio;
+              mostVisibleSection = `#${entry.target.id}`;
+            }
+          }
+        });
+
+        if (mostVisibleSection) {
+          setActiveSection(mostVisibleSection);
+        }
+      },
+      {
+        rootMargin: "-20% 0px -60% 0px",
+        threshold: [0, 0.25, 0.5, 0.75, 1],
       }
-    }, 100);
+    );
+
+    navLinks.forEach(({ href }) => {
+      const el = document.querySelector(href);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const focusTimer = window.setTimeout(() => {
+      menuRef.current?.querySelector<HTMLAnchorElement>("a")?.focus();
+    }, 0);
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMobileOpen(false);
+        triggerRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      window.clearTimeout(focusTimer);
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [mobileOpen]);
+
+  const handleMobileNavClick = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    event.preventDefault();
+    setMobileOpen(false);
+
+    window.setTimeout(() => {
+      window.history.pushState(null, "", href);
+      document.getElementById(href.slice(1))?.scrollIntoView({
+        behavior: reduceMotion ? "auto" : "smooth",
+      });
+    }, reduceMotion ? 0 : 80);
   };
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-        ? "bg-[#050c1a]/90 backdrop-blur-xl border-b border-[rgba(56,189,248,0.1)] shadow-lg shadow-black/30"
-        : "bg-transparent"
-        }`}
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color] duration-200 ${
+        scrolled || mobileOpen
+          ? "border-[var(--border)] bg-[rgba(7,17,26,0.9)] backdrop-blur-xl"
+          : "border-transparent bg-transparent"
+      }`}
     >
-      <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Logo */}
+      <nav className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-5 sm:px-8">
         <a
           href="#hero"
-          className="font-mono text-sm font-semibold text-accent-blue tracking-widest hover:text-white transition-colors"
+          className="inline-flex min-h-11 items-center rounded-[var(--radius-control)] font-display text-sm font-bold tracking-[0.13em] text-[var(--accent)] transition-colors duration-200 hover:text-[var(--foreground)]"
+          aria-label="Go to homepage"
         >
-          npna<span className="text-white">.dev</span>
+          npna<span className="text-[var(--foreground)]">.dev</span>
         </a>
 
-        {/* Desktop links */}
-        <ul className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="text-sm text-slate-400 hover:text-[#38bdf8] transition-colors duration-200 relative group"
-              >
-                {link.label}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-[#38bdf8] group-hover:w-full transition-all duration-300" />
-              </a>
-            </li>
-          ))}
+        <ul className="hidden items-center gap-0.5 md:flex">
+          {navLinks.map((link) => {
+            const active = activeSection === link.href;
+
+            return (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  aria-current={active ? "location" : undefined}
+                  className={`group relative inline-flex min-h-11 items-center rounded-[var(--radius-control)] px-3 text-sm font-semibold transition-[background-color,color] duration-200 hover:bg-white/[0.03] ${
+                    active
+                      ? "text-[var(--foreground)]"
+                      : "text-[var(--muted-strong)] hover:text-[var(--foreground)]"
+                  }`}
+                >
+                  {link.label}
+                  <span
+                    aria-hidden="true"
+                    className={`absolute inset-x-3 bottom-1.5 h-px origin-left bg-[var(--accent)] transition-transform duration-200 ${
+                      active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                    }`}
+                  />
+                </a>
+              </li>
+            );
+          })}
         </ul>
 
-        {/* CTA */}
         <a
           href="mailto:anhnguyenphamnhat@gmail.com"
-          className="hidden md:inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold border border-[rgba(56,189,248,0.35)] text-[#38bdf8] hover:bg-[rgba(56,189,248,0.1)] transition-all duration-200"
+          className="interactive-control hidden min-h-11 items-center gap-2 rounded-[var(--radius-control)] border border-[var(--border-strong)] px-4 text-sm font-bold whitespace-nowrap text-[var(--foreground)] hover:border-[var(--accent)] hover:bg-[rgba(98,198,223,0.08)] md:inline-flex"
         >
-          Hire Me
+          Email me
+          <ArrowUpRight size={15} className="control-arrow" aria-hidden="true" />
         </a>
 
-        {/* Mobile hamburger */}
         <button
-          className="md:hidden text-slate-400 hover:text-white transition-colors"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
+          ref={triggerRef}
+          type="button"
+          className="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-[var(--radius-control)] border border-[var(--border)] text-[var(--foreground-soft)] transition-[background-color,border-color,color,transform] duration-200 hover:border-[var(--border-strong)] hover:bg-[var(--surface)] hover:text-[var(--foreground)] active:scale-[0.98] md:hidden"
+          onClick={() => setMobileOpen((open) => !open)}
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileOpen}
+          aria-controls="mobile-navigation"
         >
-          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+          {mobileOpen ? <X size={21} aria-hidden="true" /> : <Menu size={21} aria-hidden="true" />}
         </button>
       </nav>
 
-      {/* Mobile menu */}
-      <AnimatePresence>
+      {/* Reading Progress Bar */}
+      <motion.div 
+        className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-[var(--accent)] origin-left z-50"
+        style={{ scaleX }}
+      />
+
+      <AnimatePresence initial={false}>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-[#080f1f]/95 backdrop-blur-xl border-b border-[rgba(56,189,248,0.1)]"
+            ref={menuRef}
+            id="mobile-navigation"
+            initial={reduceMotion ? false : { opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
+            transition={{ duration: reduceMotion ? 0 : 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="h-[calc(100dvh-4.5rem)] border-t border-[var(--border)] bg-[var(--background)] md:hidden"
           >
-            <ul className="flex flex-col px-6 py-4 gap-4">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-slate-300 hover:text-[#38bdf8] transition-colors"
-                    onClick={(e) => handleMobileNavClick(e, link.href)}
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <div className="mx-auto flex h-full max-w-7xl flex-col px-5 py-5 sm:px-8">
+              <ul>
+                {navLinks.map((link) => {
+                  const active = activeSection === link.href;
+
+                  return (
+                    <li key={link.href} className="border-b border-[var(--border)]">
+                      <a
+                        href={link.href}
+                        aria-current={active ? "location" : undefined}
+                        className={`flex min-h-14 items-center text-lg font-semibold transition-colors duration-200 ${
+                          active
+                            ? "text-[var(--accent)]"
+                            : "text-[var(--foreground-soft)] hover:text-[var(--foreground)]"
+                        }`}
+                        onClick={(event) => handleMobileNavClick(event, link.href)}
+                      >
+                        {link.label}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <a
+                href="mailto:anhnguyenphamnhat@gmail.com"
+                className="mt-auto inline-flex min-h-12 items-center justify-center gap-2 rounded-[var(--radius-control)] border border-[var(--accent)] bg-[var(--accent)] px-5 text-sm font-bold text-[var(--accent-ink)] active:scale-[0.98]"
+              >
+                Email me
+                <ArrowUpRight size={16} aria-hidden="true" />
+              </a>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

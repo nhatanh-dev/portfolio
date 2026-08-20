@@ -1,25 +1,32 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
-import { useInView } from "react-intersection-observer";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import Image, { type StaticImageData } from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowUpRight,
   BatteryCharging,
-  Calendar,
-  CheckCircle2,
+  CalendarDays,
+  Check,
   ChevronLeft,
   ChevronRight,
   Code2,
-  ImagePlus,
-  Monitor,
   ShieldCheck,
   type LucideIcon,
 } from "lucide-react";
+import evoltLanding from "../../public/projects/evolt-landing.png";
+import evoltDashboard from "../../public/projects/evolt-dashboard.png";
+import smartInvoiceArchitecture from "../../public/projects/smartinvoice-aws-architecture.png";
+import ScrollReveal from "./ScrollReveal";
+import SpotlightCard from "./SpotlightCard";
+
+interface ProjectMedia {
+  label: string;
+  image: StaticImageData;
+  description: string;
+}
 
 interface Project {
-  id: number;
   title: string;
   role: string;
   period: string;
@@ -27,361 +34,278 @@ interface Project {
   outcome: string;
   tech: string[];
   highlights: string[];
-  accent: string;
   icon: LucideIcon;
-  repositoryUrl?: string;
-  liveUrl?: string;
-  imageSlots: {
-    label: string;
-    path: string;
-    description: string;
-  }[];
+  repositoryUrl: string;
+  reverse?: boolean;
+  media: ProjectMedia[];
 }
 
 const projects: Project[] = [
   {
-    id: 1,
     title: "EV Station Management System",
     role: "Backend Developer",
-    period: "09/2025 - 11/2025",
+    period: "Sep 2025 - Nov 2025",
     summary:
-      "A charging-station management platform focused on live session tracking, billing events, penalties, and operator visibility.",
-    outcome: "Real-time charging status, session alerts, and safer concurrent station handling.",
-    tech: [".NET", "EF Core", "SQL Server", "SignalR", "VNPay"],
+      "A real-time platform for charging sessions, reservations, payments, and day-to-day station operations.",
+    outcome:
+      "Kept customer and operator views synchronized across charging events, timeouts, faults, and penalty handling.",
+    tech: [".NET 9", "EF Core", "SQL Server", "SignalR", "VNPay"],
     highlights: [
-      "Built SignalR channels for live battery percentage, remaining time, and charging-session state updates.",
-      "Implemented notifications for start, finish, fault, penalty, and timeout events.",
-      "Designed concurrent-safe logic for session timeouts, penalty calculation, and multi-station scenarios.",
+      "Built SignalR channels for battery percentage, remaining time, and charging-state updates.",
+      "Handled session timeouts and penalty calculations across concurrent station flows.",
+      "Integrated payment and notification events across the booking and charging lifecycle.",
     ],
-    accent: "#38bdf8",
     icon: BatteryCharging,
-    imageSlots: [
+    repositoryUrl: "https://github.com/nhatanh-dev/EVoltStation_BE",
+    media: [
       {
-        label: "Landing Page",
-        path: "/projects/evolt-landing.png",
-        description: "Public EV charging landing page with hero banner and login entry.",
+        label: "Public landing page",
+        image: evoltLanding,
+        description: "Customer entry point for discovering and accessing the EV charging platform.",
       },
       {
-        label: "Dashboard",
-        path: "/projects/evolt-dashboard.png",
-        description: "User dashboard with map-based station search and current vehicle panel.",
+        label: "Station dashboard",
+        image: evoltDashboard,
+        description: "Map-based station search with vehicle and charging information in one view.",
       },
     ],
   },
   {
-    id: 2,
     title: "SmartInvoice Shield",
-    role: "Cloud & Backend Developer",
-    period: "01/2026 - 04/2026",
+    role: "Cloud and Backend Developer",
+    period: "Jan 2026 - Apr 2026",
     summary:
-      "An automated invoice-processing system with cloud deployment, containerized services, and resilient data ingestion.",
-    outcome: "AWS ECS deployment flow with rolling updates and a PostgreSQL pipeline ready for high-volume invoice intake.",
-    tech: [".NET 9", "PostgreSQL", "AWS", "Docker", "ECS"],
+      "A multi-tenant invoice platform combining OCR, tax-risk checks, approval workflows, and AWS deployment.",
+    outcome:
+      "Designed a resilient processing path from upload to OCR, validation, review, and final approval.",
+    tech: [".NET 9", "PostgreSQL", "AWS", "Docker", "ECS", "SQS"],
     highlights: [
-      "Architected AWS infrastructure with ECS, ALB, and Auto Scaling for production-style deployment.",
-      "Containerized backend services with Docker and deployed them to ECS Fargate.",
-      "Planned PostgreSQL indexes and ingestion flow for dependable invoice processing under load.",
+      "Built a .NET API with tenant isolation, audit logging, and role-based access control.",
+      "Designed S3, SQS, ECS Fargate, ALB, and CloudFront infrastructure for asynchronous processing.",
+      "Applied retry, circuit breaker, and timeout policies to external validation calls.",
     ],
-    accent: "#f97316",
     icon: ShieldCheck,
-    imageSlots: [
+    repositoryUrl: "https://github.com/nhatanh-dev/SmartInvoice",
+    reverse: true,
+    media: [
       {
-        label: "AWS architecture",
-        path: "/projects/smartinvoice-aws-architecture.png",
-        description: "Cloud architecture with Amplify, CloudFront, ECS Fargate, ALB, PostgreSQL, SQS, and CI/CD flow.",
+        label: "AWS system architecture",
+        image: smartInvoiceArchitecture,
+        description: "Event-driven cloud design covering delivery, processing, storage, queues, and CI/CD.",
       },
     ],
   },
 ];
 
 function ProjectMediaCarousel({
-  accent,
   projectTitle,
-  slots,
+  media,
 }: {
-  accent: string;
   projectTitle: string;
-  slots: Project["imageSlots"];
+  media: ProjectMedia[];
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [failedPaths, setFailedPaths] = useState<string[]>([]);
-  const activeSlot = slots[activeIndex] ?? slots[0];
-  const hasMultiple = slots.length > 1;
-  const failed = failedPaths.includes(activeSlot.path);
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const rawReduceMotion = useReducedMotion();
+  const reduceMotion = isMounted ? rawReduceMotion : false;
+  
+  const activeMedia = media[activeIndex] ?? media[0];
+  const hasMultiple = media.length > 1;
 
   const goTo = (index: number) => {
-    const nextIndex = (index + slots.length) % slots.length;
-    setActiveIndex(nextIndex);
+    setActiveIndex((index + media.length) % media.length);
   };
 
   return (
-    <figure className="group/screen relative overflow-hidden rounded-xl border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/35">
-      <div className="flex h-8 items-center gap-1.5 border-b border-white/8 bg-white/[0.035] px-3">
-        <span className="h-2 w-2 rounded-full bg-red-400/70" />
-        <span className="h-2 w-2 rounded-full bg-amber-300/70" />
-        <span className="h-2 w-2 rounded-full bg-emerald-300/70" />
-        <span className="ml-2 truncate text-[11px] font-medium text-slate-500">{activeSlot.label}</span>
-      </div>
-
-      <div className="relative aspect-[16/10] overflow-hidden bg-[#f8fafc] sm:aspect-video">
-        {!failed ? (
-          <Image
-            key={activeSlot.path}
-            src={activeSlot.path}
-            alt={`${activeSlot.label} screenshot for ${projectTitle}`}
-            fill
-            sizes="(max-width: 1024px) 100vw, 560px"
-            className="object-contain transition-transform duration-500 group-hover/screen:scale-[1.015]"
-            loading="lazy"
-            unoptimized
-            onError={() => setFailedPaths((paths) => [...new Set([...paths, activeSlot.path])])}
-          />
-        ) : (
-          <>
-            <div
-              className="absolute inset-0 opacity-35"
-              style={{
-                backgroundImage:
-                  "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
-                backgroundSize: "28px 28px",
-              }}
-            />
-            <div className="relative flex h-full flex-col items-center justify-center p-6 text-center">
-              <ImagePlus size={26} style={{ color: accent }} aria-hidden="true" className="mb-3" />
-              <p className="text-sm font-semibold text-white">{activeSlot.label}</p>
-              <p className="mt-2 max-w-[15rem] text-xs leading-relaxed text-slate-500">
-                Add image at <span className="font-mono text-slate-300">{activeSlot.path}</span>
-              </p>
-            </div>
-          </>
-        )}
-
+    <SpotlightCard className="project-media overflow-hidden rounded-[var(--radius-surface)] border border-[var(--border)] bg-[var(--surface)]">
+      <div className="flex min-h-11 items-center justify-between border-b border-[var(--border)] px-4 sm:px-5 relative z-10">
+        <span className="truncate text-xs font-bold tracking-[0.06em] text-[var(--muted-strong)] uppercase">
+          {activeMedia.label}
+        </span>
         {hasMultiple && (
-          <div className="absolute inset-x-3 top-1/2 flex -translate-y-1/2 justify-between opacity-100 transition-opacity duration-200 sm:opacity-0 sm:group-hover/screen:opacity-100">
+          <div className="flex items-center gap-1.5">
             <button
               type="button"
               onClick={() => goTo(activeIndex - 1)}
               aria-label="Previous project screenshot"
-              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-[#071122]/85 text-slate-200 shadow-lg shadow-black/30 transition-all duration-200 hover:border-white/30 hover:bg-[#0e1a31] active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#38bdf8]"
+              className="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-[var(--radius-control)] border border-[var(--border)] text-[var(--foreground-soft)] transition-colors duration-200 hover:border-[var(--border-strong)] hover:bg-[var(--surface-raised)] hover:text-[var(--foreground)] active:scale-[0.98]"
             >
-              <ChevronLeft size={18} aria-hidden="true" />
+              <ChevronLeft size={17} aria-hidden="true" />
             </button>
             <button
               type="button"
               onClick={() => goTo(activeIndex + 1)}
               aria-label="Next project screenshot"
-              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-[#071122]/85 text-slate-200 shadow-lg shadow-black/30 transition-all duration-200 hover:border-white/30 hover:bg-[#0e1a31] active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#38bdf8]"
+              className="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-[var(--radius-control)] border border-[var(--border)] text-[var(--foreground-soft)] transition-colors duration-200 hover:border-[var(--border-strong)] hover:bg-[var(--surface-raised)] hover:text-[var(--foreground)] active:scale-[0.98]"
             >
-              <ChevronRight size={18} aria-hidden="true" />
+              <ChevronRight size={17} aria-hidden="true" />
             </button>
           </div>
         )}
       </div>
 
-      <figcaption className="border-t border-white/8 bg-[#071122]/80 px-3.5 py-3">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <p className="text-xs font-semibold text-slate-200">{activeSlot.label}</p>
-            <p className="mt-1 text-xs leading-relaxed text-slate-500">{activeSlot.description}</p>
-          </div>
-          {hasMultiple && (
-            <div className="flex flex-wrap gap-1.5">
-              {slots.map((slot, index) => (
-                <button
-                  key={slot.path}
-                  type="button"
-                  onClick={() => goTo(index)}
-                  aria-label={`Show ${slot.label}`}
-                  aria-pressed={index === activeIndex}
-                  className="min-h-8 cursor-pointer rounded-md border px-2.5 text-[11px] font-semibold transition-all duration-200 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#38bdf8]"
-                  style={{
-                    borderColor: index === activeIndex ? `${accent}70` : "rgba(255,255,255,0.1)",
-                    background: index === activeIndex ? `${accent}18` : "rgba(255,255,255,0.03)",
-                    color: index === activeIndex ? "#ffffff" : "#94a3b8",
-                  }}
-                >
-                  {index + 1}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+      <div className="relative aspect-[16/10] overflow-hidden bg-[var(--surface-soft)] sm:aspect-video z-10">
+        {media.map((item, index) => {
+          const active = index === activeIndex;
+
+          return (
+          <motion.div
+            key={`${projectTitle}-${item.label}-${index}`}
+            initial={false}
+            animate={
+              reduceMotion
+                ? { opacity: active ? 1 : 0, x: 0 }
+                : { opacity: active ? 1 : 0, x: active ? 0 : index < activeIndex ? -18 : 18 }
+            }
+            transition={{ duration: reduceMotion ? 0 : 0.24, ease: [0.16, 1, 0.3, 1] }}
+            className={`absolute inset-0 ${active ? "" : "pointer-events-none"}`}
+            aria-hidden={!active}
+          >
+            <Image
+              src={item.image}
+              alt={`${item.label} for ${projectTitle}`}
+              fill
+              sizes="(max-width: 1024px) calc(100vw - 40px), 720px"
+              className="object-contain"
+              placeholder="blur"
+            />
+          </motion.div>
+          );
+        })}
+      </div>
+
+      <figcaption className="border-t border-[var(--border)] px-4 py-4 sm:px-5 relative z-10">
+        <p className="text-sm leading-6 text-[var(--muted-strong)]">{activeMedia.description}</p>
       </figcaption>
-    </figure>
+    </SpotlightCard>
   );
 }
 
-function ProjectAction({
-  href,
-  icon: Icon,
-  children,
-}: {
-  href?: string;
-  icon: LucideIcon;
-  children: React.ReactNode;
-}) {
-  if (!href) {
-    return (
-      <span className="inline-flex min-h-11 cursor-not-allowed items-center gap-2 rounded-lg border border-white/8 bg-white/[0.03] px-3.5 py-2 text-sm font-semibold text-slate-500">
-        <Icon size={15} aria-hidden="true" />
-        {children}
-      </span>
-    );
-  }
-
+function ExternalAction({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-3.5 py-2 text-sm font-semibold text-slate-200 transition-all duration-200 hover:-translate-y-0.5 hover:border-[rgba(56,189,248,0.35)] hover:bg-[rgba(56,189,248,0.08)] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#38bdf8]"
+      className="interactive-control inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-control)] border border-[var(--border-strong)] px-4 text-sm font-bold whitespace-nowrap text-[var(--foreground)] hover:border-[var(--accent)] hover:bg-[rgba(98,198,223,0.08)] active:scale-[0.98]"
     >
-      <Icon size={15} aria-hidden="true" />
       {children}
-      <ArrowUpRight size={13} aria-hidden="true" className="opacity-60" />
+      <ArrowUpRight size={15} className="control-arrow" aria-hidden="true" />
     </a>
   );
 }
 
 export default function ProjectsSection() {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.05 });
-
   return (
-    <section id="projects" ref={ref} className="relative py-24">
-      <div
-        className="pointer-events-none absolute left-0 top-1/3 h-[35rem] w-[35rem] max-w-full rounded-full opacity-[0.05]"
-        style={{ background: "radial-gradient(circle, #38bdf8, transparent 70%)" }}
-      />
-
-      <div className="mx-auto max-w-6xl px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="mb-12 grid gap-5 lg:grid-cols-[0.85fr_1fr] lg:items-end"
-        >
-          <div>
-            <p className="mb-2 font-mono text-sm tracking-widest text-[#38bdf8]">
-              04. PROJECTS
-            </p>
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">
-              Featured <span className="text-gradient">case studies</span>
-            </h2>
+    <section id="projects" aria-labelledby="projects-title" className="relative py-20 sm:py-24 lg:pt-24 lg:pb-20">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <header className="grid gap-5 lg:grid-cols-12 lg:items-end lg:gap-12">
+          <div className="lg:col-span-8">
+            <ScrollReveal>
+              <h2 id="projects-title" className="max-w-[16ch] text-4xl leading-[1.02] font-bold tracking-[-0.045em] text-[var(--foreground)] sm:text-5xl lg:text-[3.5rem] lg:leading-[1.04] lg:tracking-[-0.04em]">
+                Projects with real engineering depth.
+              </h2>
+            </ScrollReveal>
           </div>
-          <p className="max-w-2xl text-sm leading-relaxed text-slate-400 sm:text-base">
-            Each project now has space for product context, engineering impact, repository links,
-            demo links, and screenshot frames. Drop your real UI images into{" "}
-            <span className="font-mono text-slate-200">public/projects</span> and update the paths
-            in this component when they are ready.
-          </p>
-        </motion.div>
+          <div className="lg:col-span-4 lg:mb-1">
+            <ScrollReveal delay={0.1}>
+              <p className="max-w-[62ch] text-base leading-7 text-[var(--muted-strong)] sm:text-lg sm:leading-8">
+                Two systems that show how I approach concurrency, cloud architecture, data integrity,
+                and product delivery.
+              </p>
+            </ScrollReveal>
+          </div>
+        </header>
 
-        <div className="space-y-10">
-          {projects.map((project, i) => {
+        <div className="mt-10 border-t border-[var(--border-strong)] sm:mt-12">
+          {projects.map((project, index) => {
             const Icon = project.icon;
 
             return (
-              <motion.article
-                key={project.id}
-                initial={{ opacity: 0, y: 40 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.12 * i }}
-                className="gradient-border group overflow-hidden rounded-2xl p-5 card-hover sm:p-7"
+              <article
+                key={project.title}
+                className="grid grid-cols-1 gap-9 border-b border-[var(--border)] py-12 sm:py-14 lg:grid-cols-12 lg:items-center lg:gap-12 xl:gap-16"
               >
-                <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-                  <div>
-                    <div className="mb-5 flex flex-wrap items-center gap-3">
-                      <div
-                        className="flex h-12 w-12 items-center justify-center rounded-xl border"
-                        style={{
-                          background: `${project.accent}14`,
-                          borderColor: `${project.accent}30`,
-                        }}
-                      >
-                        <Icon size={22} style={{ color: project.accent }} aria-hidden="true" />
-                      </div>
+                <div
+                  className={`order-2 lg:col-span-7 ${project.reverse ? "lg:order-2" : "lg:order-1"}`}
+                >
+                  <ScrollReveal delay={index % 2 === 0 ? 0.1 : 0.2}>
+                    <ProjectMediaCarousel projectTitle={project.title} media={project.media} />
+                  </ScrollReveal>
+                </div>
+
+                <div
+                  className={`order-1 lg:col-span-5 ${project.reverse ? "lg:order-1" : "lg:order-2"}`}
+                >
+                  <ScrollReveal delay={index % 2 === 0 ? 0.2 : 0.1}>
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-control)] border border-[var(--border-strong)] bg-[rgba(98,198,223,0.06)] text-[var(--accent)]">
+                        <Icon size={18} aria-hidden="true" />
+                      </span>
                       <div>
-                        <h3 className="text-2xl font-bold text-white">{project.title}</h3>
-                        <p className="text-sm font-semibold" style={{ color: project.accent }}>
-                          {project.role}
+                        <p className="text-sm font-bold text-[var(--accent)]">{project.role}</p>
+                        <p className="mt-0.5 flex items-center gap-1.5 text-xs text-[var(--muted)]">
+                          <CalendarDays size={13} aria-hidden="true" />
+                          {project.period}
                         </p>
                       </div>
                     </div>
 
-                    <div className="mb-5 flex items-center gap-1.5 text-xs font-medium text-slate-500">
-                      <Calendar size={12} aria-hidden="true" />
-                      {project.period}
-                    </div>
-
-                    <p className="max-w-xl text-sm leading-relaxed text-slate-400">
+                    <h3 className="mt-6 text-3xl leading-[1.05] font-bold tracking-[-0.04em] text-[var(--foreground)] sm:text-4xl">
+                      {project.title}
+                    </h3>
+                    <p className="mt-5 text-base leading-7 text-[var(--foreground-soft)]">
                       {project.summary}
                     </p>
 
-                    <div className="mt-5 rounded-xl border border-white/8 bg-white/[0.025] p-4">
-                      <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-slate-500">
-                        <CheckCircle2 size={14} style={{ color: project.accent }} aria-hidden="true" />
+                    <dl className="mt-6 border-l border-[var(--border-strong)] pl-4">
+                      <dt className="text-xs font-bold tracking-[0.08em] text-[var(--muted)] uppercase">
                         Engineering outcome
-                      </div>
-                      <p className="text-sm leading-relaxed text-slate-300">{project.outcome}</p>
-                    </div>
+                      </dt>
+                      <dd className="mt-2 text-sm leading-6 text-[var(--foreground-soft)]">
+                        {project.outcome}
+                      </dd>
+                    </dl>
 
-                    <div className="mt-5 flex flex-wrap gap-2">
-                      {project.tech.map((t) => (
-                        <span
-                          key={t}
-                          className="rounded-md px-2.5 py-1 text-xs font-semibold"
-                          style={{
-                            background: `${project.accent}10`,
-                            border: `1px solid ${project.accent}28`,
-                            color: project.accent,
-                          }}
+                    <ul className="mt-7 grid gap-3">
+                      {project.highlights.map((highlight) => (
+                        <li
+                          key={highlight}
+                          className="grid grid-cols-[1.4rem_minmax(0,1fr)] gap-3 text-sm leading-6 text-[var(--muted-strong)]"
                         >
-                          {t}
-                        </span>
+                          <span className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-md bg-[rgba(98,198,223,0.08)] text-[var(--accent)]">
+                            <Check size={12} aria-hidden="true" />
+                          </span>
+                          <span>{highlight}</span>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
 
-                    <div className="mt-6 flex flex-wrap gap-3">
-                      <ProjectAction href={project.repositoryUrl} icon={Code2}>
-                        GitHub repo
-                      </ProjectAction>
-                      <ProjectAction href={project.liveUrl} icon={Monitor}>
-                        Live preview
-                      </ProjectAction>
-                    </div>
-                  </div>
+                    <ul className="mt-7 flex flex-wrap gap-2" aria-label={`${project.title} technologies`}>
+                      {project.tech.map((technology) => (
+                        <li
+                          key={technology}
+                          className="rounded-[var(--radius-control)] border border-[var(--border)] bg-white/[0.018] px-3 py-1.5 text-xs font-semibold text-[var(--foreground-soft)]"
+                        >
+                          {technology}
+                        </li>
+                      ))}
+                    </ul>
 
-                  <div className="space-y-5">
-                    <ProjectMediaCarousel
-                      accent={project.accent}
-                      projectTitle={project.title}
-                      slots={project.imageSlots}
-                    />
-
-                    <div>
-                      <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-slate-500">
-                        Implementation notes
-                      </div>
-                      <ul className="space-y-3">
-                        {project.highlights.map((h, idx) => (
-                          <li key={idx} className="flex gap-3 text-sm leading-relaxed text-slate-400">
-                            <span
-                              className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md font-mono text-[11px] font-bold"
-                              style={{
-                                background: `${project.accent}12`,
-                                color: project.accent,
-                              }}
-                            >
-                              {idx + 1}
-                            </span>
-                            <span>{h}</span>
-                          </li>
-                        ))}
-                      </ul>
+                    <div className="mt-8 flex flex-wrap gap-3">
+                      <ExternalAction href={project.repositoryUrl}>
+                        <Code2 size={16} aria-hidden="true" />
+                        View repository
+                      </ExternalAction>
                     </div>
-                  </div>
+                  </ScrollReveal>
                 </div>
-              </motion.article>
+              </article>
             );
           })}
         </div>

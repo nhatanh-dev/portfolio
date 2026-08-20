@@ -1,38 +1,77 @@
-"use client";
+import { ArrowUpRight, Code2, Link2, Mail, Phone } from "lucide-react";
 
-import { Code2, Mail, Phone, Link2 } from "lucide-react";
+const contactLinks = [
+  {
+    label: "GitHub",
+    href: "https://github.com/nhatanh-dev",
+    icon: Code2,
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/anhnguyen2505/",
+    icon: Link2,
+  },
+  {
+    label: "Phone",
+    href: "tel:+84559371255",
+    icon: Phone,
+  },
+];
 
 export default function Footer() {
   return (
-    <footer className="py-12 border-t border-[rgba(56,189,248,0.08)]">
-      <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <div>
-          <p className="font-mono text-[#38bdf8] font-semibold text-sm">
-            npna<span className="text-white">.dev</span>
-          </p>
-          <p className="text-slate-600 text-xs mt-1">
-            Nguyen Pham Nhat Anh · Built with Next.js &amp; Tailwind CSS
-          </p>
+    <footer className="border-t border-[var(--border-strong)] bg-[var(--background-deep)]">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <div className="grid gap-8 py-16 sm:py-20 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-8">
+            <p className="text-sm font-bold text-[var(--accent)]">Open to internship opportunities</p>
+            <h2 className="mt-3 max-w-[15ch] text-3xl leading-[1.05] font-bold tracking-[-0.04em] text-[var(--foreground)] sm:text-5xl">
+              Looking for a backend and cloud intern who ships?
+            </h2>
+            <p className="mt-5 max-w-[52ch] text-base leading-7 text-[var(--muted-strong)]">
+              I would be glad to discuss the role, the team, and the systems you are building.
+            </p>
+          </div>
+
+          <div className="lg:col-span-4 lg:flex lg:justify-end">
+            <a
+              href="mailto:anhnguyenphamnhat@gmail.com"
+              className="interactive-control inline-flex min-h-12 items-center gap-2 rounded-[var(--radius-control)] border border-[var(--accent)] bg-[var(--accent)] px-5 text-sm font-bold whitespace-nowrap text-[var(--accent-ink)] hover:bg-[var(--accent-strong)]"
+            >
+              <Mail size={16} aria-hidden="true" />
+              Email me
+              <ArrowUpRight size={15} className="control-arrow" aria-hidden="true" />
+            </a>
+          </div>
         </div>
 
-        <div className="flex items-center gap-4">
-          {[
-            { icon: Code2, href: "https://github.com/nhatanh-dev", label: "GitHub" },
-            { icon: Mail, href: "mailto:anhnguyenphamnhat@gmail.com", label: "Email" },
-            { icon: Phone, href: "tel:+84559371255", label: "Phone" },
-            { icon: Link2, href: "https://www.linkedin.com/in/anhnguyen2505/", label: "LinkedIn" },
-          ].map(({ icon: Icon, href, label }) => (
-            <a
-              key={label}
-              href={href}
-              target={href.startsWith("http") ? "_blank" : undefined}
-              rel="noopener noreferrer"
-              aria-label={label}
-              className="w-9 h-9 rounded-full flex items-center justify-center text-slate-500 hover:text-[#38bdf8] hover:bg-[rgba(56,189,248,0.08)] border border-transparent hover:border-[rgba(56,189,248,0.2)] transition-all duration-200"
-            >
-              <Icon size={16} />
-            </a>
-          ))}
+        <div className="flex flex-col gap-7 border-t border-[var(--border)] py-8 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="font-display text-sm font-bold tracking-[0.12em] text-[var(--accent)]">
+              npna<span className="text-[var(--foreground)]">.dev</span>
+            </p>
+            <p className="mt-2 text-sm text-[var(--muted)]">
+              © {new Date().getFullYear()} Nguyen Pham Nhat Anh. Built with Next.js and Tailwind CSS.
+            </p>
+          </div>
+
+          <nav aria-label="Contact links">
+            <ul className="flex flex-wrap gap-x-5 gap-y-2">
+              {contactLinks.map(({ label, href, icon: Icon }) => (
+                <li key={label}>
+                  <a
+                    href={href}
+                    target={href.startsWith("http") ? "_blank" : undefined}
+                    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    className="link-underline inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[var(--muted-strong)]"
+                  >
+                    <Icon size={15} className="text-[var(--accent)]" aria-hidden="true" />
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </div>
     </footer>
