@@ -54,7 +54,7 @@ export default function TechStackSection() {
 
         <div className="border-t border-[var(--border)] lg:col-span-8">
           {categories.map(({ title, description, icon: Icon, skills }, index) => (
-            <ScrollReveal key={title} delay={index * 0.1}>
+            <ScrollReveal key={title}>
               <SpotlightCard className="stack-row grid gap-5 border-b border-[var(--border)] px-4 py-7 sm:grid-cols-[15rem_minmax(0,1fr)] sm:gap-8 sm:px-5 sm:py-7">
                 <div className="flex items-start gap-3.5 relative z-10">
                   <span className="stack-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-control)] border border-[var(--border-strong)] bg-[rgba(98,198,223,0.06)] text-[var(--accent)] transition-transform duration-300">

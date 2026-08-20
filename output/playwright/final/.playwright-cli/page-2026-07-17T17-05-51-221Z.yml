@@ -1,0 +1,248 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - main [ref=e3]:
+    - navigation [ref=e5]:
+      - link "npna .dev" [ref=e6] [cursor=pointer]:
+        - /url: "#hero"
+        - text: npna
+        - generic [ref=e7]: .dev
+      - list [ref=e8]:
+        - listitem [ref=e9]:
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: "#hero"
+        - listitem [ref=e12]:
+          - link "Stack" [ref=e13] [cursor=pointer]:
+            - /url: "#stack"
+        - listitem [ref=e15]:
+          - link "Experience" [ref=e16] [cursor=pointer]:
+            - /url: "#experience"
+        - listitem [ref=e18]:
+          - link "Projects" [ref=e19] [cursor=pointer]:
+            - /url: "#projects"
+        - listitem [ref=e21]:
+          - link "Education" [ref=e22] [cursor=pointer]:
+            - /url: "#education"
+      - link "Hire Me" [ref=e24] [cursor=pointer]:
+        - /url: mailto:anhnguyenphamnhat@gmail.com
+    - generic [ref=e25]:
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - generic [ref=e29]: Available for Internship / Part-time
+          - heading "Nguyen Pham Nhat Anh" [level=1] [ref=e31]: Nguyen PhamNhat Anh
+          - paragraph [ref=e32]: "> Software Engineering Student|Cloud & Backend Enthusiast"
+          - paragraph [ref=e33]: Motivated 3rd-year Software Engineering student. I am passionate about backend development, cloud infrastructure, and software architecture. Currently focusing on building scalable systems and expanding my knowledge in modern cloud technologies.
+          - generic [ref=e34]:
+            - link "GitHub" [ref=e35] [cursor=pointer]:
+              - /url: https://github.com/nhatanh-dev
+              - generic [ref=e40]: nhatanh-dev
+            - link "Email" [ref=e45] [cursor=pointer]:
+              - /url: mailto:anhnguyenphamnhat@gmail.com
+              - generic [ref=e49]: anhnguyenphamnhat@gmail.com
+            - link "Phone" [ref=e50] [cursor=pointer]:
+              - /url: tel:+84559371255
+              - generic [ref=e53]: 0559 371 255
+            - link "LinkedIn" [ref=e54] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/anhnguyen2505/
+          - generic [ref=e63]:
+            - link "View Projects" [ref=e64] [cursor=pointer]:
+              - /url: "#projects"
+            - link "Contact Me" [ref=e65] [cursor=pointer]:
+              - /url: mailto:anhnguyenphamnhat@gmail.com
+        - img "Nguyen Pham Nhat Anh — profile photo" [ref=e68]
+      - generic [ref=e69]: Scroll
+    - generic [ref=e76]:
+      - generic [ref=e77]:
+        - paragraph [ref=e78]: 02. SKILLS
+        - heading "Tech stack" [level=2] [ref=e79]
+        - paragraph [ref=e80]: Technologies I have worked with, from building APIs to deploying cloud infrastructure.
+      - generic [ref=e81]:
+        - article [ref=e82]:
+          - heading "Backend & Database" [level=3] [ref=e89]
+          - list [ref=e90]:
+            - listitem [ref=e91]: C#
+            - listitem [ref=e92]: .NET Core
+            - listitem [ref=e93]: Java
+            - listitem [ref=e94]: SQL Server
+            - listitem [ref=e95]: PostgreSQL
+        - article [ref=e96]:
+          - heading "Cloud & DevOps" [level=3] [ref=e101]
+          - list [ref=e102]:
+            - listitem [ref=e103]: AWS
+            - listitem [ref=e104]: Docker
+        - article [ref=e105]:
+          - heading "Frontend & Mobile" [level=3] [ref=e112]
+          - list [ref=e113]:
+            - listitem [ref=e114]: React
+            - listitem [ref=e115]: Angular
+            - listitem [ref=e116]: Flutter
+            - listitem [ref=e117]: JavaScript
+            - listitem [ref=e118]: TypeScript
+        - article [ref=e119]:
+          - heading "Tools & Workflow" [level=3] [ref=e126]
+          - list [ref=e127]:
+            - listitem [ref=e128]: GitHub
+            - listitem [ref=e129]: Jira
+            - listitem [ref=e130]: Postman
+    - generic [ref=e134]:
+      - generic [ref=e135]:
+        - paragraph [ref=e136]: 03. EXPERIENCE
+        - heading "Where I've Worked" [level=2] [ref=e137]
+      - article [ref=e138]:
+        - generic [ref=e139]: 3-Month OJT Program
+        - generic [ref=e148]:
+          - generic [ref=e149]:
+            - heading "First Cloud AI Journey (FCAJ) Member / Intern" [level=3] [ref=e150]
+            - paragraph [ref=e151]: AWS Study Bootcamp
+          - list [ref=e152]:
+            - listitem [ref=e153]:
+              - generic [ref=e154]: ▹
+              - generic [ref=e155]: Completed a 3-month on-the-job training (OJT) internship within an intensive cloud learning bootcamp.
+            - listitem [ref=e156]:
+              - generic [ref=e157]: ▹
+              - generic [ref=e158]: Active member of the FCAJ Challenger Group, collaborating on hands-on team projects.
+            - listitem [ref=e159]:
+              - generic [ref=e160]: ▹
+              - generic [ref=e161]: Directly studied and applied AWS infrastructure services — including EC2, S3, ECS, ALB, and CloudWatch — in real group-based project scenarios.
+          - generic [ref=e162]:
+            - generic [ref=e163]: AWS
+            - generic [ref=e164]: Cloud Infrastructure
+            - generic [ref=e165]: OJT
+            - generic [ref=e166]: Team Collaboration
+      - paragraph [ref=e171]: FCAJ Challenger — recognised as an active contributor in the bootcamp cohort.
+    - generic [ref=e175]:
+      - generic [ref=e176]:
+        - generic [ref=e177]:
+          - paragraph [ref=e178]: 04. PROJECTS
+          - heading "Featured case studies" [level=2] [ref=e179]
+        - paragraph [ref=e180]: Each project now has space for product context, engineering impact, repository links, demo links, and screenshot frames. Drop your real UI images into public/projects and update the paths in this component when they are ready.
+      - generic [ref=e181]:
+        - article [ref=e182]:
+          - generic [ref=e183]:
+            - generic [ref=e184]:
+              - generic [ref=e191]:
+                - heading "EV Station Management System" [level=3] [ref=e192]
+                - paragraph [ref=e193]: Backend Developer
+              - generic [ref=e194]: 09/2025 - 11/2025
+              - paragraph [ref=e197]: A charging-station management platform focused on live session tracking, billing events, penalties, and operator visibility.
+              - generic [ref=e198]:
+                - generic [ref=e199]: Engineering outcome
+                - paragraph [ref=e203]: Real-time charging status, session alerts, and safer concurrent station handling.
+              - generic [ref=e204]:
+                - generic [ref=e205]: .NET
+                - generic [ref=e206]: EF Core
+                - generic [ref=e207]: SQL Server
+                - generic [ref=e208]: SignalR
+                - generic [ref=e209]: VNPay
+              - generic [ref=e210]:
+                - generic [ref=e211]: GitHub repo
+                - generic [ref=e216]: Live preview
+            - generic [ref=e219]:
+              - figure [ref=e220]:
+                - generic [ref=e221]: Landing Page
+                - generic [ref=e223]:
+                  - img "Landing Page screenshot for EV Station Management System" [ref=e224]
+                  - generic [ref=e225]:
+                    - button "Previous project screenshot" [ref=e226] [cursor=pointer]
+                    - button "Next project screenshot" [ref=e229] [cursor=pointer]
+                - generic [ref=e233]:
+                  - generic [ref=e234]:
+                    - paragraph [ref=e235]: Landing Page
+                    - paragraph [ref=e236]: Public EV charging landing page with hero banner and login entry.
+                  - generic [ref=e237]:
+                    - button "Show Landing Page" [pressed] [ref=e238] [cursor=pointer]: "1"
+                    - button "Show Dashboard" [ref=e239] [cursor=pointer]: "2"
+              - generic [ref=e240]:
+                - generic [ref=e241]: Implementation notes
+                - list [ref=e242]:
+                  - listitem [ref=e243]:
+                    - generic [ref=e244]: "1"
+                    - generic [ref=e245]: Built SignalR channels for live battery percentage, remaining time, and charging-session state updates.
+                  - listitem [ref=e246]:
+                    - generic [ref=e247]: "2"
+                    - generic [ref=e248]: Implemented notifications for start, finish, fault, penalty, and timeout events.
+                  - listitem [ref=e249]:
+                    - generic [ref=e250]: "3"
+                    - generic [ref=e251]: Designed concurrent-safe logic for session timeouts, penalty calculation, and multi-station scenarios.
+        - article [ref=e252]:
+          - generic [ref=e253]:
+            - generic [ref=e254]:
+              - generic [ref=e260]:
+                - heading "SmartInvoice Shield" [level=3] [ref=e261]
+                - paragraph [ref=e262]: Cloud & Backend Developer
+              - generic [ref=e263]: 01/2026 - 04/2026
+              - paragraph [ref=e266]: An automated invoice-processing system with cloud deployment, containerized services, and resilient data ingestion.
+              - generic [ref=e267]:
+                - generic [ref=e268]: Engineering outcome
+                - paragraph [ref=e272]: AWS ECS deployment flow with rolling updates and a PostgreSQL pipeline ready for high-volume invoice intake.
+              - generic [ref=e273]:
+                - generic [ref=e274]: .NET 9
+                - generic [ref=e275]: PostgreSQL
+                - generic [ref=e276]: AWS
+                - generic [ref=e277]: Docker
+                - generic [ref=e278]: ECS
+              - generic [ref=e279]:
+                - generic [ref=e280]: GitHub repo
+                - generic [ref=e285]: Live preview
+            - generic [ref=e288]:
+              - figure [ref=e289]:
+                - generic [ref=e290]: AWS architecture
+                - img "AWS architecture screenshot for SmartInvoice Shield" [ref=e293]
+                - generic [ref=e296]:
+                  - paragraph [ref=e297]: AWS architecture
+                  - paragraph [ref=e298]: Cloud architecture with Amplify, CloudFront, ECS Fargate, ALB, PostgreSQL, SQS, and CI/CD flow.
+              - generic [ref=e299]:
+                - generic [ref=e300]: Implementation notes
+                - list [ref=e301]:
+                  - listitem [ref=e302]:
+                    - generic [ref=e303]: "1"
+                    - generic [ref=e304]: Architected AWS infrastructure with ECS, ALB, and Auto Scaling for production-style deployment.
+                  - listitem [ref=e305]:
+                    - generic [ref=e306]: "2"
+                    - generic [ref=e307]: Containerized backend services with Docker and deployed them to ECS Fargate.
+                  - listitem [ref=e308]:
+                    - generic [ref=e309]: "3"
+                    - generic [ref=e310]: Planned PostgreSQL indexes and ingestion flow for dependable invoice processing under load.
+    - generic [ref=e314]:
+      - generic [ref=e315]:
+        - paragraph [ref=e316]: 05. EDUCATION
+        - heading "Background & Interests" [level=2] [ref=e317]
+      - generic [ref=e318]:
+        - article [ref=e319]:
+          - generic [ref=e325]:
+            - heading "FPT University HCM" [level=3] [ref=e326]
+            - paragraph [ref=e327]: Bachelor of Software Engineering
+            - paragraph [ref=e328]: Expected 2027
+          - generic [ref=e329]:
+            - generic [ref=e330]:
+              - generic [ref=e331]: "8.6"
+              - generic [ref=e332]: Cumulative GPA
+            - generic [ref=e333]:
+              - generic [ref=e334]:
+                - generic [ref=e335]: "9.3"
+                - generic [ref=e336]: /10
+              - generic [ref=e337]: DSA Score
+          - paragraph [ref=e341]: High Distinction in Data Structures & Algorithms
+        - complementary [ref=e342]:
+          - heading "Outside of Code" [level=3] [ref=e343]
+          - generic [ref=e344]:
+            - generic [ref=e349]:
+              - paragraph [ref=e350]: Long-distance Running
+              - paragraph [ref=e351]: Endurance & mental fortitude
+            - generic [ref=e358]:
+              - paragraph [ref=e359]: Badminton
+              - paragraph [ref=e360]: Agility & competitive spirit
+          - paragraph [ref=e361]: "\"Discipline on the track translates directly to discipline in the codebase.\""
+    - generic [ref=e363]:
+      - generic [ref=e364]:
+        - paragraph [ref=e365]: npna.dev
+        - paragraph [ref=e366]: Nguyen Pham Nhat Anh · Built with Next.js & Tailwind CSS
+      - generic [ref=e367]:
+        - link "GitHub" [ref=e368] [cursor=pointer]:
+          - /url: https://github.com/nhatanh-dev
+        - link "Email" [ref=e373] [cursor=pointer]:
+          - /url: mailto:anhnguyenphamnhat@gmail.com
+        - link "Phone" [ref=e377] [cursor=pointer]:
+          - /url: tel:+84559371255
+        - link "LinkedIn" [ref=e380] [cursor=pointer]:
+          - /url: https://www.linkedin.com/in/anhnguyen2505/

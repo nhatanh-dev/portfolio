@@ -45,6 +45,9 @@ export default function Navbar() {
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const next = latest > 20;
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+      setActiveSection(navLinks[navLinks.length - 1]?.href ?? activeSection);
+    }
     if (next !== scrolledRef.current) {
       scrolledRef.current = next;
       setScrolled(next);
@@ -132,6 +135,9 @@ export default function Navbar() {
       <nav className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-5 sm:px-8">
         <a
           href="#hero"
+          onClick={(event) => {
+            if (mobileOpen) handleMobileNavClick(event, "#hero");
+          }}
           className="inline-flex min-h-11 items-center rounded-[var(--radius-control)] font-display text-sm font-bold tracking-[0.13em] text-[var(--accent)] transition-colors duration-200 hover:text-[var(--foreground)]"
           aria-label="Go to homepage"
         >

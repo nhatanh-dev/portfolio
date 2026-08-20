@@ -1,0 +1,143 @@
+[browser] Image with src "/projects/smartinvoice-aws-architecture.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Image with src "/projects/smartinvoice-aws-architecture.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Image with src "/projects/smartinvoice-aws-architecture.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Image with src "http://localhost:3000/avt.jpg" has "fill" and a height value of 0. This is likely because the parent element of the image has not been styled to have a set height. (file://D:/FPT_Study/portfolio/.next/dev/static/chunks/node_modules_01nphqe._.js:17662:44)
+[browser] Uncaught ReferenceError: useInView is not defined
+    at ProjectsSection (src/components/ProjectsSection.tsx:244:27)
+    at Home (src\app\page.tsx:35:7)
+  242 |
+  243 | export default function ProjectsSection() {
+> 244 |   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.05 });
+      |                           ^
+  245 |
+  246 |   return (
+  247 |     <section id="projects" ref={ref} className="relative py-24">
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[browser] Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template). 
+    at Set.forEach (<anonymous>) (<anonymous>)
+[browser] Image with src "/projects/evolt-landing.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled (src/components/Navbar.tsx:26:40)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+      <LoadingBoundary name="/" loading={null}>
+        <HTTPAccessFallbackBoundary notFound={{...}} forbidden={undefined} unauthorized={undefined}>
+          <HTTPAccessFallbackErrorBoundary pathname="/" notFound={{...}} forbidden={undefined} unauthorized={undefined} ...>
+            <RedirectBoundary>
+              <RedirectErrorBoundary router={{...}}>
+                <InnerLayoutRouter url="/" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} segmentPath={[...]} ...>
+                  <SegmentViewNode type="page" pagePath="page.tsx">
+                    <SegmentTrieNode>
+                    <Home>
+                      <main id="main-content" className="min-h-[100...">
+                        <Navbar>
+                        <HeroSection>
+                          <section id="hero" className="relative m...">
+                            <div>
+                            <div className="relative m...">
+                              <div className="grid items...">
+                                <div className="max-w-3xl">
+                                  <motion.div initial={false} animate={{opacity:1,y:0}} ...>
+                                    <div
+                                      className="mb-6"
+                                      style={{
++                                       opacity: 1
+-                                       opacity: "0"
++                                       transform: "none"
+-                                       transform: "translateY(18px)"
+                                      }}
+                                      ref={function useMotionRef.useCallback}
+                                    >
+                                  <motion.h1 initial={false} animate={{opacity:1,y:0}} ...>
+                                    <h1
+                                      className="mb-6 text-[clamp(3.25rem,7.4vw,6.75rem)] leading-[0.94] font-bold tra..."
+                                      style={{
++                                       opacity: 1
+-                                       opacity: "0"
++                                       transform: "none"
+-                                       transform: "translateY(18px)"
+                                      }}
+                                      ref={function useMotionRef.useCallback}
+                                    >
+                                  <motion.p initial={false} animate={{opacity:1,y:0}} ...>
+                                    <p
+                                      className="mb-7 max-w-2xl font-mono text-sm leading-relaxed tracking-[0.03em] te..."
+                                      style={{
++                                       opacity: 1
+-                                       opacity: "0"
++                                       transform: "none"
+-                                       transform: "translateY(18px)"
+                                      }}
+                                      ref={function useMotionRef.useCallback}
+                                    >
+                                  <motion.p initial={false} animate={{opacity:1,y:0}} ...>
+                                    <p
+                                      className="mb-8 max-w-[66ch] border-l border-[var(--border-strong)] pl-5 text-ba..."
+                                      style={{
++                                       opacity: 1
+-                                       opacity: "0"
++                                       transform: "none"
+-                                       transform: "translateY(18px)"
+                                      }}
+                                      ref={function useMotionRef.useCallback}
+                                    >
+                                  <motion.div initial={false} animate={{opacity:1,y:0}} ...>
+                                    <div
+                                      className="mb-9 grid max-w-2xl gap-2 sm:grid-cols-2"
+                                      style={{
++                                       opacity: 1
+-                                       opacity: "0"
++                                       transform: "none"
+-                                       transform: "translateY(18px)"
+                                      }}
+                                      ref={function useMotionRef.useCallback}
+                                    >
+                                  <motion.div initial={false} animate={{opacity:1,y:0}} ...>
+                                    <div
+                                      className="flex flex-wrap gap-3"
+                                      style={{
++                                       opacity: 1
+-                                       opacity: "0"
++                                       transform: "none"
+-                                       transform: "translateY(18px)"
+                                      }}
+                                      ref={function useMotionRef.useCallback}
+                                    >
+                                <motion.div initial={false} animate={{opacity:1,x:0}} ...>
+                                  <div
+                                    className="flex justify-center lg:justify-end"
+                                    style={{
++                                     opacity: 1
+-                                     opacity: "0"
++                                     transform: "none"
+-                                     transform: "translateX(28px)"
+                                    }}
+                                    ref={function useMotionRef.useCallback}
+                                  >
+                            <motion.div initial={false} animate={{opacity:1}} transition={{delay:0}} ...>
+                              <div
+                                className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 flex-col items-center ga..."
++                               style={{opacity:1}}
+-                               style={{opacity:"0"}}
+                                ref={function useMotionRef.useCallback}
+                              >
+                        ...
+                  ...
+                ...
+ 
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled (src/components/Navbar.tsx:26:40)

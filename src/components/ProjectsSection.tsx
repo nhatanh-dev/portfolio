@@ -234,7 +234,7 @@ export default function ProjectsSection() {
                 <div
                   className={`order-2 lg:col-span-7 ${project.reverse ? "lg:order-2" : "lg:order-1"}`}
                 >
-                  <ScrollReveal delay={index % 2 === 0 ? 0.1 : 0.2}>
+                  <ScrollReveal>
                     <ProjectMediaCarousel projectTitle={project.title} media={project.media} />
                   </ScrollReveal>
                 </div>
@@ -242,7 +242,7 @@ export default function ProjectsSection() {
                 <div
                   className={`order-1 lg:col-span-5 ${project.reverse ? "lg:order-1" : "lg:order-2"}`}
                 >
-                  <ScrollReveal delay={index % 2 === 0 ? 0.2 : 0.1}>
+                  <ScrollReveal>
                     <div className="flex items-center gap-3">
                       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-control)] border border-[var(--border-strong)] bg-[rgba(98,198,223,0.06)] text-[var(--accent)]">
                         <Icon size={18} aria-hidden="true" />

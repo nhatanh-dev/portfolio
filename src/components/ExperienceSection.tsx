@@ -31,7 +31,7 @@ export default function ExperienceSection() {
         <SpotlightCard className="mt-12 border-t border-[var(--border-strong)] rounded-[var(--radius-surface)] p-1">
           <article className="grid lg:grid-cols-12 lg:gap-12 relative z-10">
             <div className="border-b border-[var(--border)] py-7 lg:col-span-3 lg:border-r lg:border-b-0 lg:py-8 lg:px-4">
-              <ScrollReveal delay={0.1}>
+              <ScrollReveal>
                 <div className="flex h-11 w-11 items-center justify-center rounded-[var(--radius-control)] border border-[var(--border-strong)] bg-[rgba(98,198,223,0.06)] text-[var(--accent)]">
                   <BriefcaseBusiness size={19} aria-hidden="true" />
                 </div>
@@ -44,7 +44,7 @@ export default function ExperienceSection() {
             </div>
 
             <div className="py-8 lg:col-span-9 lg:px-4">
-              <ScrollReveal delay={0.2}>
+              <ScrollReveal>
                 <p className="text-sm font-bold tracking-[0.06em] text-[var(--accent)] uppercase">
                   First Cloud AI Journey
                 </p>

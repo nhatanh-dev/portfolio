@@ -1,0 +1,167 @@
+[     274ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[     374ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[   20475ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[   20490ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[   30755ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[   30790ms] [LOG] [Fast Refresh] done in 142ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[   30909ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[   30940ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[   33912ms] [WARNING] Image with src "/projects/evolt-landing.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[   47714ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[   47747ms] [LOG] [Fast Refresh] done in 133ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[   47844ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[   47869ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[   47904ms] [WARNING] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[   47961ms] [ERROR] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+      <LoadingBoundary name="/" loading={null}>
+        <HTTPAccessFallbackBoundary notFound={{...}} forbidden={undefined} unauthorized={undefined}>
+          <HTTPAccessFallbackErrorBoundary pathname="/" notFound={{...}} forbidden={undefined} unauthorized={undefined} ...>
+            <RedirectBoundary>
+              <RedirectErrorBoundary router={{...}}>
+                <InnerLayoutRouter url="/" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} segmentPath={[...]} ...>
+                  <SegmentViewNode type="page" pagePath="page.tsx">
+                    <SegmentTrieNode>
+                    <Home>
+                      <main id="main-content" className="min-h-[100...">
+                        <Navbar>
+                        <HeroSection>
+                          <section id="hero" className="relative m...">
+                            <div>
+                            <div className="relative m...">
+                              <div className="grid items...">
+                                <div className="max-w-3xl">
+                                  <motion.div initial={false} animate={{opacity:1,y:0}} ...>
+                                    <div
+                                      className="mb-6"
+                                      style={{
++                                       opacity: 1
+-                                       opacity: "0"
++                                       transform: "none"
+-                                       transform: "translateY(18px)"
+                                      }}
+                                      ref={function useMotionRef.useCallback}
+                                    >
+                                  <motion.h1 initial={false} animate={{opacity:1,y:0}} ...>
+                                    <h1
+                                      className="mb-6 text-[clamp(3.25rem,7.4vw,6.75rem)] leading-[0.94] font-bold tra..."
+                                      style={{
++                                       opacity: 1
+-                                       opacity: "0"
++                                       transform: "none"
+-                                       transform: "translateY(18px)"
+                                      }}
+                                      ref={function useMotionRef.useCallback}
+                                    >
+                                  <motion.p initial={false} animate={{opacity:1,y:0}} ...>
+                                    <p
+                                      className="mb-7 max-w-2xl font-mono text-sm leading-relaxed tracking-[0.03em] te..."
+                                      style={{
++                                       opacity: 1
+-                                       opacity: "0"
++                                       transform: "none"
+-                                       transform: "translateY(18px)"
+                                      }}
+                                      ref={function useMotionRef.useCallback}
+                                    >
+                                  <motion.p initial={false} animate={{opacity:1,y:0}} ...>
+                                    <p
+                                      className="mb-8 max-w-[66ch] border-l border-[var(--border-strong)] pl-5 text-ba..."
+                                      style={{
++                                       opacity: 1
+-                                       opacity: "0"
++                                       transform: "none"
+-                                       transform: "translateY(18px)"
+                                      }}
+                                      ref={function useMotionRef.useCallback}
+                                    >
+                                  <motion.div initial={false} animate={{opacity:1,y:0}} ...>
+                                    <div
+                                      className="mb-9 grid max-w-2xl gap-2 sm:grid-cols-2"
+                                      style={{
++                                       opacity: 1
+-                                       opacity: "0"
++                                       transform: "none"
+-                                       transform: "translateY(18px)"
+                                      }}
+                                      ref={function useMotionRef.useCallback}
+                                    >
+                                  <motion.div initial={false} animate={{opacity:1,y:0}} ...>
+                                    <div
+                                      className="flex flex-wrap gap-3"
+                                      style={{
++                                       opacity: 1
+-                                       opacity: "0"
++                                       transform: "none"
+-                                       transform: "translateY(18px)"
+                                      }}
+                                      ref={function useMotionRef.useCallback}
+                                    >
+                                <motion.div initial={false} animate={{opacity:1,x:0}} ...>
+                                  <div
+                                    className="flex justify-center lg:justify-end"
+                                    style={{
++                                     opacity: 1
+-                                     opacity: "0"
++                                     transform: "none"
+-                                     transform: "translateX(28px)"
+                                    }}
+                                    ref={function useMotionRef.useCallback}
+                                  >
+                            <motion.div initial={false} animate={{opacity:1}} transition={{delay:0}} ...>
+                              <div
+                                className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 flex-col items-center ga..."
++                               style={{opacity:1}}
+-                               style={{opacity:"0"}}
+                                ref={function useMotionRef.useCallback}
+                              >
+                        ...
+                  ...
+                ...
+ @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:3318
+[  146013ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[  146162ms] [LOG] [Fast Refresh] done in 218ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[  183968ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[  184999ms] [WARNING] [HMR] Invalid message: {"isTrusted":true}
+TypeError: Cannot convert undefined or null to object
+    at Object.keys (<anonymous>)
+    at extractModulesFromTurbopackMessage (http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13654:39)
+    at TurbopackHmr.onTurbopackMessage (http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13601:32)
+    at processMessage (http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13959:30)
+    at WebSocket.handleMessage (http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13358:52) @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[  185001ms] [LOG] [Fast Refresh] done in 1133ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[  185120ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[  185988ms] [LOG] [Fast Refresh] done in 968ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[  186202ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[  186286ms] [LOG] [Fast Refresh] done in 186ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[  186889ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[  186913ms] [LOG] [Fast Refresh] done in 127ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[  254457ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[  254689ms] [LOG] [Fast Refresh] done in 336ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[  331086ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[  331093ms] [LOG] [Fast Refresh] done in 107ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[  410909ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=e-mrX6vHcS48PxDb_ddWa' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  414243ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=e-mrX6vHcS48PxDb_ddWa' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  417597ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=e-mrX6vHcS48PxDb_ddWa' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  420940ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=e-mrX6vHcS48PxDb_ddWa' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  424298ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=e-mrX6vHcS48PxDb_ddWa' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  431657ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=e-mrX6vHcS48PxDb_ddWa' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  439010ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=e-mrX6vHcS48PxDb_ddWa' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  446385ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=e-mrX6vHcS48PxDb_ddWa' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  453757ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=e-mrX6vHcS48PxDb_ddWa' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  698796ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=e-mrX6vHcS48PxDb_ddWa' failed: WebSocket opening handshake timed out @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  943826ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=e-mrX6vHcS48PxDb_ddWa' failed: WebSocket opening handshake timed out @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[ 1034971ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=e-mrX6vHcS48PxDb_ddWa' failed: Error during WebSocket handshake: net::ERR_CONNECTION_RESET @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322

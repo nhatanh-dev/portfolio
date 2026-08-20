@@ -39,7 +39,7 @@ export default function EducationSection() {
         <SpotlightCard className="mt-14 sm:mt-16 lg:mt-12 rounded-[var(--radius-surface)] p-1">
           <div className="grid border-t border-[var(--border-strong)] lg:grid-cols-12 lg:gap-12 relative z-10">
             <article className="py-8 lg:col-span-8 lg:pr-8">
-              <ScrollReveal delay={0.1}>
+              <ScrollReveal>
                 <div className="flex items-start gap-4">
                   <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[var(--radius-control)] border border-[var(--border-strong)] bg-[rgba(98,198,223,0.06)] text-[var(--accent)]">
                     <GraduationCap size={21} aria-hidden="true" />
@@ -80,7 +80,7 @@ export default function EducationSection() {
             </article>
 
             <aside className="border-t border-[var(--border)] py-8 lg:col-span-4 lg:border-t-0 lg:border-l lg:pl-10">
-              <ScrollReveal delay={0.2}>
+              <ScrollReveal>
                 <h3 className="text-xl font-bold tracking-[-0.02em] text-[var(--foreground)]">
                   Outside the IDE
                 </h3>
