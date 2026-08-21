@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { ArrowRight, ArrowUpRight, Code2, Link2, Mail } from "lucide-react";
 import avatarImage from "../../public/avt.jpg";
-import NetworkBackground from "./NetworkBackground";
+import HexagonBackground from "./HexagonBackground";
 import ScrambleText from "./ScrambleText";
 import ScrollReveal from "./ScrollReveal";
 

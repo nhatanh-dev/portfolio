@@ -19,6 +19,7 @@ import evoltDashboard from "../../public/projects/evolt-dashboard.png";
 import smartInvoiceArchitecture from "../../public/projects/smartinvoice-aws-architecture.png";
 import ScrollReveal from "./ScrollReveal";
 import SpotlightCard from "./SpotlightCard";
+import { ProjectsBackground } from "./SectionBackgrounds";
 
 interface ProjectMedia {
   label: string;
@@ -202,8 +203,9 @@ function ExternalAction({ href, children }: { href: string; children: React.Reac
 
 export default function ProjectsSection() {
   return (
-    <section id="projects" aria-labelledby="projects-title" className="relative py-20 sm:py-24 lg:pt-24 lg:pb-20">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+    <section id="projects" className="relative py-20 sm:py-24 lg:pt-24 lg:pb-20">
+      <ProjectsBackground />
+      <div className="mx-auto max-w-7xl px-5 sm:px-8 relative z-10">
         <header className="grid gap-5 lg:grid-cols-12 lg:items-end lg:gap-12">
           <div className="lg:col-span-8">
             <ScrollReveal>

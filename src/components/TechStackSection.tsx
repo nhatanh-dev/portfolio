@@ -1,6 +1,7 @@
 import { Cloud, Code2, Database, GitBranch, type LucideIcon } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 import SpotlightCard from "./SpotlightCard";
+import { StackBackground } from "./SectionBackgrounds";
 
 interface Category {
   title: string;
@@ -38,8 +39,9 @@ const categories: Category[] = [
 
 export default function TechStackSection() {
   return (
-    <section id="stack" aria-labelledby="stack-title" className="relative py-20 sm:py-24 lg:pt-24 lg:pb-14">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:gap-16">
+    <section id="stack" className="relative py-20 sm:py-24 lg:pt-24 lg:pb-14">
+      <StackBackground />
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:gap-16 relative z-10">
         <header className="max-w-2xl lg:col-span-4 lg:pt-2">
           <ScrollReveal>
             <h2 id="stack-title" className="text-4xl leading-[1.02] font-bold tracking-[-0.045em] text-[var(--foreground)] sm:text-5xl lg:text-[3.5rem] lg:leading-[1.04] lg:tracking-[-0.04em]">

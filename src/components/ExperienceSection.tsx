@@ -1,21 +1,35 @@
 import { Award, BriefcaseBusiness, CalendarDays, Check } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 import SpotlightCard from "./SpotlightCard";
+import FloatingPhotoStack from "./FloatingPhotoStack";
+import { ExperienceBackground } from "./SectionBackgrounds";
 
 const contributions = [
-  "Completed an intensive three-month on-the-job cloud program through AWS Study Bootcamp.",
-  "Applied EC2, S3, ECS, ALB, and CloudWatch in collaborative, project-based infrastructure work.",
-  "Worked with the FCAJ Challenger group to review solutions, share progress, and deliver as a team.",
+  {
+    text: "Completed an intensive three-month on-the-job cloud program through AWS Study Bootcamp.",
+    keyword: "AWS Study Bootcamp.",
+    photos: ["/avt.jpg", "/avt.jpg", "/avt.jpg"] // Placeholders
+  },
+  {
+    text: "Applied EC2, S3, ECS, ALB, and CloudWatch in collaborative, project-based infrastructure work.",
+    keyword: "",
+    photos: []
+  },
+  {
+    text: "Worked with the FCAJ Challenger group to review solutions, share progress, and deliver as a team.",
+    keyword: "",
+    photos: []
+  }
 ];
 
 export default function ExperienceSection() {
   return (
     <section
       id="experience"
-      aria-labelledby="experience-title"
       className="relative border-y border-[var(--border)] bg-[var(--background-deep)] py-20 sm:py-24 lg:pt-24 lg:pb-16"
     >
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+      <ExperienceBackground />
+      <div className="mx-auto max-w-7xl px-5 sm:px-8 relative z-10">
         <header className="max-w-3xl">
           <ScrollReveal>
             <h2 id="experience-title" className="text-4xl leading-[1.02] font-bold tracking-[-0.045em] text-[var(--foreground)] sm:text-5xl lg:text-[3.5rem] lg:leading-[1.04] lg:tracking-[-0.04em]">
@@ -53,15 +67,24 @@ export default function ExperienceSection() {
                 </h3>
 
                 <ul className="mt-7 grid max-w-4xl gap-4">
-                  {contributions.map((item) => (
+                  {contributions.map((item, index) => (
                     <li
-                      key={item}
+                      key={index}
                       className="grid grid-cols-[1.5rem_minmax(0,1fr)] gap-3 text-base leading-7 text-[var(--foreground-soft)]"
                     >
                       <span className="mt-0.5 flex h-6 w-6 items-center justify-center rounded-md bg-[rgba(98,198,223,0.08)] text-[var(--accent)]">
                         <Check size={14} aria-hidden="true" />
                       </span>
-                      <span>{item}</span>
+                      <span>
+                        {item.keyword ? (
+                          <>
+                            {item.text.replace(item.keyword, "")}
+                            <FloatingPhotoStack images={item.photos}>{item.keyword}</FloatingPhotoStack>
+                          </>
+                        ) : (
+                          item.text
+                        )}
+                      </span>
                     </li>
                   ))}
                 </ul>

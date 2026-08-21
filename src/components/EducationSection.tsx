@@ -1,17 +1,21 @@
 import { Activity, GraduationCap, Medal, Wind } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 import SpotlightCard from "./SpotlightCard";
+import FloatingPhotoStack from "./FloatingPhotoStack";
+import { EducationBackground } from "./SectionBackgrounds";
 
 const interests = [
   {
     name: "Long-distance running",
     description: "Endurance, pacing, and consistent progress.",
     icon: Activity,
+    photos: ["/avt.jpg", "/avt.jpg"] // Placeholders
   },
   {
     name: "Badminton",
     description: "Fast decisions and competitive focus.",
     icon: Wind,
+    photos: ["/avt.jpg"] // Placeholders
   },
 ];
 
@@ -19,10 +23,10 @@ export default function EducationSection() {
   return (
     <section
       id="education"
-      aria-labelledby="education-title"
       className="relative border-t border-[var(--border)] bg-[var(--background-deep)] py-20 sm:py-24 lg:pt-24 lg:pb-14"
     >
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+      <EducationBackground />
+      <div className="mx-auto max-w-7xl px-5 sm:px-8 relative z-10">
         <header className="max-w-4xl">
           <ScrollReveal>
             <h2 id="education-title" className="max-w-[22ch] text-4xl leading-[1.02] font-bold tracking-[-0.045em] text-[var(--foreground)] sm:text-5xl lg:text-[3.5rem] lg:leading-[1.04] lg:tracking-[-0.04em]">
@@ -73,7 +77,7 @@ export default function EducationSection() {
                 <div className="mt-6 flex items-start gap-3">
                   <Medal size={18} className="mt-1 shrink-0 text-[var(--accent)]" aria-hidden="true" />
                   <p className="text-sm leading-6 text-[var(--foreground-soft)]">
-                    High Distinction in Data Structures and Algorithms.
+                    <FloatingPhotoStack images={["/avt.jpg"]}>High Distinction</FloatingPhotoStack> in Data Structures and Algorithms.
                   </p>
                 </div>
               </ScrollReveal>
@@ -85,7 +89,7 @@ export default function EducationSection() {
                   Outside the IDE
                 </h3>
                 <div className="mt-5 border-t border-[var(--border)]">
-                  {interests.map(({ name, description, icon: Icon }) => (
+                  {interests.map(({ name, description, icon: Icon, photos }) => (
                     <div
                       key={name}
                       className="flex items-start gap-4 border-b border-[var(--border)] py-5"
@@ -94,7 +98,13 @@ export default function EducationSection() {
                         <Icon size={17} aria-hidden="true" />
                       </span>
                       <div>
-                        <p className="font-semibold text-[var(--foreground)]">{name}</p>
+                        <p className="font-semibold text-[var(--foreground)]">
+                          {photos.length > 0 ? (
+                            <FloatingPhotoStack images={photos}>{name}</FloatingPhotoStack>
+                          ) : (
+                            name
+                          )}
+                        </p>
                         <p className="mt-1 text-sm leading-6 text-[var(--muted)]">{description}</p>
                       </div>
                     </div>
