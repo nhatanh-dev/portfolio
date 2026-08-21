@@ -33,7 +33,7 @@ export default function HeroSection() {
       <div className="hero-backdrop pointer-events-none absolute inset-0" aria-hidden="true" />
       
       {/* 3D Network Particle Effect */}
-      <NetworkBackground />
+      <HexagonBackground />
 
       <div className="relative mx-auto w-full max-w-7xl px-5 pt-28 pb-16 sm:px-8 sm:pt-32 sm:pb-20 lg:pt-24 lg:pb-16 z-10">
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14 xl:gap-20">
