@@ -89,20 +89,19 @@ export default function NetworkBackground() {
         if (particles[i].x < 0 || particles[i].x > width) particles[i].vx *= -1;
         if (particles[i].y < 0 || particles[i].y > height) particles[i].vy *= -1;
 
-        // Draw particle
+        // Add glow to tech nodes via a second larger circle (shadowBlur crashes iOS Safari)
+        if (particles[i].isTechNode) {
+          ctx.beginPath();
+          ctx.arc(particles[i].x, particles[i].y, particles[i].radius * 3, 0, Math.PI * 2);
+          // Create a faint version of the color for the glow
+          ctx.fillStyle = particles[i].color.replace("0.8", "0.2").replace("0.4", "0.1");
+          ctx.fill();
+        }
+        
         ctx.beginPath();
         ctx.arc(particles[i].x, particles[i].y, particles[i].radius, 0, Math.PI * 2);
         ctx.fillStyle = particles[i].color;
-        
-        // Add glow to tech nodes
-        if (particles[i].isTechNode) {
-          ctx.shadowBlur = 10;
-          ctx.shadowColor = particles[i].color;
-        } else {
-          ctx.shadowBlur = 0;
-        }
         ctx.fill();
-        ctx.shadowBlur = 0; // reset
 
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;

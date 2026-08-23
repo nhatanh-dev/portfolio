@@ -11,7 +11,7 @@ export function StackBackground() {
         <rect x="0" y="0" width="100%" height="100%" fill="url(#dot-matrix)" />
       </svg>
       {/* Subtle glowing orb in top right */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--accent)] opacity-20 blur-[120px] rounded-full translate-x-1/3 -translate-y-1/3" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--accent)] opacity-20 blur-3xl rounded-full translate-x-1/3 -translate-y-1/3" />
     </div>
   );
 }
@@ -20,8 +20,8 @@ export function StackBackground() {
 export function ExperienceBackground() {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
-      <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-[rgba(98,198,223,0.15)] blur-[100px] rounded-full mix-blend-screen" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[70%] h-[70%] bg-[rgba(155,93,229,0.12)] blur-[120px] rounded-full mix-blend-screen" />
+      <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-[rgba(98,198,223,0.15)] blur-3xl rounded-full" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[70%] h-[70%] bg-[rgba(155,93,229,0.12)] blur-3xl rounded-full" />
     </div>
   );
 }
