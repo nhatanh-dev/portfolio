@@ -131,7 +131,7 @@ export default function FloatingPhotoStack({ children, images }: FloatingPhotoSt
 
   if (isMobile) {
     return (
-      <span className="block">
+      <div className="block">
         <span className="font-semibold text-[var(--foreground)]">{children}</span>
         {images.length > 0 && (
           <div className="mt-3 flex gap-3 overflow-x-auto pb-2 snap-x">
@@ -147,7 +147,7 @@ export default function FloatingPhotoStack({ children, images }: FloatingPhotoSt
           </div>
         )}
         <Lightbox />
-      </span>
+      </div>
     );
   }
 

@@ -154,6 +154,7 @@ export default function NetworkBackground() {
     animate();
 
     const handleResize = () => {
+      if (window.innerWidth === width) return; // Ignore vertical resize (iOS URL bar)
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
       init();
