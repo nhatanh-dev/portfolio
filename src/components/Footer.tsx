@@ -48,7 +48,7 @@ export default function Footer() {
         <div className="flex flex-col gap-7 border-t border-[var(--border)] py-8 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="font-display text-sm font-bold tracking-[0.12em] text-[var(--accent)]">
-              anhnpn<span className="text-[var(--foreground)]">.vercel.app</span>
+              npna<span className="text-[var(--foreground)]">.dev</span>
             </p>
             <p className="mt-2 text-sm text-[var(--muted)]">
               © {new Date().getFullYear()} Nguyen Pham Nhat Anh. Built with Next.js and Tailwind CSS.

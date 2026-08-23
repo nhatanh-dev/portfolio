@@ -83,6 +83,9 @@ export default function FloatingPhotoStack({ children, images }: FloatingPhotoSt
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4 sm:p-8 backdrop-blur-md"
             onClick={() => setIsOpen(false)}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Photo gallery"
           >
             <button 
               className="absolute top-6 right-6 text-white hover:text-[var(--accent)] transition-colors p-2"
@@ -142,24 +145,26 @@ export default function FloatingPhotoStack({ children, images }: FloatingPhotoSt
   };
 
   if (isMobile) {
+    if (images.length === 0) {
+      return <span className="font-semibold text-[var(--foreground)]">{children}</span>;
+    }
+
     return (
-      <div className="block">
-        <span className="font-semibold text-[var(--foreground)]">{children}</span>
-        {images.length > 0 && (
-          <div className="mt-3 flex gap-3 overflow-x-auto pb-2 snap-x">
-            {images.map((src, idx) => (
-              <div 
-                key={idx} 
-                onClick={() => { setCurrentIndex(idx); setIsOpen(true); }}
-                className="relative aspect-video w-56 shrink-0 snap-start overflow-hidden rounded-md border border-[var(--border-strong)] cursor-pointer"
-              >
-                <Image src={src} alt="Photo" fill className="object-cover transition-transform hover:scale-105" sizes="224px" />
-              </div>
-            ))}
-          </div>
-        )}
+      <>
+        <button
+          type="button"
+          className="inline cursor-pointer touch-manipulation border-0 border-b border-dashed border-[var(--accent)] bg-transparent p-0 text-left font-semibold text-[var(--foreground)] transition-colors duration-200 active:text-[var(--accent)] focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background-deep)]"
+          onClick={() => {
+            setCurrentIndex(0);
+            setIsOpen(true);
+          }}
+          aria-haspopup="dialog"
+          aria-expanded={isOpen}
+        >
+          {children}
+        </button>
         {renderLightbox()}
-      </div>
+      </>
     );
   }
 

@@ -136,7 +136,7 @@ export default function Navbar() {
           className="inline-flex min-h-11 items-center rounded-[var(--radius-control)] font-display text-sm font-bold tracking-[0.13em] text-[var(--accent)] transition-colors duration-200 hover:text-[var(--foreground)]"
           aria-label="Go to homepage"
         >
-          anhnpn<span className="text-[var(--foreground)]">.vercel.app</span>
+          npna<span className="text-[var(--foreground)]">.dev</span>
         </a>
 
         <ul className="hidden items-center gap-0.5 md:flex">
