@@ -141,7 +141,7 @@ export default function FloatingPhotoStack({ children, images }: FloatingPhotoSt
                 onClick={() => { setCurrentIndex(idx); setIsOpen(true); }}
                 className="relative aspect-video w-56 shrink-0 snap-start overflow-hidden rounded-md border border-[var(--border-strong)] cursor-pointer"
               >
-                <Image src={src} alt="Photo" fill className="object-cover transition-transform hover:scale-105" />
+                <Image src={src} alt="Photo" fill className="object-cover transition-transform hover:scale-105" sizes="224px" />
               </div>
             ))}
           </div>
