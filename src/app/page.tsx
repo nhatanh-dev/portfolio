@@ -11,8 +11,8 @@ const structuredData = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Nguyen Pham Nhat Anh",
-  url: "https://npna.dev",
-  image: "https://npna.dev/avt.jpg",
+  url: "https://anhnpn.vercel.app",
+  image: "https://anhnpn.vercel.app/avt.jpg",
   jobTitle: "Backend and Cloud Developer",
   alumniOf: {
     "@type": "CollegeOrUniversity",

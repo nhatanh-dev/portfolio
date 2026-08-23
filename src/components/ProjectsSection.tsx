@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import {
@@ -106,14 +106,9 @@ function ProjectMediaCarousel({
   media: ProjectMedia[];
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isMounted, setIsMounted] = useState(false);
-  
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   const rawReduceMotion = useReducedMotion();
-  const reduceMotion = isMounted ? rawReduceMotion : false;
+  const reduceMotion = rawReduceMotion ?? false;
   
   const activeMedia = media[activeIndex] ?? media[0];
   const hasMultiple = media.length > 1;
@@ -225,7 +220,7 @@ export default function ProjectsSection() {
         </header>
 
         <div className="mt-10 border-t border-[var(--border-strong)] sm:mt-12">
-          {projects.map((project, index) => {
+          {projects.map((project) => {
             const Icon = project.icon;
 
             return (

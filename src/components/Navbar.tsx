@@ -23,14 +23,13 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("#hero");
-  const [isMounted, setIsMounted] = useState(false);
   
   const scrolledRef = useRef(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   
   const rawReduceMotion = useReducedMotion();
-  const reduceMotion = isMounted ? rawReduceMotion : false;
+  const reduceMotion = rawReduceMotion ?? false;
   
   const { scrollY, scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -38,10 +37,6 @@ export default function Navbar() {
     damping: 30,
     restDelta: 0.001
   });
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const next = latest > 20;
@@ -141,7 +136,7 @@ export default function Navbar() {
           className="inline-flex min-h-11 items-center rounded-[var(--radius-control)] font-display text-sm font-bold tracking-[0.13em] text-[var(--accent)] transition-colors duration-200 hover:text-[var(--foreground)]"
           aria-label="Go to homepage"
         >
-          npna<span className="text-[var(--foreground)]">.dev</span>
+          anhnpn<span className="text-[var(--foreground)]">.vercel.app</span>
         </a>
 
         <ul className="hidden items-center gap-0.5 md:flex">

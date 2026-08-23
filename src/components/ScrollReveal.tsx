@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 interface ScrollRevealProps {
@@ -10,13 +9,8 @@ interface ScrollRevealProps {
 }
 
 export default function ScrollReveal({ children, className = "", delay = 0 }: ScrollRevealProps) {
-  const [isMounted, setIsMounted] = useState(false);
   const rawReduceMotion = useReducedMotion();
-  const reduceMotion = isMounted ? rawReduceMotion : false;
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const reduceMotion = rawReduceMotion ?? false;
 
   return (
     <motion.div

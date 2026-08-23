@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Image, { StaticImageData } from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
@@ -11,25 +11,38 @@ interface FloatingPhotoStackProps {
   images: (string | StaticImageData)[];
 }
 
+const mobileQuery = "(max-width: 767px), (pointer: coarse)";
+
+function subscribeToMobilePreference(onStoreChange: () => void) {
+  const mediaQuery = window.matchMedia(mobileQuery);
+  mediaQuery.addEventListener("change", onStoreChange);
+  return () => mediaQuery.removeEventListener("change", onStoreChange);
+}
+
+function getMobileSnapshot() {
+  return window.matchMedia(mobileQuery).matches;
+}
+
+function getServerMobileSnapshot() {
+  return false;
+}
+
 export default function FloatingPhotoStack({ children, images }: FloatingPhotoStackProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hoveredPhotoIndex, setHoveredPhotoIndex] = useState<number | null>(null);
-  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
   const [rect, setRect] = useState<DOMRect | null>(null);
   
   const containerRef = useRef<HTMLSpanElement>(null);
+  const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
   const rawReduceMotion = useReducedMotion();
-
-  useEffect(() => {
-    setPortalRoot(document.body);
-    const checkMobile = () => setIsMobile(window.innerWidth < 768 || window.matchMedia("(pointer: coarse)").matches);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const isMobile = useSyncExternalStore(
+    subscribeToMobilePreference,
+    getMobileSnapshot,
+    getServerMobileSnapshot,
+  );
+  const portalRoot = typeof document === "undefined" ? null : document.body;
 
   // Update rect on scroll or when entering
   useEffect(() => {
@@ -38,11 +51,10 @@ export default function FloatingPhotoStack({ children, images }: FloatingPhotoSt
         setRect(containerRef.current.getBoundingClientRect());
       }
     };
-    if (isHovered) {
-      updateRect();
-      window.addEventListener("scroll", updateRect, { passive: true });
-      window.addEventListener("resize", updateRect);
-    }
+    if (!isHovered) return;
+
+    window.addEventListener("scroll", updateRect, { passive: true });
+    window.addEventListener("resize", updateRect);
     return () => {
       window.removeEventListener("scroll", updateRect);
       window.removeEventListener("resize", updateRect);
@@ -60,7 +72,7 @@ export default function FloatingPhotoStack({ children, images }: FloatingPhotoSt
   };
 
   // The Lightbox Modal
-  const Lightbox = () => {
+  const renderLightbox = () => {
     if (!portalRoot) return null;
     return createPortal(
       <AnimatePresence>
@@ -146,12 +158,10 @@ export default function FloatingPhotoStack({ children, images }: FloatingPhotoSt
             ))}
           </div>
         )}
-        <Lightbox />
+        {renderLightbox()}
       </div>
     );
   }
-
-  const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseEnter = () => {
     if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
@@ -167,7 +177,7 @@ export default function FloatingPhotoStack({ children, images }: FloatingPhotoSt
   };
 
   // The floating stack rendered in a portal to escape overflow-hidden
-  const StackPortal = () => {
+  const renderStackPortal = () => {
     if (!portalRoot || !rect) return null;
     
     // We use absolute positioning relative to the document body.
@@ -248,8 +258,8 @@ export default function FloatingPhotoStack({ children, images }: FloatingPhotoSt
           {children}
         </span>
       </span>
-      <StackPortal />
-      <Lightbox />
+      {renderStackPortal()}
+      {renderLightbox()}
     </>
   );
 }

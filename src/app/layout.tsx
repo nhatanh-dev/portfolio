@@ -15,7 +15,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://npna.dev"),
+  metadataBase: new URL("https://anhnpn.vercel.app"),
   title: {
     default: "Nguyen Pham Nhat Anh | Backend & Cloud Developer",
     template: "%s | Nguyen Pham Nhat Anh",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://npna.dev",
+    url: "https://anhnpn.vercel.app",
     siteName: "Nguyen Pham Nhat Anh",
     title: "Nguyen Pham Nhat Anh | Backend & Cloud Developer",
     description:

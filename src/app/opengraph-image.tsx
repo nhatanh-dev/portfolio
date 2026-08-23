@@ -32,7 +32,7 @@ export default function OpenGraphImage() {
             letterSpacing: "0.14em",
           }}
         >
-          NPNA.DEV
+          ANHNPN.VERCEL.APP
         </div>
         <div
           style={{
