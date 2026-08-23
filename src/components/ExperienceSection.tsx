@@ -8,7 +8,7 @@ const contributions = [
   {
     text: "Completed an intensive three-month on-the-job cloud program through AWS Study Bootcamp.",
     keyword: "AWS Study Bootcamp.",
-    photos: ["/avt.jpg", "/avt.jpg", "/avt.jpg"] // Placeholders
+    photos: ["/experience/IMG_1531.JPG", "/experience/IMG_E1533.JPG"]
   },
   {
     text: "Applied EC2, S3, ECS, ALB, and CloudWatch in collaborative, project-based infrastructure work.",
@@ -75,7 +75,7 @@ export default function ExperienceSection() {
                       <span className="mt-0.5 flex h-6 w-6 items-center justify-center rounded-md bg-[rgba(98,198,223,0.08)] text-[var(--accent)]">
                         <Check size={14} aria-hidden="true" />
                       </span>
-                      <span>
+                      <div className="inline">
                         {item.keyword ? (
                           <>
                             {item.text.replace(item.keyword, "")}
@@ -84,7 +84,7 @@ export default function ExperienceSection() {
                         ) : (
                           item.text
                         )}
-                      </span>
+                      </div>
                     </li>
                   ))}
                 </ul>

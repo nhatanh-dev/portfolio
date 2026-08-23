@@ -64,8 +64,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${archivo.variable} ${spaceGrotesk.variable} w-full overflow-x-hidden antialiased`}>
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+      <body className={`${archivo.variable} ${spaceGrotesk.variable} w-full overflow-x-hidden antialiased`} suppressHydrationWarning>
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>

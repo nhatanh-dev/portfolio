@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { ArrowRight, ArrowUpRight, Code2, Link2, Mail } from "lucide-react";
 import avatarImage from "../../public/avt.jpg";
-import HexagonBackground from "./HexagonBackground";
+import NetworkBackground from "./NetworkBackground";
 import ScrambleText from "./ScrambleText";
 import ScrollReveal from "./ScrollReveal";
 
@@ -33,14 +33,14 @@ export default function HeroSection() {
       <div className="hero-backdrop pointer-events-none absolute inset-0" aria-hidden="true" />
       
       {/* 3D Network Particle Effect */}
-      <HexagonBackground />
+      <NetworkBackground />
 
       <div className="relative mx-auto w-full max-w-7xl px-5 pt-28 pb-16 sm:px-8 sm:pt-32 sm:pb-20 lg:pt-24 lg:pb-16 z-10">
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14 xl:gap-20">
           <div className="max-w-3xl lg:col-span-7">
             <ScrollReveal delay={0.05}>
               <p className="mb-5 text-xs font-bold tracking-[0.16em] text-[var(--accent)] uppercase">
-                Nguyen Pham Nhat Anh
+                Alvin Nguyen (Nguyen Pham Nhat Anh)
               </p>
             </ScrollReveal>
 

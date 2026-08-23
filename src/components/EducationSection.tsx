@@ -9,13 +9,13 @@ const interests = [
     name: "Long-distance running",
     description: "Endurance, pacing, and consistent progress.",
     icon: Activity,
-    photos: ["/avt.jpg", "/avt.jpg"] // Placeholders
+    photos: ["/hobbies/Eximbank_10K.png", "/hobbies/11022-2025-ho-chi-minh-city-night-run-eximbank.png"]
   },
   {
     name: "Badminton",
     description: "Fast decisions and competitive focus.",
     icon: Wind,
-    photos: ["/avt.jpg"] // Placeholders
+    photos: ["/hobbies/IMG_0182.PNG"]
   },
 ];
 
@@ -50,7 +50,7 @@ export default function EducationSection() {
                   </span>
                   <div>
                     <h3 className="text-2xl font-bold tracking-[-0.03em] text-[var(--foreground)] sm:text-3xl">
-                      FPT University HCM
+                      <FloatingPhotoStack images={["/education/NDPP8643.JPEG"]}>FPT University HCM</FloatingPhotoStack>
                     </h3>
                     <p className="mt-1.5 text-base font-semibold text-[var(--accent)]">
                       Bachelor of Software Engineering
@@ -77,7 +77,7 @@ export default function EducationSection() {
                 <div className="mt-6 flex items-start gap-3">
                   <Medal size={18} className="mt-1 shrink-0 text-[var(--accent)]" aria-hidden="true" />
                   <p className="text-sm leading-6 text-[var(--foreground-soft)]">
-                    <FloatingPhotoStack images={["/avt.jpg"]}>High Distinction</FloatingPhotoStack> in Data Structures and Algorithms.
+                    High Distinction in Data Structures and Algorithms.
                   </p>
                 </div>
               </ScrollReveal>
@@ -98,13 +98,13 @@ export default function EducationSection() {
                         <Icon size={17} aria-hidden="true" />
                       </span>
                       <div>
-                        <p className="font-semibold text-[var(--foreground)]">
+                        <div className="font-semibold text-[var(--foreground)] inline-block">
                           {photos.length > 0 ? (
                             <FloatingPhotoStack images={photos}>{name}</FloatingPhotoStack>
                           ) : (
                             name
                           )}
-                        </p>
+                        </div>
                         <p className="mt-1 text-sm leading-6 text-[var(--muted)]">{description}</p>
                       </div>
                     </div>
