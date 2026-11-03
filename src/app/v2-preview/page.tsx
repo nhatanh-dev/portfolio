@@ -1,16 +1,14 @@
 import V2Nav from "@/components/v2/V2Nav";
-import V2Hero from "@/components/v2/V2Hero";
-import V2About from "@/components/v2/V2About";
-import V2Works from "@/components/v2/V2Works";
+import { v2Sections } from "@/components/v2/registry";
 
 export default function V2Page() {
   return (
     <>
       <V2Nav />
       <main id="v2-main">
-        <V2Hero />
-        <V2About />
-        <V2Works />
+        {v2Sections.map(({ id, Component }) => (
+          <Component key={id} />
+        ))}
       </main>
     </>
   );
