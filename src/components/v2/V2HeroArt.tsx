@@ -29,7 +29,7 @@ function Container({ x, y, body, top, side, ribs }: Box & { ribs: string }) {
 
 export function HeroCloud() {
   return (
-    <svg className={styles.cloud} viewBox="0 0 520 250" aria-hidden="true" focusable="false">
+    <svg className={styles.cloud} data-m="cloud" viewBox="0 0 520 250" aria-hidden="true" focusable="false">
       <defs>
         <linearGradient id="cloudFill" gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="230">
           <stop offset="0" stopColor="#fff1e9" />
@@ -51,7 +51,7 @@ export function HeroCloud() {
 export function HeroContainers({ className = styles.crates }: { className?: string }) {
   const ribs = useId();
   return (
-    <svg className={className} viewBox="-90 0 500 540" aria-hidden="true" focusable="false">
+    <svg className={className} data-m="crates" viewBox="-90 0 500 540" aria-hidden="true" focusable="false">
       <defs>
         <pattern id={ribs} width="13" height="10" patternUnits="userSpaceOnUse">
           <rect width="4" height="10" fill="rgba(0,0,0,.34)" />

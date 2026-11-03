@@ -7,7 +7,7 @@ const inter = Inter({ variable: "--v2-sans", subsets: ["latin"], display: "swap"
 const mono = JetBrains_Mono({ variable: "--v2-mono", subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
-  title: "V2 Prototype",
+  title: "Nguyen Pham Nhat Anh (Alvin Nguyen) | V2 Preview",
   robots: { index: false, follow: false },
 };
 

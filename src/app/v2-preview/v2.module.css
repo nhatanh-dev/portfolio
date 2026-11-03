@@ -127,9 +127,36 @@
 
 .eyebrow::before {
   content: "";
+  flex: none;
   width: 40px;
   height: 1px;
   background: var(--ink);
+}
+
+@media (max-width: 639px) {
+  .eyebrow {
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+  }
+  .eyebrow::before {
+    display: none;
+  }
+}
+
+/* Secondary identity: English name, quieter than the primary NGUYEN PHAM / NHAT ANH type. */
+.alias {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.role {
+  color: #6b6a68;
+}
+
+.role::before {
+  content: "·";
+  margin-right: 0.9em;
+  color: var(--vermilion-deep);
 }
 
 .name {
@@ -142,9 +169,18 @@
   letter-spacing: -0.005em;
 }
 
-.name span {
+.name > span,
+.nameInner {
   display: block;
   white-space: nowrap;
+}
+
+/* Mask for the headline reveal: the line clips its inner span while it slides up. */
+.nameLine {
+  width: max-content;
+  overflow: clip;
+  padding: 0.06em 0.05em;
+  margin: -0.06em -0.05em;
 }
 
 .nameInk {
@@ -209,6 +245,14 @@
 .btnGhost {
   border: 1.5px solid var(--ink);
   background: var(--paper);
+}
+
+/* Second, darker slab behind the main one for foreground/background separation. */
+.shapeShadow {
+  position: absolute;
+  inset: 0;
+  background: #8f2312;
+  clip-path: polygon(14% 24%, 100% 12%, 100% 100%, 0 100%);
 }
 
 /* Stage: portrait + vermilion shape. In flow below the copy on mobile; overlays the hero on desktop. */
@@ -350,6 +394,18 @@
   transform-origin: left bottom;
 }
 
+.ch {
+  display: inline-block;
+}
+
+.titleMask {
+  display: block;
+  width: max-content;
+  overflow: clip;
+  padding: 0.06em 0.05em;
+  margin: -0.06em -0.05em;
+}
+
 .onDark {
   color: #f7f1e6;
 }
@@ -366,7 +422,8 @@
 /* ---------- About (editorial: big photo, short copy) ---------- */
 .about {
   position: relative;
-  padding: 8px var(--gut) clamp(64px, 9vw, 120px);
+  z-index: 3;
+  padding: 8px var(--gut) clamp(40px, 5vw, 76px);
   background: var(--paper);
   display: grid;
   gap: 26px;
@@ -391,14 +448,36 @@
   margin-bottom: 6px;
 }
 
-.aboutPhoto img {
+.photoFrame {
   position: relative;
   z-index: 1;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  clip-path: polygon(9% 0, 100% 0, 91% 100%, 0 100%);
+}
+
+.aboutPhoto img {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: 50% 30%;
-  clip-path: polygon(9% 0, 100% 0, 91% 100%, 0 100%);
+}
+
+/* Vermilion stem that drops from the hero slab, across the seam, into the photo slab. */
+.stem {
+  position: absolute;
+  z-index: 0;
+  left: 63.5%;
+  width: 14%;
+  bottom: 94%;
+  height: clamp(100px, 18vh, 190px);
+  background: linear-gradient(var(--vermilion-deep), var(--vermilion));
+  clip-path: polygon(26% 0, 100% 0, 74% 100%, 0 100%);
+  transform-origin: 50% 0;
+  /* Only the scroll animation reveals the stem; without JS or with reduced motion it stays hidden. */
+  visibility: hidden;
 }
 
 .photoSlab {
@@ -520,8 +599,12 @@
   align-self: start;
   gap: 8px;
   min-height: 44px;
+  padding: 0 18px;
   font-weight: 600;
-  border-bottom: 1.5px solid currentColor;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
 /* Featured project */
@@ -772,6 +855,19 @@
     clip-path: polygon(74% 10%, 98% 10%, 80% 100%, 36% 100%);
   }
 
+  .shapeShadow {
+    clip-path: polygon(68% 13%, 90% 13%, 72% 100%, 30% 100%);
+  }
+
+  .stem {
+    left: 67%;
+    width: 24%;
+  }
+
+  .stackList {
+    pointer-events: auto;
+  }
+
   .cloud {
     left: 56%;
     top: 24%;
@@ -902,5 +998,303 @@
     margin-left: clamp(24px, 8vw, 120px);
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
     gap: 40px;
+  }
+}
+
+/* ---------- Motion hooks (Phase 2) ---------- */
+/* Hide animated hero layers until GSAP has applied its start states, so there is no flash of final content. */
+.hero[data-motion="pending"] [data-m] {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero[data-motion="pending"] [data-m] {
+    visibility: visible;
+  }
+}
+
+/* ---------- Interaction states (Phase 3) ---------- */
+/* Hover/active are gated on a real hover device; focus-visible always applies so keyboard users get the same response. */
+.btnSolid,
+.btnGhost {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: translate 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), scale 0.2s, color 0.35s, box-shadow 0.35s;
+}
+
+.btnSolid::before,
+.btnGhost::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--ink);
+  translate: -105% 0;
+  transition: translate 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.btnSolid svg {
+  transition: translate 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.btnSolid:focus-visible::before,
+.btnGhost:focus-visible::before {
+  translate: 0 0;
+}
+
+.btnGhost:focus-visible {
+  color: var(--paper);
+}
+
+.btnSolid:focus-visible svg {
+  translate: 3px -3px;
+}
+
+.btnSolid:active,
+.btnGhost:active {
+  scale: 0.97;
+}
+
+.stackList li::before {
+  transition: margin-right 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), color 0.3s;
+}
+
+.scrollCue svg,
+.repoLink svg {
+  transition: translate 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.featured,
+.diagram {
+  transition: border-color 0.4s, box-shadow 0.4s;
+}
+
+.shotBack,
+.shotFront {
+  transition: box-shadow 0.6s;
+}
+
+.shotBack img,
+.shotFront img,
+.diagram img {
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.featured:focus-within {
+  border-color: rgba(255, 154, 133, 0.6);
+  box-shadow: 0 30px 80px -30px rgba(228, 91, 71, 0.5);
+}
+
+.featured:focus-within .shotBack img {
+  transform: scale(1.05);
+}
+
+.featured:focus-within .shotFront img {
+  transform: scale(1.06) translate(-1.5%, -1.5%);
+}
+
+.featured:focus-within .shotFront {
+  box-shadow: 0 30px 80px -10px rgba(0, 0, 0, 0.85);
+}
+
+.secondary:focus-within .diagram {
+  box-shadow: 14px 14px 0 var(--vermilion-deep);
+}
+
+.secondary:focus-within .diagram img {
+  transform: scale(1.04);
+}
+
+.repoLink:focus-visible svg {
+  translate: 3px -3px;
+}
+
+.featured .repoLink:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
+  background: #ff9a85;
+  border-color: #ff9a85;
+  color: var(--night);
+}
+
+.secondary .repoLink:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 4px;
+  background: var(--vermilion-deep);
+  border-color: var(--vermilion-deep);
+  color: #fff;
+}
+
+@media (hover: hover) {
+  .btnSolid:hover::before,
+  .btnGhost:hover::before {
+    translate: 0 0;
+  }
+
+  .btnGhost:hover {
+    color: var(--paper);
+  }
+
+  .btnSolid:hover svg {
+    translate: 3px -3px;
+  }
+
+  .stackList li:hover::before {
+    margin-right: 22px;
+    color: var(--ink);
+    opacity: 1;
+  }
+
+  .scrollCue:hover svg {
+    translate: 0 6px;
+  }
+
+  .repoLink:hover svg {
+    translate: 3px -3px;
+  }
+
+  .featured .repoLink:hover {
+    background: #ff9a85;
+    border-color: #ff9a85;
+    color: var(--night);
+  }
+
+  .secondary .repoLink:hover {
+    background: var(--vermilion-deep);
+    border-color: var(--vermilion-deep);
+    color: #fff;
+  }
+
+  .featured:hover {
+    border-color: rgba(255, 154, 133, 0.6);
+    box-shadow: 0 30px 80px -30px rgba(228, 91, 71, 0.5);
+  }
+
+  .featured:hover .shotBack img {
+    transform: scale(1.05);
+  }
+
+  .featured:hover .shotFront img {
+    transform: scale(1.06) translate(-1.5%, -1.5%);
+  }
+
+  .featured:hover .shotFront {
+    box-shadow: 0 30px 80px -10px rgba(0, 0, 0, 0.85);
+  }
+
+  .secondary:hover .diagram {
+    box-shadow: 14px 14px 0 var(--vermilion-deep);
+  }
+
+  .secondary:hover .diagram img {
+    transform: scale(1.04);
+  }
+}
+
+/* Touch: pressed feedback instead of hover. */
+@media (hover: none) {
+  .featured:active .shotFront img {
+    transform: scale(1.04);
+  }
+
+  .secondary:active .diagram img {
+    transform: scale(1.03);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btnSolid,
+  .btnGhost,
+  .btnSolid::before,
+  .btnGhost::before,
+  .btnSolid svg,
+  .stackList li::before,
+  .scrollCue svg,
+  .repoLink svg,
+  .featured,
+  .diagram,
+  .shotBack,
+  .shotFront,
+  .shotBack img,
+  .shotFront img,
+  .diagram img {
+    transition: none;
+  }
+}
+
+/* ---------- Ambient motion (Phase 3 polish) ---------- */
+/* Two independent layers, each nested inside a layer that GSAP owns (arc -> orbit, slab -> glow), so pointer parallax and
+   entrance transforms never share an element with these keyframes. Only transform/opacity animate; no filters. */
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+.orbit {
+  position: absolute;
+  inset: -1px; /* align with the arc's 1px border */
+  border-radius: 50%;
+  animation: orbit 26s linear infinite;
+  animation-play-state: paused;
+  will-change: transform;
+}
+
+/* Short comet tail: a masked conic segment ending at 12 o'clock, plus a small head dot. */
+.orbitTrail {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0deg 300deg, rgba(228, 91, 71, 0) 300deg, rgba(228, 91, 71, 0.55) 357deg, transparent 360deg);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+}
+
+.orbitDot {
+  position: absolute;
+  top: -2px;
+  left: calc(50% - 3px);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--vermilion);
+  box-shadow: 0 0 0 4px rgba(228, 91, 71, 0.14);
+}
+
+.glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 46% 56% at 72% 38%, rgba(255, 222, 205, 0.32), transparent 70%);
+  transform-origin: 72% 38%;
+  animation: breathe 11s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.hero[data-ambient="on"] .orbit,
+.hero[data-ambient="on"] .glow {
+  animation-play-state: running;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit {
+    display: none;
+  }
+  .glow {
+    animation: none;
+    opacity: 0.6;
   }
 }
