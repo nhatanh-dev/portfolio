@@ -752,11 +752,17 @@
   }
 }
 
-/* ---------- ≥ 900px: nav links ---------- */
+/* ---------- ≥ 900px: nav links. Eight links: tighter gaps and no numerals until 1280px, where there is room for them. ---------- */
 @media (min-width: 900px) {
   .navLinks {
-    gap: clamp(24px, 3.2vw, 52px);
+    gap: clamp(18px, 2.2vw, 44px);
     font-size: 1rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .navLinks {
+    gap: clamp(24px, 3vw, 44px);
   }
   .navLinks sup {
     display: inline;
