@@ -1,0 +1,906 @@
+/* V2 prototype — Phase 1 static composition. No motion, no scroll effects. */
+
+.root {
+  --paper: #f5f0e8;
+  --paper-2: #efe8dc;
+  --ink: #16181f;
+  --ink-soft: #3b3f4a;
+  --vermilion: #e45b47;
+  --vermilion-deep: #c8341f;
+  --night: #14161d;
+  --gut: clamp(22px, 5.2vw, 86px);
+  --nav-h: 72px;
+  --pw: min(38.5vw, 60svh);
+  position: relative;
+  min-height: 100svh;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--v2-sans), system-ui, sans-serif;
+  line-height: 1.5;
+  overflow-x: clip;
+}
+
+.root a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.root :focus-visible {
+  outline: 2px solid var(--vermilion-deep);
+  outline-offset: 3px;
+}
+
+/* ---------- Nav ---------- */
+.nav {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 20;
+  height: var(--nav-h);
+  padding: 0 var(--gut);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.logo {
+  font-family: var(--v2-display), Impact, sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+
+.logo span {
+  color: var(--vermilion);
+}
+
+.navLinks {
+  display: flex;
+  gap: 18px;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.navLinks sup {
+  display: none;
+}
+
+.navLinks a {
+  position: relative;
+  padding: 6px 0;
+}
+
+.navLinks sup {
+  margin-right: 5px;
+  font-family: var(--v2-mono), monospace;
+  font-size: 0.62rem;
+  color: var(--vermilion-deep);
+  vertical-align: 0.5em;
+}
+
+.navLinks a[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -2px 0;
+  height: 2px;
+  background: var(--vermilion-deep);
+}
+
+/* ---------- Hero (mobile-first: portrait-led, layered) ---------- */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(60rem 30rem at -8% 35%, rgba(0, 0, 0, 0.045), transparent 70%),
+    var(--paper);
+  overflow: hidden;
+}
+
+/* Mobile: dedicated stacked composition. Copy sits on paper (no overlap with the shape or portrait);
+   the portrait stage follows below. Desktop re-establishes its own layout in the 1024px block. */
+.copy {
+  display: contents;
+}
+
+.copy > * {
+  position: relative;
+  z-index: 5;
+}
+
+.eyebrow { order: 1; }
+.name { order: 2; }
+.tagline { order: 3; }
+.ctas { order: 4; }
+.tags { order: 5; }
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: calc(var(--nav-h) + 24px) var(--gut) 0;
+  font-family: var(--v2-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 40px;
+  height: 1px;
+  background: var(--ink);
+}
+
+.name {
+  margin: 10px var(--gut) 0;
+  font-family: var(--v2-display), Impact, sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: min(calc((100vw - 2 * var(--gut)) / 5.4), 7rem);
+  line-height: 0.92;
+  letter-spacing: -0.005em;
+}
+
+.name span {
+  display: block;
+  white-space: nowrap;
+}
+
+.nameInk {
+  color: var(--ink);
+}
+
+.nameRed {
+  color: var(--vermilion-deep);
+  transform: skewX(-9deg);
+  transform-origin: left bottom;
+  margin-left: -0.02em;
+}
+
+.tagline {
+  margin: 16px var(--gut) 0;
+  padding-left: 14px;
+  border-left: 3px solid var(--vermilion-deep);
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 1.3;
+}
+
+.tags {
+  margin: 18px var(--gut) 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  font-family: var(--v2-mono), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6b6a68;
+}
+
+.ctas {
+  margin: 18px var(--gut) 0;
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 10px;
+}
+
+.btnSolid,
+.btnGhost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.btnSolid {
+  background: var(--vermilion-deep);
+  color: #fff !important;
+  box-shadow: 0 10px 24px -10px rgba(200, 52, 31, 0.7);
+}
+
+.btnGhost {
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+}
+
+/* Stage: portrait + vermilion shape. In flow below the copy on mobile; overlays the hero on desktop. */
+.stage {
+  order: 6;
+  position: relative;
+  z-index: 2;
+  height: calc(min(104vw, 520px) * 1.42);
+  margin-top: 10px;
+  pointer-events: none;
+}
+
+.shape {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  clip-path: polygon(24% 20%, 100% 10%, 100% 100%, 0 100%);
+  background: linear-gradient(115deg, #e8654f 0%, #dc4a33 45%, #b82d19 100%);
+}
+
+.shape::before {
+  /* fine technical grid */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(120deg, #000 10%, transparent 70%);
+}
+
+.brDesk {
+  display: none;
+}
+
+.cloud {
+  position: absolute;
+  left: 58%;
+  top: 12%;
+  width: 42%;
+  height: auto;
+}
+
+.crates,
+.cratesLeft {
+  display: none;
+}
+
+.arc {
+  display: none;
+}
+
+.stackList {
+  display: none;
+  position: absolute;
+  z-index: 3;
+  list-style: none;
+  padding: 6px 0 6px 20px;
+  border-left: 1px solid rgba(255, 255, 255, 0.55);
+  font-family: var(--v2-mono), monospace;
+  font-size: clamp(0.72rem, 1vw, 1rem);
+  letter-spacing: 0.1em;
+  color: #fff;
+  gap: 12px;
+}
+
+.stackList li::before {
+  content: ">";
+  margin-right: 12px;
+  opacity: 0.7;
+}
+
+.portrait {
+  position: absolute;
+  z-index: 3;
+  bottom: 0;
+  left: calc(50% - min(52vw, 260px) + 2vw);
+  width: min(104vw, 520px);
+  height: auto;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Paper "fold" that swallows the portrait's flat bottom edge (and holds the CTAs on mobile). */
+.lip {
+  position: absolute;
+  z-index: 4;
+  inset: auto 0 0 0;
+  height: clamp(56px, 15vw, 76px);
+  background: var(--paper);
+  clip-path: ellipse(80% 100% at 50% 100%);
+}
+
+.scrollCue {
+  position: absolute;
+  z-index: 5;
+  right: var(--gut);
+  bottom: clamp(18px, 4svh, 40px);
+  display: none;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  font-family: var(--v2-mono), monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: right;
+  color: var(--ink-soft);
+}
+
+.scrollCue svg {
+  color: var(--vermilion-deep);
+}
+
+/* ---------- Section primitives ---------- */
+.index {
+  font-family: var(--v2-display), Impact, sans-serif;
+  font-size: 2.2rem;
+  color: var(--vermilion-deep);
+  line-height: 1;
+}
+
+.index i {
+  margin-left: 8px;
+  font-style: normal;
+  font-weight: 300;
+  color: #b8745f;
+}
+
+.sectionTitle {
+  font-family: var(--v2-display), Impact, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  text-transform: uppercase;
+  font-size: clamp(3rem, 7vw, 6rem);
+  line-height: 0.95;
+  transform: skewX(-9deg);
+  transform-origin: left bottom;
+}
+
+.onDark {
+  color: #f7f1e6;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- About (editorial: big photo, short copy) ---------- */
+.about {
+  position: relative;
+  padding: 8px var(--gut) clamp(64px, 9vw, 120px);
+  background: var(--paper);
+  display: grid;
+  gap: 26px;
+}
+
+.aboutContent {
+  display: contents;
+}
+
+.aboutHead {
+  order: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+}
+
+.aboutPhoto {
+  order: 2;
+  position: relative;
+  aspect-ratio: 1.12 / 1;
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+.aboutPhoto img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+  clip-path: polygon(9% 0, 100% 0, 91% 100%, 0 100%);
+}
+
+.photoSlab {
+  position: absolute;
+  z-index: 0;
+  inset: 5% -5% -4% 30%;
+  background: linear-gradient(120deg, var(--vermilion), var(--vermilion-deep));
+  clip-path: polygon(14% 0, 100% 0, 88% 100%, 0 100%);
+}
+
+.lede {
+  order: 3;
+  font-weight: 700;
+  font-style: italic;
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.aboutText {
+  order: 4;
+  max-width: 52ch;
+  font-size: 1.02rem;
+  color: var(--ink-soft);
+}
+
+.facts {
+  order: 5;
+  list-style: none;
+  padding-top: 22px;
+  border-top: 1px solid rgba(22, 24, 31, 0.14);
+  display: grid;
+  gap: 16px;
+}
+
+.facts li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--vermilion-deep);
+}
+
+.facts svg {
+  flex: none;
+}
+
+.facts span {
+  display: grid;
+  color: var(--ink);
+  line-height: 1.25;
+}
+
+.facts b {
+  font-size: 0.95rem;
+}
+
+.facts small {
+  font-size: 0.8rem;
+  color: #6b6a68;
+}
+
+/* ---------- Works (editorial: large imagery, asymmetric) ---------- */
+.works {
+  position: relative;
+  margin-top: calc(clamp(18px, 3vw, 44px) * -1);
+  padding: calc(clamp(18px, 3vw, 44px) + clamp(48px, 6vw, 80px)) var(--gut) clamp(56px, 7vw, 96px);
+  background:
+    radial-gradient(48rem 26rem at 78% 38%, rgba(200, 52, 31, 0.26), transparent 70%),
+    var(--night);
+  clip-path: polygon(0 clamp(18px, 3vw, 44px), 100% 0, 100% 100%, 0 100%);
+  color: #f7f1e6;
+  display: grid;
+  gap: 36px;
+}
+
+.worksIntro {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+  justify-items: start;
+}
+
+.worksIntro > p {
+  max-width: 34ch;
+  color: rgba(247, 241, 230, 0.78);
+}
+
+.projects {
+  display: grid;
+  gap: 28px;
+  min-width: 0;
+}
+
+.kicker {
+  font-family: var(--v2-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pills span {
+  padding: 3px 14px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+.repoLink {
+  display: inline-flex;
+  align-items: center;
+  align-self: start;
+  gap: 8px;
+  min-height: 44px;
+  font-weight: 600;
+  border-bottom: 1.5px solid currentColor;
+}
+
+/* Featured project */
+.featured {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
+  background:
+    radial-gradient(30rem 20rem at 85% 90%, rgba(228, 91, 71, 0.4), transparent 70%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(200, 52, 31, 0.18));
+}
+
+.featuredCopy {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  gap: 14px;
+  align-content: center;
+  justify-items: start;
+  padding: 28px 24px 8px;
+}
+
+.featuredCopy h3 {
+  font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+
+.featuredCopy > p:not(.kicker, .pills) {
+  max-width: 36ch;
+  color: rgba(247, 241, 230, 0.8);
+}
+
+.featuredCopy .repoLink {
+  color: #ff9a85;
+}
+
+.shots {
+  position: relative;
+  min-height: 74vw;
+}
+
+.shotBack,
+.shotFront {
+  position: absolute;
+  overflow: hidden;
+  background: #0b0c10;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 12px;
+  box-shadow: 0 24px 60px -16px rgba(0, 0, 0, 0.75);
+}
+
+.shotBack {
+  top: 6%;
+  left: 5%;
+  width: 66%;
+  z-index: 1;
+  opacity: 0.92;
+}
+
+.shotFront {
+  right: -6%;
+  bottom: -5%;
+  width: 84%;
+  z-index: 2;
+  border-radius: 12px 0 0 0;
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.shotBack img,
+.shotFront img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Secondary project: paper sheet, architecture diagram shown whole on white */
+.secondary {
+  display: grid;
+  gap: 26px;
+  align-items: center;
+  padding: 24px;
+  border-radius: 24px;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.diagram {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  padding: 12px 12px 10px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 8px 8px 0 var(--vermilion-deep);
+}
+
+.diagram img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.diagram span {
+  font-family: var(--v2-mono), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6b6a68;
+}
+
+.secondaryCopy {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+}
+
+.secondaryCopy h3 {
+  font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.secondaryCopy > p:not(.kicker, .pills) {
+  max-width: 34ch;
+  color: var(--ink-soft);
+}
+
+.secondaryCopy .repoLink {
+  color: var(--vermilion-deep);
+}
+
+/* ---------- ≥ 640px ---------- */
+@media (min-width: 640px) {
+  .shots {
+    min-height: 420px;
+  }
+  .secondary {
+    grid-template-columns: 1fr 1fr;
+    padding: 32px;
+  }
+}
+
+/* ---------- ≥ 900px: nav links ---------- */
+@media (min-width: 900px) {
+  .navLinks {
+    gap: clamp(24px, 3.2vw, 52px);
+    font-size: 1rem;
+  }
+  .navLinks sup {
+    display: inline;
+  }
+}
+
+/* ---------- ≥ 1024px: asymmetric desktop composition ---------- */
+@media (min-width: 1024px) {
+  .hero {
+    display: block;
+    min-height: max(100svh, 640px);
+  }
+
+  .copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: max(100svh, 640px);
+    padding: var(--nav-h) var(--gut) clamp(48px, 9svh, 96px);
+    max-width: 54vw;
+  }
+
+  .brDesk {
+    display: inline;
+  }
+
+  .eyebrow,
+  .name,
+  .tagline,
+  .ctas,
+  .tags {
+    order: 0;
+  }
+
+  .eyebrow {
+    margin: 0;
+    font-size: clamp(0.72rem, 0.95vw, 0.95rem);
+  }
+
+  .eyebrow::before {
+    width: 56px;
+  }
+
+  .name {
+    margin: clamp(10px, 1.6svh, 20px) 0 0;
+    font-size: min(8.8vw, 18.5svh);
+  }
+
+  .tagline {
+    margin: clamp(16px, 3svh, 32px) 0 0;
+    max-width: none;
+    padding-left: 18px;
+    font-size: clamp(1.15rem, 1.7vw, 1.65rem);
+  }
+
+  .tags {
+    margin: clamp(14px, 2.4svh, 26px) 0 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px 22px;
+    font-size: clamp(0.72rem, 0.95vw, 0.95rem);
+    letter-spacing: 0.14em;
+  }
+
+  .tags span + span::before {
+    content: "/";
+    margin-right: 22px;
+    color: #9b988f;
+  }
+
+  .ctas {
+    margin: clamp(18px, 3.4svh, 36px) 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .btnSolid,
+  .btnGhost {
+    padding: 0 28px;
+    font-size: 1rem;
+  }
+
+  .btnGhost {
+    background: transparent;
+  }
+
+  .stage {
+    position: absolute;
+    inset: 0;
+    height: auto;
+    margin: 0;
+  }
+
+  .shape {
+    clip-path: polygon(74% 10%, 98% 10%, 80% 100%, 36% 100%);
+  }
+
+  .cloud {
+    left: 56%;
+    top: 24%;
+    width: 31%;
+  }
+
+  .crates {
+    display: block;
+    position: absolute;
+    right: 3%;
+    bottom: 0;
+    width: 29%;
+    height: auto;
+  }
+
+  .cratesLeft {
+    display: block;
+    position: absolute;
+    left: 36.5%;
+    bottom: 0;
+    width: 15%;
+    height: auto;
+  }
+
+  .arc {
+    display: block;
+    position: absolute;
+    left: 43%;
+    top: -26%;
+    width: 36vw;
+    aspect-ratio: 1;
+    border: 1px solid rgba(22, 24, 31, 0.13);
+    border-radius: 50%;
+  }
+
+  .stackList {
+    display: grid;
+    right: 8.5%;
+    top: 17%;
+  }
+
+  .portrait {
+    left: calc(61vw - var(--pw) / 2);
+    width: var(--pw);
+  }
+
+  .lip {
+    height: clamp(36px, 7svh, 72px);
+    clip-path: ellipse(34% 100% at 62% 100%);
+  }
+
+  .scrollCue {
+    display: flex;
+    pointer-events: auto;
+  }
+
+  /* About: photo-led two-column editorial */
+  .about {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: center;
+    column-gap: clamp(48px, 6vw, 112px);
+    padding-top: clamp(28px, 3vw, 56px);
+  }
+
+  .aboutContent {
+    display: grid;
+    gap: 22px;
+    align-content: center;
+  }
+
+  .aboutPhoto {
+    order: 0;
+    aspect-ratio: 1.08 / 1;
+    margin: 0;
+  }
+
+  .aboutHead,
+  .lede,
+  .aboutText,
+  .facts {
+    order: 0;
+  }
+
+  .facts {
+    grid-template-columns: repeat(3, auto);
+    justify-content: space-between;
+    gap: 18px;
+    margin-top: 6px;
+  }
+
+  /* Works: intro left, featured project dominant, secondary offset */
+  .worksIntro .sectionTitle {
+    font-size: clamp(3rem, 5.2vw, 5.2rem);
+  }
+
+  .works {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 2.2fr);
+    column-gap: clamp(28px, 3.4vw, 56px);
+    align-items: start;
+  }
+
+  .featured {
+    grid-template-columns: minmax(0, 0.74fr) minmax(0, 1.6fr);
+    min-height: 500px;
+  }
+
+  .featuredCopy {
+    padding: 40px 0 40px 40px;
+  }
+
+  .shots {
+    min-height: 0;
+  }
+
+  .shotBack {
+    top: 9%;
+    left: 4%;
+    width: 60%;
+  }
+
+  .shotFront {
+    right: -3%;
+    bottom: -5%;
+    width: 82%;
+  }
+
+  .secondary {
+    margin-left: clamp(24px, 8vw, 120px);
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 40px;
+  }
+}
