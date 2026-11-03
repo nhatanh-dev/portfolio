@@ -1298,3 +1298,94 @@
     opacity: 0.6;
   }
 }
+
+/* Below 1024px the primary links live in a full-screen menu so any number of sections fits. The toggle is fixed so the menu stays
+   reachable from every section. Closed, the menu is visibility:hidden, so none of its links are focusable. */
+.menuBtn {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .menuBtn {
+    position: fixed;
+    top: 14px;
+    right: var(--gut);
+    z-index: 40;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1.5px solid var(--ink);
+    border-radius: 999px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--v2-mono), monospace;
+    font-size: 0.74rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 8px 24px -10px rgba(17, 17, 18, 0.45);
+  }
+
+  .navLinks {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: calc(var(--nav-h) + 12px) var(--gut) 40px;
+    overflow-y: auto;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--v2-display), Impact, sans-serif;
+    font-size: clamp(2.2rem, 9vw, 3.6rem);
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0s 0.3s;
+  }
+
+  .nav[data-open="true"] .navLinks {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s;
+  }
+
+  .navLinks a {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 6px 0;
+    min-height: 44px;
+  }
+
+  .navLinks sup {
+    display: inline;
+    margin: 0;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: var(--vermilion);
+  }
+
+  .navLinks a[aria-current="page"]::after {
+    display: none;
+  }
+
+  .navLinks a:focus-visible,
+  .menuBtn:focus-visible {
+    outline: 2px solid var(--vermilion);
+    outline-offset: 4px;
+  }
+}
+
+@media (max-width: 1023px) and (prefers-reduced-motion: reduce) {
+  .navLinks,
+  .nav[data-open="true"] .navLinks {
+    transition: none;
+  }
+}
