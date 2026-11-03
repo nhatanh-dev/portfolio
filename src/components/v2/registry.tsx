@@ -5,6 +5,7 @@ import V2Works from "./V2Works";
 import V2Experience from "./V2Experience";
 import V2Tech from "./V2Tech";
 import V2Credentials from "./V2Credentials";
+import V2Beyond from "./V2Beyond";
 
 export type V2Section = {
   /** Anchor id; the section component renders <section id={id}>. */
@@ -16,7 +17,7 @@ export type V2Section = {
 
 /**
  * Single source of truth for page composition and navigation, in scroll order.
- * Beyond the Code and Contact are added here as they are built.
+ * Contact is added here when it is built.
  */
 export const v2Sections: V2Section[] = [
   { id: "hero", label: "Home", Component: V2Hero },
@@ -25,4 +26,5 @@ export const v2Sections: V2Section[] = [
   { id: "experience", label: "Experience", Component: V2Experience },
   { id: "expertise", label: "Expertise", Component: V2Tech },
   { id: "credentials", label: "Credentials", Component: V2Credentials },
+  { id: "beyond", label: "Beyond", Component: V2Beyond },
 ];
