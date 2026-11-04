@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { landingY, scrollToId } from "./landing";
 
 /**
  * Initial-load anchor navigation. The root layout makes <html> smooth-scrolling, so the browser's fragment scroll starts as an animation
@@ -9,12 +10,14 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
  * therefore instant; once the document, fonts and images have loaded (layout is final) the triggers are refreshed and the hash target is
  * re-applied unless the visitor has already scrolled, then smooth scrolling is restored for in-page navigation. Browser Back/Forward between
  * hash entries is also corrected: the Next.js router can leave the page at the top (the #about entry, whose top edge sits exactly at the
- * bottom of the first viewport), so once the traversal's scroll has stopped, a hash target that is entirely off screen is brought into view.
+ * bottom of the first viewport), so once the traversal's scroll has stopped, the entry is put at its landing position.
  *
  * Resizing across a breakpoint such as 1024px (rotating a tablet, resizing a window) re-creates the section animations, which refreshed
  * ScrollTrigger and left the page at the top: its refresh scrolls to the top to measure, and several refreshes run back to back, so the
  * position it restores can be the already-reset one. The reading position (the section at 40% of the viewport and how far through it) is
  * therefore tracked and re-applied once a resize has settled.
+ *
+ * Destinations land by their introduction, not by the section box (see landing.ts), for clicks, the initial hash and Back/Forward.
  *
  * In-page anchor clicks are handled here too. A plain <a href="#x"> click makes the browser add a history entry without the Next router's
  * history state; going Back to such an entry after visiting a case study left the case-study page rendered under the home URL. Pushing the
@@ -32,6 +35,26 @@ export default function V2Anchors() {
     };
     events.forEach((e) => window.addEventListener(e, mark, { passive: true, once: true }));
 
+    // Waits until scrolling has stopped for a few frames (the browser's or the Next router's own scroll-to-hash has finished), then puts the
+    // hash target at its landing position. `allow` lets the initial-load case stand down once the visitor has scrolled.
+    const landWhenSettled = (id: string, allow: () => boolean = () => true, done?: () => void) => {
+      let last = -1;
+      let still = 0;
+      const tick = () => {
+        if (!live) return;
+        still = window.scrollY === last ? still + 1 : 0;
+        last = window.scrollY;
+        if (still < 3) {
+          requestAnimationFrame(tick);
+          return;
+        }
+        const y = landingY(id);
+        if (allow() && y !== null && Math.abs(window.scrollY - y) > 4) window.scrollTo({ top: y, behavior: "instant" });
+        done?.();
+      };
+      requestAnimationFrame(tick);
+    };
+
     const loaded =
       document.readyState === "complete" ? Promise.resolve() : new Promise<void>((r) => window.addEventListener("load", () => r(), { once: true }));
     Promise.all([loaded, document.fonts?.ready]).then(() => {
@@ -39,7 +62,12 @@ export default function V2Anchors() {
       ScrollTrigger.refresh();
       const id = decodeURIComponent(window.location.hash.slice(1));
       const target = id ? document.getElementById(id) : null;
-      if (target && !touched) target.scrollIntoView({ block: "start" });
+      if (target && !touched) {
+        scrollToId(id, false);
+        // On a client-side return to this page (Back from a case study) the Next router scrolls to the hash after this; land again once it has.
+        landWhenSettled(id, () => !touched, () => (root.style.scrollBehavior = ""));
+        return;
+      }
       root.style.scrollBehavior = "";
     });
 
@@ -63,7 +91,13 @@ export default function V2Anchors() {
       });
     };
     let settle = 0;
+    let lastW = window.innerWidth;
     const onResize = () => {
+      // Only a width change (breakpoint, rotation, window resize) re-creates the layout. A height-only resize is the mobile browser
+      // collapsing or showing its URL bar while the visitor scrolls; re-applying a stored position then snaps the page back by the
+      // distance scrolled since the resize began (measured: 400-500px), and ScrollTrigger already ignores such resizes on touch devices.
+      if (window.innerWidth === lastW) return;
+      lastW = window.innerWidth;
       if (!resizing) anchor = anchor ?? read();
       resizing = true;
       window.clearTimeout(settle);
@@ -93,7 +127,7 @@ export default function V2Anchors() {
       if (!target) return;
       e.preventDefault();
       if (window.location.hash !== `#${id}`) window.history.pushState(window.history.state, "", `#${id}`);
-      target.scrollIntoView({ block: "start" });
+      if (!scrollToId(id)) target.scrollIntoView({ block: "start" });
       // Same focus behaviour as a native fragment navigation: the target becomes the sequential-focus starting point.
       if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
       target.focus({ preventScroll: true });
@@ -101,22 +135,10 @@ export default function V2Anchors() {
     document.addEventListener("click", onClick);
 
     const onPop = () => {
-      const target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
-      if (!target) return;
-      let last = -1;
-      let still = 0;
-      const tick = () => {
-        if (!live) return;
-        still = window.scrollY === last ? still + 1 : 0;
-        last = window.scrollY;
-        if (still < 3) {
-          requestAnimationFrame(tick);
-          return;
-        }
-        const r = target.getBoundingClientRect();
-        if (r.top >= window.innerHeight || r.bottom <= 0) target.scrollIntoView({ block: "start", behavior: "instant" });
-      };
-      requestAnimationFrame(tick);
+      const id = decodeURIComponent(window.location.hash.slice(1));
+      // The browser's own fragment scroll aligns the section box (or the Next router leaves the page elsewhere); put the entry at the same
+      // landing position a click on its link produces.
+      if (id && document.getElementById(id)) landWhenSettled(id);
     };
     window.addEventListener("popstate", onPop);
 

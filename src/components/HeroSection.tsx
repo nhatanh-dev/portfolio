@@ -19,7 +19,7 @@ const profileLinks = [
   },
   {
     label: "LinkedIn",
-    href: "https://www.linkedin.com/in/anhnguyen2505/",
+    href: "https://www.linkedin.com/in/annguyex/",
     icon: Link2,
   },
 ];

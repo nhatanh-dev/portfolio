@@ -20,7 +20,7 @@ const structuredData = {
   },
   sameAs: [
     "https://github.com/nhatanh-dev",
-    "https://www.linkedin.com/in/anhnguyen2505/",
+    "https://www.linkedin.com/in/annguyex/",
   ],
 };
 

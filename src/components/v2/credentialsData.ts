@@ -123,8 +123,6 @@ export const credentials: Credential[] = [
     courses: 6,
     ...img("certnexus"),
     verifyUrl: "https://coursera.org/share/aaef7e3baa5520c91525565cfca6ecda",
-    // Printed on the certificate itself.
-    note: "A Coursera Professional Certificate. It is not the industry certification (CET-110), which requires passing the CET-110 exam.",
   },
 ];
 

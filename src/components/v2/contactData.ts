@@ -7,7 +7,7 @@ export const contact = {
   email: "anhnguyenphamnhat@gmail.com",
   links: [
     { label: "GitHub", href: "https://github.com/nhatanh-dev" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/anhnguyen2505" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/annguyex/" },
   ],
   name: "Nguyen Pham Nhat Anh",
   alias: "Alvin Nguyen",

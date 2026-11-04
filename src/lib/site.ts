@@ -20,7 +20,7 @@ export const person = {
   jobTitle: "Backend and Cloud Developer",
   university: "FPT University HCM",
   github: "https://github.com/nhatanh-dev",
-  linkedin: "https://www.linkedin.com/in/anhnguyen2505",
+  linkedin: "https://www.linkedin.com/in/annguyex/",
   image: `${siteUrl}/avt.jpg`,
 } as const;
 
