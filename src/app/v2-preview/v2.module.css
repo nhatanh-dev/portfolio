@@ -98,7 +98,7 @@
   vertical-align: 0.5em;
 }
 
-.navLinks a[aria-current="page"]::after {
+.navLinks a[aria-current]::after {
   content: "";
   position: absolute;
   inset: auto 0 -2px 0;
@@ -1398,8 +1398,21 @@
     color: var(--vermilion);
   }
 
-  .navLinks a[aria-current="page"]::after {
-    display: none;
+  /* Mobile menu: the current section is marked with a dot at the right edge and the vermilion accent. */
+  .navLinks a[aria-current] {
+    color: var(--vermilion);
+  }
+
+  .navLinks a[aria-current]::after {
+    position: static;
+    inset: auto;
+    flex: none;
+    align-self: center;
+    width: 12px;
+    height: 12px;
+    margin-left: auto;
+    border-radius: 50%;
+    background: var(--vermilion);
   }
 
   .navLinks a:focus-visible,

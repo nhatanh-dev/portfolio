@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import styles from "@/app/v2-preview/v2.module.css";
 import { v2Sections } from "./registry";
+import { useActiveSection } from "./useActiveSection";
 
 /**
  * Inline links on wide screens; below 1024px the same <nav> becomes a full-screen menu opened by a button. The list comes from
@@ -11,6 +12,7 @@ import { v2Sections } from "./registry";
  */
 export default function V2Nav() {
   const [open, setOpen] = useState(false);
+  const active = useActiveSection();
   const btn = useRef<HTMLButtonElement>(null);
   const nav = useRef<HTMLElement>(null);
 
@@ -71,7 +73,7 @@ export default function V2Nav() {
       </button>
       <nav id="v2-menu" ref={nav} aria-label="Primary" className={styles.navLinks}>
         {v2Sections.map((s, i) => (
-          <a key={s.id} href={`#${s.id}`} aria-current={i === 0 ? "page" : undefined} onClick={() => setOpen(false)}>
+          <a key={s.id} href={`#${s.id}`} aria-current={s.id === active ? "location" : undefined} onClick={() => setOpen(false)}>
             <sup>{String(i + 1).padStart(2, "0")}</sup>
             {s.label}
           </a>
