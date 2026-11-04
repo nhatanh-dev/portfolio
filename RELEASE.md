@@ -34,40 +34,41 @@ apply to Production: Production only goes to V2 when the variable is set to `1` 
   Shareable Link (Deployment page, Share) or a Protection Bypass for Automation secret.
 * The production domain was not touched: `https://anhnpn.vercel.app` still serves the legacy build (same cache age and content, `robots.txt`/`sitemap.xml` 404).
 
-## Production cutover checklist (E2, requires explicit approval)
+## Production cutover (E2): staged release, then manual promote
 
-Identity before you start
-* Current production deployment (rollback target): `https://portfolio-4uh36lsff-nhatanh-devs-projects.vercel.app`, from commit `7652a5e` on `main`
-  (GitHub deployment 6050742577). Confirm in Vercel > Deployments that it is listed as "Current" and still available.
-* Production branch: `main` (every earlier Production deployment came from `main`). Confirm in Settings > Git.
-* Release candidate: the commit that will be merged. It must equal the staged commit (`fa36a84` or a later commit that was re-staged).
+Facts this plan relies on (Vercel docs, "Promoting Deployments" and "Instant Rollback"):
+* Merging to the production branch (`main`) normally deploys AND assigns the domain automatically.
+* With Settings > Environments > Production > Branch Tracking > **Auto-assign Custom Production Domains** turned off, a merge builds a *Staged* production
+  deployment that does not serve traffic until you **Promote** it (no rebuild).
+* **Hobby Instant Rollback only reaches the immediately previous Production deployment.** After any Instant Rollback Vercel turns auto-assign off; "Undo Rollback" restores it.
+
+Identity
+* Production branch: `main`. Merge base is the current `main` tip `7652a5e`, so the PR is a clean fast-forward-able stack of 18 commits.
+* Currently serving (rollback target): `portfolio-4uh36lsff-nhatanh-devs-projects.vercel.app`, commit `7652a5e` (GitHub deployment 6050742577).
+* Published projects: exactly two (`ev-station-management-system`, `smartinvoice-shield`). Drafts: `flood-route`, `fcaj-workshop` (404, not built).
 
 Steps
-1. Owner confirms: email, GitHub and LinkedIn URLs (`src/components/v2/contactData.ts`), avatar `public/avt.jpg` (structured data), and that no private
-   project information is exposed.
-2. Staging sign-off: the full browser checklist below passes on the Preview URL (E1), including OG/canonical/sitemap/robots/header checks.
-3. Vercel > Settings > Environment Variables: add `NEXT_PUBLIC_V2_HOME` = `1`, scope **Production only**. Verify Preview and Development are unchecked.
-   Do not rely on Preview and Production sharing values.
-4. Open a PR `redesign/v2-prototype` into `main`; the PR's Preview build must be green.
-5. Merge (this starts the Production build with the flag on). While it builds, current production keeps serving.
-6. Open the new deployment's own URL first (Deployments > the new one > Visit) and run the checks below. The domain switches to it automatically when the
-   build is ready; if you want a manual gate, turn off "Auto-assign Custom Production Domains" (Settings > Domains) before merging and promote by hand.
-7. On `https://anhnpn.vercel.app`:
-   * `/` is V2 (title "Nguyen Pham Nhat Anh (Alvin Nguyen) | Backend & Cloud Developer"), canonical `https://anhnpn.vercel.app`, `robots` meta `index, follow`
-     and **no** `X-Robots-Tag: noindex` header (that header must only exist on Preview URLs).
-   * `/projects/ev-station-management-system` and `/projects/smartinvoice-shield` return 200; `/projects/flood-route` returns 404.
-   * `/v2-preview` and `/v2-preview/projects/...` return 307 to the final URLs.
-   * `/sitemap.xml` lists exactly 3 URLs; `/robots.txt` points to it; `/og` returns a 1200x630 PNG; `/opengraph-image` still 200.
-   * Deep links `/#works`, `/#credentials`, `/#contact`; nav, dock, mobile menu; Back/Forward through a case study; contact links.
-   * Browser console clean; no missing images; certificate verify links open.
-8. Search Console: submit the sitemap; URL-inspect `/` and one case study. Re-check social previews (LinkedIn Post Inspector, X, opengraph.xyz); they cache, so use the debuggers' re-scrape.
+1. **Before anything else, merge nothing else to `main`.** The rollback target must stay the legacy deployment, so no other Production deployment may be created between now and promotion.
+2. Settings > Environments > Production > Branch Tracking: turn **Auto-assign Custom Production Domains OFF** and save. If the toggle is not there, stop: the flow becomes
+   "merge = live"; decide explicitly before continuing.
+3. Settings > Environment Variables: add `NEXT_PUBLIC_V2_HOME` = `1`, environment **Production only** (Preview and Development unchecked).
+4. Merge the PR (merge commit or squash). Vercel builds a **Staged** production deployment; the live domain still serves the legacy site.
+5. Open the staged deployment (Deployments > the new Production row > Visit; it is protected, so use your Vercel login or a Share link) and verify: `/` V2 title,
+   `robots` meta `index, follow`, **no** `X-Robots-Tag: noindex`, canonical `https://anhnpn.vercel.app`; `/projects/ev-station-management-system` and
+   `/projects/smartinvoice-shield` 200; `/projects/flood-route` 404; `/v2-preview` 307; `/sitemap.xml` 3 URLs; `/robots.txt`; `/og` PNG; console clean.
+6. Promote: row menu (...) > **Promote** > confirm. The deployment becomes **Current**. Domain switches instantly.
+7. On `https://anhnpn.vercel.app` (hard refresh): repeat step 5 on the live domain, then deep links (`/#works`, `/#credentials`, `/#contact`), nav and dock, mobile menu,
+   Back/Forward through a case study, contact links, one certificate verify link, reduced motion, 390px and 1440px layouts.
+8. Settings: turn **Auto-assign Custom Production Domains back ON** (otherwise future merges stay staged).
+9. Search Console: submit `https://anhnpn.vercel.app/sitemap.xml`; inspect `/` and one case study. Re-scrape social previews (LinkedIn Post Inspector, X, opengraph.xyz).
 
 ## Rollback
 
-* Instant (no build): Vercel > Deployments > `portfolio-4uh36lsff` (commit `7652a5e`) > "Instant Rollback" / "Promote to Production". The legacy homepage is back immediately.
-* Source rollback: remove `NEXT_PUBLIC_V2_HOME` from Production and redeploy (or revert the merge commit). `/` is the legacy homepage again; V2 returns to noindex `/v2-preview`.
-* The redirects are temporary (307), so browsers do not cache them. No legacy file was deleted by any release step.
-* If the sitemap was submitted, resubmit after a rollback so Search Console re-reads it.
+* Any release-blocking problem: project Overview > Production tile > **Instant Rollback** > the previous deployment (`portfolio-4uh36lsff`, `7652a5e`) > Confirm. Instant, no build.
+  Then **Undo Rollback** only when a fixed deployment is ready (auto-assign stays off until then).
+* If step 6 has not happened yet, there is nothing to roll back: just do not promote; delete or ignore the staged deployment.
+* Source rollback afterwards: `git revert` the merge commit on `main` (or remove `NEXT_PUBLIC_V2_HOME` from Production) and redeploy.
+* The redirects are 307, so browsers do not cache them. No legacy file was deleted by any step. After a rollback, resubmit the sitemap.
 
 ## Known limits
 
