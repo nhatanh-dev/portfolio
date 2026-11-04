@@ -1,0 +1,52 @@
+/* Base styles for the V2 route group (replaces the legacy globals.css for these pages). The V2 CSS modules were written against Tailwind's
+   preflight reset, so the same reset is imported here, without any utilities or legacy theme. */
+@import "tailwindcss/preflight.css" layer(base);
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.5rem;
+  overflow-x: clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  min-width: 20rem;
+  width: 100%;
+  overflow-x: clip;
+  background: #111112;
+  color: #f5f0e8;
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.v2-skip {
+  position: fixed;
+  z-index: 100;
+  left: 1rem;
+  top: 1rem;
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 0.9rem;
+  border-radius: 0.625rem;
+  background: #f5f0e8;
+  color: #111112;
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-170%);
+}
+
+.v2-skip:focus {
+  transform: translateY(0);
+  outline: 3px solid #e45b47;
+  outline-offset: 3px;
+}

@@ -1,0 +1,493 @@
+/* Section 04 — Experience (FCAJ). Warm Paper section that rises out of Selected Works.
+   Palette: Ink #111112, Warm Paper #F5F0E8, Vermilion #E45B47, Soft Gray #AEB0AE. */
+
+.exp {
+  --slant: clamp(18px, 3vw, 44px);
+  --spine-x: calc(var(--gut) + 14px);
+  --ink-black: #111112;
+  --soft-gray: #aeb0ae;
+  position: relative;
+  z-index: 4;
+  margin-top: calc(var(--slant) * -1);
+  padding: calc(var(--slant) + clamp(40px, 6vw, 88px)) var(--gut) clamp(72px, 9vw, 140px);
+  background: var(--paper);
+  color: var(--ink-black);
+  clip-path: polygon(0 var(--slant), 100% 0, 100% 100%, 0 100%);
+}
+
+/* ---------- Spine: one vermilion line from the section seam down the whole timeline ---------- */
+.spine {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0; /* the line runs on through the seam into the next section */
+  left: var(--spine-x);
+  width: 2px;
+  margin-left: -1px;
+  background: rgba(17, 17, 18, 0.12);
+  pointer-events: none;
+}
+
+.spineLine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(var(--vermilion-deep), var(--vermilion));
+  transform-origin: 50% 0;
+}
+
+/* The travelling head only exists while scroll motion is live. */
+.spineHead {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: var(--vermilion);
+  box-shadow: 0 0 0 6px rgba(228, 91, 71, 0.18);
+  display: none;
+}
+
+.live .spineHead {
+  display: block;
+}
+
+/* ---------- Oversized word ---------- */
+.word {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  font-family: var(--v2-display), Impact, sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: clamp(3.2rem, 20.8vw, 24rem);
+  line-height: 0.84;
+  letter-spacing: -0.012em;
+  white-space: nowrap;
+}
+
+.wordMask {
+  display: block;
+  width: max-content;
+  overflow: clip;
+  padding: 0.05em 0.04em;
+  margin: -0.05em -0.04em;
+}
+
+.ch {
+  display: inline-block;
+}
+
+.accent {
+  color: var(--vermilion-deep);
+}
+
+.intro {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 18px;
+  margin-top: clamp(20px, 3vw, 40px);
+  padding-left: calc(var(--spine-x) - var(--gut) + 30px);
+}
+
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--v2-mono), monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #55575a;
+}
+
+.kicker b {
+  font-family: var(--v2-display), Impact, sans-serif;
+  font-weight: 400;
+  font-size: 1.7rem;
+  letter-spacing: 0;
+  color: var(--vermilion-deep);
+}
+
+.lede {
+  max-width: 34ch;
+  font-weight: 700;
+  font-style: italic;
+  font-size: clamp(1.3rem, 2.1vw, 1.9rem);
+  line-height: 1.22;
+}
+
+.sub {
+  max-width: 52ch;
+  margin-top: 12px;
+  color: #3b3f4a;
+}
+
+/* ---------- Body: timeline + sticky gallery ---------- */
+.body {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: clamp(36px, 5vw, 64px);
+  margin-top: clamp(40px, 5vw, 72px);
+}
+
+.timeline {
+  position: relative;
+  list-style: none;
+  padding-left: calc(var(--spine-x) - var(--gut) + 30px);
+}
+
+.ms {
+  position: relative;
+  padding-bottom: clamp(44px, 6vw, 84px);
+}
+
+.ms:last-child {
+  padding-bottom: 0;
+}
+
+/* node on the spine */
+.ms::before {
+  content: "";
+  position: absolute;
+  left: -30px;
+  top: 0.55em;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid rgba(17, 17, 18, 0.35);
+  transition: background-color 0.4s, border-color 0.4s, scale 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.num {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--v2-display), Impact, sans-serif;
+  font-size: clamp(3rem, 6.4vw, 6.4rem);
+  line-height: 0.9;
+  color: var(--vermilion-deep);
+}
+
+.numMask {
+  display: block;
+  width: max-content;
+  overflow: clip;
+  padding: 0.04em 0.04em;
+  margin: -0.04em -0.04em;
+}
+
+/* Outlined numerals fill with vermilion when the spine head reaches them (only while motion is live). */
+.live .num {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(17, 17, 18, 0.5);
+  transition: color 0.5s, -webkit-text-stroke-color 0.5s;
+}
+
+.live .active .num {
+  color: var(--vermilion-deep);
+  -webkit-text-stroke-color: var(--vermilion-deep);
+}
+
+.live .active::before {
+  background: var(--vermilion);
+  border-color: var(--vermilion);
+  scale: 1.25;
+}
+
+.msTitle {
+  font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.msText {
+  max-width: 44ch;
+  margin-top: 10px;
+  font-size: 1.04rem;
+  color: #3b3f4a;
+}
+
+.chips {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.chips li {
+  padding: 4px 14px;
+  border: 1.5px solid var(--ink-black);
+  border-radius: 999px;
+  font-family: var(--v2-mono), monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+}
+
+/* ---------- Gallery: two real photos, layered; the front one is chosen by scroll, hover/focus or tap ---------- */
+.gallery {
+  position: relative;
+  height: min(118vw, 640px);
+}
+
+.frame {
+  position: absolute;
+  transition: z-index 0s 0.25s;
+}
+
+.frameA {
+  inset: 0 16% 46% 0;
+  z-index: 3;
+}
+
+.frameB {
+  inset: 40% 0 0 20%;
+  z-index: 2;
+}
+
+.gallery[data-active="1"] .frameA {
+  z-index: 2;
+}
+
+.gallery[data-active="1"] .frameB {
+  z-index: 3;
+}
+
+.photoBtn {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  cursor: default;
+  text-align: left;
+  font: inherit;
+  transition: transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.55s;
+  box-shadow: 0 24px 50px -24px rgba(17, 17, 18, 0.55);
+}
+
+.clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--soft-gray);
+}
+
+.clip img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* paper tint on the photo that is behind */
+.photoBtn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events: none;
+}
+
+.cap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 28px 16px 12px;
+  background: linear-gradient(transparent, rgba(17, 17, 18, 0.72));
+  font-family: var(--v2-mono), monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0;
+  translate: 0 8px;
+  transition: opacity 0.4s, translate 0.4s;
+}
+
+/* the front photo shows its caption */
+.gallery[data-active="0"] .frameA .cap,
+.gallery[data-active="1"] .frameB .cap {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* the back photo is tinted and invites interaction */
+.gallery[data-active="0"] .frameB .photoBtn,
+.gallery[data-active="1"] .frameA .photoBtn {
+  cursor: pointer;
+  transform: scale(0.95);
+}
+
+.gallery[data-active="0"] .frameB .photoBtn::after,
+.gallery[data-active="1"] .frameA .photoBtn::after {
+  opacity: 0.34;
+}
+
+.photoBtn:focus-visible {
+  outline: 3px solid var(--vermilion-deep);
+  outline-offset: 5px;
+}
+
+@media (hover: hover) {
+  .gallery[data-active="0"] .frameB .photoBtn:hover,
+  .gallery[data-active="1"] .frameA .photoBtn:hover {
+    transform: scale(0.98) translateY(-8px);
+  }
+
+  .gallery[data-active="0"] .frameB .photoBtn:hover::after,
+  .gallery[data-active="1"] .frameA .photoBtn:hover::after {
+    opacity: 0.12;
+  }
+
+  .gallery[data-active="0"] .frameB .photoBtn:hover .cap,
+  .gallery[data-active="1"] .frameA .photoBtn:hover .cap {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .photoBtn:hover .clip img {
+    transform: scale(1.05);
+  }
+}
+
+/* touch: pressed feedback */
+@media (hover: none) {
+  .photoBtn:active {
+    transform: scale(0.97);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photoBtn,
+  .clip img,
+  .photoBtn::after,
+  .cap,
+  .ms::before,
+  .live .num {
+    transition: none;
+  }
+}
+
+/* ---------- ≥ 1024px: asymmetric editorial layout ---------- */
+@media (min-width: 1024px) {
+  .exp {
+    --spine-x: calc(var(--gut) + 170px);
+  }
+
+  .intro {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: start;
+    gap: clamp(32px, 5vw, 80px);
+    padding-left: calc(var(--spine-x) - var(--gut) + 32px);
+  }
+
+  .intro .kicker {
+    padding-top: 8px;
+  }
+
+  .body {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: start;
+    column-gap: clamp(40px, 6vw, 110px);
+  }
+
+  .timeline {
+    padding-left: calc(var(--spine-x) - var(--gut) + 32px);
+  }
+
+  .ms::before {
+    left: -32px;
+  }
+
+  .num {
+    position: absolute;
+    left: calc((var(--spine-x) - var(--gut) + 32px) * -1);
+    width: calc(var(--spine-x) - var(--gut) - 14px);
+    text-align: right;
+    top: -0.06em;
+    margin: 0;
+  }
+
+  .num .numMask {
+    margin-left: auto;
+  }
+
+  .gallery {
+    position: sticky;
+    top: 12vh;
+    height: min(74vh, 620px);
+    min-height: 460px;
+  }
+}
+
+/* ---------- Journey highlights label + photo affordance ---------- */
+.hlLabel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 clamp(20px, 2.4vw, 32px) calc((var(--spine-x) - var(--gut) + 30px));
+  font-family: var(--v2-mono), monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #55575a;
+}
+
+.hlLabel::after {
+  content: "";
+  flex: none;
+  width: 48px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+.hint {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  padding: 4px 10px 4px 22px;
+  border-radius: 999px;
+  background: rgba(17, 17, 18, 0.78);
+  color: var(--paper);
+  font-family: var(--v2-mono), monospace;
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+
+.hint::before {
+  content: "";
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: var(--vermilion);
+}
+
+/* shown only on the photo that is behind, so it reads as "this can be brought forward" */
+.gallery[data-active="0"] .frameB .hint,
+.gallery[data-active="1"] .frameA .hint {
+  opacity: 1;
+}

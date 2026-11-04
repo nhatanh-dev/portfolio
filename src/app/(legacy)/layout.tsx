@@ -41,12 +41,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://anhnpn.vercel.app",
     siteName: "Nguyen Pham Nhat Anh",
+    // Explicit because the generated image file lives at the app root, outside this route group (the URL is unchanged).
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Nguyen Pham Nhat Anh, Backend and Cloud Developer" }],
     title: "Nguyen Pham Nhat Anh | Backend & Cloud Developer",
     description:
       "Software Engineering student building dependable backend systems and cloud infrastructure.",
   },
   twitter: {
     card: "summary_large_image",
+    images: [{ url: "/twitter-image", width: 1200, height: 630, alt: "Nguyen Pham Nhat Anh, Backend and Cloud Developer" }],
     title: "Nguyen Pham Nhat Anh | Backend & Cloud Developer",
     description:
       "Software Engineering student building dependable backend systems and cloud infrastructure.",

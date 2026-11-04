@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local tooling and working files: never committed or deployed
+/.claude/
+/.impeccable/
+/output/
+/assets/
+
+# raw source photographs, cutouts and design references live outside public/ so they can never be served. Only the optimized
+# WebP files under public/ ship. (Hashes of the originals: source-assets/v2/SHA256SUMS.txt)
+/source-assets/
