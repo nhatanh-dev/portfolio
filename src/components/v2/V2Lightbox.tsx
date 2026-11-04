@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, type KeyboardEvent } from "react";
 import { ArrowUpRight, ChevronLeft, ChevronRight, X } from "lucide-react";
-import styles from "@/app/v2-preview/credentials.module.css";
+import styles from "@/app/(v2)/v2-preview/credentials.module.css";
 import { credentials, kindLabel } from "./credentialsData";
 
 type Props = {

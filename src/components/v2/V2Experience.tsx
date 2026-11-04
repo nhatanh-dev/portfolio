@@ -4,7 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import styles from "@/app/v2-preview/experience.module.css";
+import styles from "@/app/(v2)/v2-preview/experience.module.css";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -36,15 +36,15 @@ const milestones = [
 const photos = [
   {
     src: "/v2/experience/fcaj-group.webp",
-    w: 1600,
-    h: 1067,
+    w: 1120,
+    h: 747,
     alt: "A large group photo in a bright room with an AWS wall sign and the First Cloud Journey AI logo",
     cap: "First Cloud AI Journey · group photo",
   },
   {
     src: "/v2/experience/fcaj-aws-office.webp",
-    w: 1400,
-    h: 994,
+    w: 1120,
+    h: 795,
     alt: "Seven people giving thumbs up in front of an AWS sign at the AWS office",
     cap: "At the AWS office",
   },

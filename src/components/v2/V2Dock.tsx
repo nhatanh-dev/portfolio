@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
-import styles from "@/app/v2-preview/dock.module.css";
+import styles from "@/app/(v2)/v2-preview/dock.module.css";
 import { v2Sections } from "./registry";
 import { useActiveSection } from "./useActiveSection";
 import { contact } from "./contactData";

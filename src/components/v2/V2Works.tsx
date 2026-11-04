@@ -7,7 +7,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ArrowUpRight } from "lucide-react";
-import styles from "@/app/v2-preview/v2.module.css";
+import { projectPath } from "@/lib/site";
+import styles from "@/app/(v2)/v2-preview/v2.module.css";
 import V2Chars from "./V2Chars";
 import V2ProjectIndex from "./V2ProjectIndex";
 import { cardDiagram, featuredProjects, githubProfile, type Project } from "./projects";
@@ -37,7 +38,7 @@ function RepoLink({ href, label }: { href: string; label: string }) {
 function Actions({ p }: { p: Project }) {
   return (
     <div className={styles.workActions} data-w="copy">
-      <Link href={`/v2-preview/projects/${p.slug}`} className={`${styles.repoLink} ${styles.caseLink}`}>
+      <Link href={projectPath(p.slug)} className={`${styles.repoLink} ${styles.caseLink}`}>
         View Case Study <ArrowUpRight size={18} aria-hidden="true" />
       </Link>
       {p.visibility === "public" && p.repository && <RepoLink href={p.repository} label="Source" />}

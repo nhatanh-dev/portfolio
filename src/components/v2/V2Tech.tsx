@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ChevronDown } from "lucide-react";
-import styles from "@/app/v2-preview/tech.module.css";
+import styles from "@/app/(v2)/v2-preview/tech.module.css";
 import V2Chars from "./V2Chars";
 import { curtainReveal } from "./motion";
 import { neighbours, techCategories, techLinks, type TechCategory, type TechId } from "./techData";

@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Maximize2 } from "lucide-react";
-import styles from "@/app/v2-preview/beyond.module.css";
+import styles from "@/app/(v2)/v2-preview/beyond.module.css";
 import V2Chars from "./V2Chars";
 import V2Viewer from "./V2Viewer";
 import { curtainReveal } from "./motion";

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
-import styles from "@/app/v2-preview/v2.module.css";
+import styles from "@/app/(v2)/v2-preview/v2.module.css";
 import { v2Sections } from "./registry";
 import { useActiveSection } from "./useActiveSection";
 

@@ -1,5 +1,5 @@
 import { useId } from "react";
-import styles from "@/app/v2-preview/v2.module.css";
+import styles from "@/app/(v2)/v2-preview/v2.module.css";
 
 /* Lightweight flat-vector scenery for the hero shape: no filters, no raster. */
 

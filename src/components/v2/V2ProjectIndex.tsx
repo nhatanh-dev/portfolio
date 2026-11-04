@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import styles from "@/app/v2-preview/project.module.css";
+import { projectPath } from "@/lib/site";
+import styles from "@/app/(v2)/v2-preview/project.module.css";
 import { indexProjects } from "./projects";
 
 /**
@@ -22,7 +23,7 @@ export default function V2ProjectIndex() {
       <ol className={styles.rows}>
         {indexProjects.map((p, i) => (
           <li key={p.slug}>
-            <Link href={`/v2-preview/projects/${p.slug}`} className={styles.row}>
+            <Link href={projectPath(p.slug)} className={styles.row}>
               <span className={styles.rowN} aria-hidden="true">
                 {String(i + 3).padStart(2, "0")}
               </span>

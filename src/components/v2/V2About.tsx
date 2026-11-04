@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { CalendarDays, Code2, GraduationCap } from "lucide-react";
-import styles from "@/app/v2-preview/v2.module.css";
+import styles from "@/app/(v2)/v2-preview/v2.module.css";
 import V2Chars from "./V2Chars";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);

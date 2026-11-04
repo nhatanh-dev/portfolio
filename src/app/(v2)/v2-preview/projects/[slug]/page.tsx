@@ -6,6 +6,8 @@ import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import styles from "../../project.module.css";
 import { bySlug, published, githubProfile } from "@/components/v2/projects";
 import { contact } from "@/components/v2/contactData";
+import JsonLd from "@/components/v2/JsonLd";
+import { homeHref, person, projectPath, siteUrl } from "@/lib/site";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -17,7 +19,17 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const p = bySlug((await params).slug);
-  return p ? { title: `${p.title} · Case study`, description: p.summary } : {};
+  if (!p) return {};
+  const title = `${p.title} · Case study`;
+  const description = `${p.summary} A case study by ${person.name}, ${p.role}, ${p.period}.`;
+  const og = { url: "/og", width: 1200, height: 630, alt: `${p.title}, a case study by ${person.name}` };
+  return {
+    title,
+    description,
+    alternates: { canonical: projectPath(p.slug) },
+    openGraph: { title: `${title} | ${person.name}`, description, url: projectPath(p.slug), images: [og] },
+    twitter: { title: `${title} | ${person.name}`, description, images: ["/og"] },
+  };
 }
 
 function Ext({ href, children }: { href: string; children: React.ReactNode }) {
@@ -37,10 +49,35 @@ export default async function CaseStudy({ params }: Props) {
   const hasMedia = !!(p.screens?.length || p.diagram || p.video);
   const hasLinks = (p.visibility === "public" && !!p.repository) || !!p.links?.length;
 
+  const url = `${siteUrl}${projectPath(p.slug)}`;
+  const ld = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": p.visibility === "public" && p.repository ? "SoftwareSourceCode" : "CreativeWork",
+        "@id": `${url}#work`,
+        name: p.title,
+        description: p.summary,
+        url,
+        inLanguage: "en",
+        author: { "@type": "Person", "@id": `${siteUrl}/#person`, name: person.name, url: siteUrl },
+        ...(p.visibility === "public" && p.repository ? { codeRepository: p.repository } : {}),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: person.name, item: siteUrl },
+          { "@type": "ListItem", position: 2, name: p.title, item: url },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className={styles.page}>
+      <JsonLd data={ld} />
       <header className={styles.top}>
-        <Link href="/v2-preview#works" className={styles.back}>
+        <Link href={homeHref("works")} className={styles.back}>
           <ArrowLeft size={18} aria-hidden="true" /> Selected Works
         </Link>
         <a href={`mailto:${contact.email}`} className={styles.mail}>
@@ -157,7 +194,7 @@ export default async function CaseStudy({ params }: Props) {
 
         <nav className={styles.next} aria-label="More">
           {published.length > 1 ? (
-            <Link href={`/v2-preview/projects/${next.slug}`} className={styles.nextLink}>
+            <Link href={projectPath(next.slug)} className={styles.nextLink}>
               <span>Next case study</span>
               <b>
                 {next.title} <ArrowRight size={28} aria-hidden="true" />

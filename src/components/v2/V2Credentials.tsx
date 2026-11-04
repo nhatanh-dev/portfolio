@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ArrowUpRight, ChevronDown, Maximize2 } from "lucide-react";
-import styles from "@/app/v2-preview/credentials.module.css";
+import styles from "@/app/(v2)/v2-preview/credentials.module.css";
 import V2Chars from "./V2Chars";
 import V2Lightbox from "./V2Lightbox";
 import { curtainReveal } from "./motion";

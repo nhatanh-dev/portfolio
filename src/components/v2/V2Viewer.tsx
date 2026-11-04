@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, type KeyboardEvent } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
-import styles from "@/app/v2-preview/credentials.module.css";
+import styles from "@/app/(v2)/v2-preview/credentials.module.css";
 import type { Doc } from "./beyondData";
 
 type Props = {

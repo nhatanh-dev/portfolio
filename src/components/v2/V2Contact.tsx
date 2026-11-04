@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ArrowUp, ArrowUpRight, Check, Copy } from "lucide-react";
-import styles from "@/app/v2-preview/contact.module.css";
+import styles from "@/app/(v2)/v2-preview/contact.module.css";
 import { contact } from "./contactData";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);

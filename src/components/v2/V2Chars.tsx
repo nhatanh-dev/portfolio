@@ -1,4 +1,4 @@
-import styles from "@/app/v2-preview/v2.module.css";
+import styles from "@/app/(v2)/v2-preview/v2.module.css";
 
 /** Splits text into per-character spans so motion can stagger a mask reveal. Hidden from AT; the heading carries an aria-label. */
 export default function V2Chars({ text, motion, attr = "data-m" }: { text: string; motion?: string; attr?: string }) {
