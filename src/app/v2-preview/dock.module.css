@@ -76,6 +76,7 @@
 
   .extra {
     display: flex;
+    align-self: stretch;
     align-items: center;
     gap: 14px;
     max-width: 0;
@@ -150,7 +151,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    min-height: 40px;
+    min-height: 44px;
     padding: 0 6px;
     border: 0;
     border-radius: 999px;
@@ -178,6 +179,7 @@
   }
 
   .mail {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 7px;
@@ -195,6 +197,22 @@
   .mail[data-ghost="true"] {
     background: transparent;
     border-color: var(--ink-black);
+  }
+
+  /* The pill is 36px tall; an invisible extension above and below gives it a 44px effective touch target without changing its look. */
+  .mail::before,
+  .logo::before {
+    content: "";
+    position: absolute;
+    inset: -6px 0;
+  }
+
+  .logo {
+    position: relative;
+  }
+
+  .logo::before {
+    inset: -10px -4px;
   }
 
   .mail svg {
