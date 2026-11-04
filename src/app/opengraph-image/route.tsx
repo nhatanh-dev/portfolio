@@ -1,13 +1,13 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Nguyen Pham Nhat Anh, Backend and Cloud Developer";
-export const size = {
-  width: 1200,
-  height: 630,
-};
-export const contentType = "image/png";
+export const dynamic = "force-static";
 
-export default function OpenGraphImage() {
+// Served at /opengraph-image (and /twitter-image) as a route handler, not through the metadata file convention: those files sit outside
+// the route groups, so the convention found no layout with a metadataBase (a build warning) and attached the image to nothing. The
+// legacy layout references the URLs explicitly.
+const size = { width: 1200, height: 630 };
+
+export function GET() {
   return new ImageResponse(
     <div
       style={{
