@@ -339,9 +339,6 @@ export default function V2Credentials() {
             </div>
           ))}
         </dl>
-        <p className={styles.eduNote}>
-          The Coursera certificates are online learning credentials, separate from the degree.
-        </p>
       </div>
 
       <V2Lightbox index={lb} onIndex={setLb} onClose={() => setLb(null)} getOpener={() => opener.current} />

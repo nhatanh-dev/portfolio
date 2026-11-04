@@ -276,12 +276,6 @@
   line-height: 1.15;
 }
 
-.recNote {
-  font-size: 0.82rem;
-  line-height: 1.5;
-  color: var(--soft-gray);
-}
-
 .textBtn {
   display: inline-flex;
   align-items: center;
@@ -382,6 +376,11 @@
 
 .ch2 .the {
   color: var(--ink-black);
+}
+
+.ch2 .the,
+.ch3 .the {
+  margin-bottom: 0.3em;
 }
 
 .geo {
@@ -665,7 +664,6 @@
     pointer-events: none;
   }
 
-  .rail button[aria-current="true"] .railL,
   .rail button:hover .railL,
   .rail button:focus-visible .railL {
     opacity: 1;
@@ -674,6 +672,14 @@
 
   .rail button:focus-visible {
     outline-offset: 2px;
+  }
+
+  /* The active label is shown only where it clears the content column; hover and focus always show it. */
+  @media (min-width: 1500px) {
+    .rail button[aria-current="true"] .railL {
+      opacity: 1;
+      translate: 0 0;
+    }
   }
 
   .rail[data-tone="dark"] button:focus-visible {
@@ -703,21 +709,21 @@
     padding: 40px var(--gut) 72px calc(var(--gut) + 56px);
   }
 
-  /* 02 */
+  /* 02. The word, the lede and the record are one in-flow column, so they can never collide whatever the viewport height; the section
+     grows if the column needs more than a screen. The player is the only absolute layer. The word is sized from the height budget and from
+     the width left of the player, so the lettering stops where the player starts. */
   .ch2 {
-    display: block;
+    --left: calc(var(--gut) + 56px);
+    --pl: clamp(560px, 49vw, 920px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(26px, 3svh, 32px);
     min-height: max(100svh, 720px);
-    padding: 0;
-  }
-
-  .courtWord {
-    position: absolute;
-    top: clamp(56px, 8vh, 96px);
-    left: calc(var(--gut) + 56px);
+    padding: clamp(56px, 8vh, 96px) var(--gut) max(5svh, 36px) var(--left);
   }
 
   .courtWord .word {
-    --word: clamp(9rem, min(21vw, 40svh), 24rem);
+    --word: clamp(8rem, min(21vw, 36svh, calc((var(--pl) - var(--left) + 36px) / 2.3)), 24rem);
   }
 
   .slabA {
@@ -751,23 +757,18 @@
 
   .player {
     position: absolute;
-    left: clamp(560px, 49vw, 920px);
-    bottom: 5svh;
+    left: var(--pl);
+    bottom: max(5svh, 36px);
     width: auto;
     height: min(82svh, 800px);
   }
 
   .courtLede {
-    position: absolute;
-    left: calc(var(--gut) + 56px);
-    top: calc(8svh + clamp(9rem, min(21vw, 40svh), 24rem) * 1.12 + 22px);
     max-width: 16ch;
   }
 
   .record {
-    position: absolute;
-    left: calc(var(--gut) + 56px);
-    bottom: 5svh;
+    margin-top: auto;
     width: min(38vw, 540px);
     padding: 18px;
     grid-template-columns: minmax(130px, 170px) 1fr;
@@ -779,15 +780,21 @@
     max-width: none;
   }
 
-  /* 03 */
+  /* 03. Same approach: word, then the paragraph pushed to the foot of the scene, in one column. The word is limited by the width left of
+     the speaker. */
   .ch3 {
-    display: block;
+    --left: calc(var(--gut) + 56px);
+    --sh: min(74svh, 600px);
+    --sw: calc(var(--sh) * 278 / 468);
+    --sr: clamp(60px, 12vw, 230px);
+    display: flex;
+    flex-direction: column;
     min-height: max(100svh, 700px);
-    padding: calc(var(--slant) + clamp(56px, 9vh, 100px)) var(--gut) 0 calc(var(--gut) + 56px);
+    padding: calc(var(--slant) + clamp(56px, 9vh, 100px)) var(--gut) 0 var(--left);
   }
 
   .voiceWord .word {
-    --word: clamp(11rem, min(25vw, 50svh), 28rem);
+    --word: clamp(8rem, min(25vw, 44svh, calc((100vw - var(--left) - var(--sr) - var(--sw) + 40px) / 2.1)), 28rem);
   }
 
   .vslab {
@@ -797,17 +804,16 @@
   }
 
   .voiceCopy {
-    position: absolute;
-    left: calc(var(--gut) + 56px);
-    bottom: calc(var(--slant) + 7svh);
-    max-width: 34ch;
+    margin-top: auto;
+    padding: 28px 0 calc(var(--slant) + 7svh);
+    max-width: 40ch;
   }
 
   .speaker {
     position: absolute;
-    right: clamp(60px, 12vw, 230px);
+    right: var(--sr);
     bottom: 0;
-    height: min(74svh, 600px);
+    height: var(--sh);
   }
 }
 

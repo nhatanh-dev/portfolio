@@ -62,10 +62,14 @@ function createDrift(cfgs: DriftCfg[]) {
       };
     }),
   );
+  // Blend factor 0 -> 1, eased in the first time the drift starts. Each oscillator begins at its own point of the cycle (not at zero) and the
+  // pointer offset may already be non-zero, so without the blend the first tick would move every layer by up to ~20px in one frame.
+  const blend = { k: 0 };
+  let ramped = false;
   const apply = () => {
     for (const l of layers) {
-      l.setX(l.p.x + l.a.x);
-      l.setY(l.p.y + l.a.y);
+      l.setX((l.p.x + l.a.x) * blend.k);
+      l.setY((l.p.y + l.a.y) * blend.k);
     }
   };
   let on = false;
@@ -74,6 +78,10 @@ function createDrift(cfgs: DriftCfg[]) {
     setActive(next: boolean) {
       if (next === on) return;
       on = next;
+      if (next && !ramped) {
+        ramped = true;
+        gsap.to(blend, { k: 1, duration: 2.4, ease: "sine.inOut" });
+      }
       layers.forEach((l) => l.tweens.forEach((t) => (next ? t.resume() : t.pause())));
       if (next) gsap.ticker.add(apply);
       else gsap.ticker.remove(apply);
@@ -90,6 +98,7 @@ function createDrift(cfgs: DriftCfg[]) {
         l.tweens.forEach((t) => t.kill());
         gsap.killTweensOf(l.p);
       });
+      gsap.killTweensOf(blend);
     },
   };
 }
@@ -191,7 +200,13 @@ export default function V2Hero() {
           .fromTo(q('[data-m="ctas"]'), { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 1.15)
           .fromTo(q('[data-m="stacklist"]'), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, 1.1)
           .fromTo(q('[data-m="stack"]'), { autoAlpha: 0, x: 16 }, { autoAlpha: 1, x: 0, duration: 0.6, stagger: 0.07 }, 1.2)
-          .fromTo(q('[data-m="cue"]'), { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.7 }, 1.55);
+          .fromTo(q('[data-m="cue"]'), { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.7 }, 1.55)
+          // Ambient drift joins while the entrance is still settling (it only writes x/y, which no entrance tween touches) and is blended in from zero.
+          .call(() => {
+            ambientReady = true;
+            syncAmbient();
+          }, [], 1.35);
+        tl.timeScale(1.3);
         el.dataset.motion = "running";
 
         // ----- Background drift: ambient oscillation + pointer parallax, summed per layer -----
@@ -199,12 +214,12 @@ export default function V2Hero() {
         drift = createDrift([
           { els: q('[data-par="title"]'), pdx: 14, pdy: 6 },
           { els: q('[data-m="portrait"]'), pdx: 12, pdy: 5 },
-          { els: q('[data-m="slab"]'), pdx: -26, pdy: -12, ax: 18, ay: 13, tx: 24, ty: 29, phase: 0 },
-          { els: q('[data-m="slab2"]'), pdx: -44, pdy: -22, ax: -14, ay: 11, tx: 27, ty: 22, phase: 0.35 },
-          { els: q('[data-m="cloud"]'), pdx: -46, pdy: -16, ax: 24, ay: 14, tx: 21, ty: 26, phase: 0.6 },
-          { els: crates.slice(0, 1), pdx: 26, pdy: 14, ax: 13, ay: 9, tx: 25, ty: 20, phase: 0.2 },
-          { els: crates.slice(1), pdx: 26, pdy: 14, ax: -13, ay: -10, tx: 23, ty: 28, phase: 0.75 },
-          { els: q('[data-m="arc"]'), pdx: -64, pdy: -30, ax: 9, ay: 8, tx: 30, ty: 25, phase: 0.5 },
+          { els: q('[data-m="slab"]'), pdx: -26, pdy: -12, ax: 25, ay: 18, tx: 21, ty: 25, phase: 0 },
+          { els: q('[data-m="slab2"]'), pdx: -44, pdy: -22, ax: -20, ay: 15, tx: 23, ty: 19, phase: 0.35 },
+          { els: q('[data-m="cloud"]'), pdx: -46, pdy: -16, ax: 32, ay: 19, tx: 18, ty: 22, phase: 0.6 },
+          { els: crates.slice(0, 1), pdx: 26, pdy: 14, ax: 18, ay: 12, tx: 21, ty: 17, phase: 0.2 },
+          { els: crates.slice(1), pdx: 26, pdy: 14, ax: -18, ay: -14, tx: 20, ty: 24, phase: 0.75 },
+          { els: q('[data-m="arc"]'), pdx: -64, pdy: -30, ax: 13, ay: 11, tx: 26, ty: 21, phase: 0.5 },
           { els: q('[data-m="stacklist"]'), pdx: 16, pdy: 9 },
         ]);
         syncAmbient();
@@ -288,14 +303,19 @@ export default function V2Hero() {
             0.6,
           )
           .set(q('[data-m="portrait"]'), { autoAlpha: 1 }, 0.6)
-          .fromTo(q('[data-m="cloud"]'), { autoAlpha: 0, xPercent: -20 }, { autoAlpha: 1, xPercent: 0, duration: 1.1 }, 1.05);
+          .fromTo(q('[data-m="cloud"]'), { autoAlpha: 0, xPercent: -20 }, { autoAlpha: 1, xPercent: 0, duration: 1.1 }, 1.05)
+          .call(() => {
+            ambientReady = true;
+            syncAmbient();
+          }, [], 0.95);
+        tl.timeScale(1.25);
         el.dataset.motion = "running";
 
         // Ambient drift only, at roughly half the desktop amplitude, on the layers that exist on mobile.
         drift = createDrift([
-          { els: q('[data-m="slab"]'), ax: 5, ay: 4, tx: 24, ty: 29, phase: 0 },
-          { els: q('[data-m="slab2"]'), ax: -4, ay: 3, tx: 27, ty: 22, phase: 0.35 },
-          { els: q('[data-m="cloud"]'), ax: 8, ay: 5, tx: 21, ty: 26, phase: 0.6 },
+          { els: q('[data-m="slab"]'), ax: 8, ay: 6, tx: 21, ty: 25, phase: 0 },
+          { els: q('[data-m="slab2"]'), ax: -7, ay: 5, tx: 23, ty: 19, phase: 0.35 },
+          { els: q('[data-m="cloud"]'), ax: 11, ay: 8, tx: 18, ty: 22, phase: 0.6 },
         ]);
         syncAmbient();
         return () => {

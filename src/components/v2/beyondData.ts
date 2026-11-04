@@ -74,8 +74,7 @@ export const copy = {
     caption: "Event photograph · HCMC Night Run Eximbank, 4th edition · 10 km, bib 11022",
     record: {
       label: "Separate record · finisher certificate",
-      lines: ["HCMC Night Run Eximbank 2024 · 10 km", "Time 1:01:58 · Overall 224 · Age group M_U31 41st"],
-      note: "As printed on the certificate (bib 11310). It is a different document from the photograph, which shows bib 11022.",
+      lines: ["HCMC Night Run Eximbank 2024 · 10 km", "Time 1:01:58 · Overall 224 · Age group M_U31 41st"], 
     },
   },
   court: {
@@ -84,7 +83,6 @@ export const copy = {
       label: "Documentary record · medal card",
       printed: "Hội thao 2025 Làng Cóc · Cầu lông · Hạng Nhì · Đôi Nam",
       reading: "Sports festival 2025 · Badminton · Second place · Men's doubles",
-      note: "Printed on the card above the medals. The player portrait is a separate photograph and is not claimed to be from this event.",
     },
   },
   voice: {

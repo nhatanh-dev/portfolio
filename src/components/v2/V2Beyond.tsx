@@ -9,6 +9,7 @@ import styles from "@/app/(v2)/v2-preview/beyond.module.css";
 import V2Chars from "./V2Chars";
 import V2Viewer from "./V2Viewer";
 import { curtainReveal } from "./motion";
+import { scrollToId } from "./landing";
 import { chapters, copy, cutouts, doc, docs, type Doc } from "./beyondData";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
@@ -47,8 +48,8 @@ export default function V2Beyond() {
   };
 
   const goto = (i: number) => {
-    const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    chRefs.current[i]?.scrollIntoView({ behavior: calm ? "auto" : "smooth", block: "start" });
+    const id = chRefs.current[i]?.id;
+    if (id) scrollToId(id);
   };
 
   useGSAP(
@@ -266,7 +267,6 @@ export default function V2Beyond() {
                   {l}
                 </p>
               ))}
-              <p className={styles.recNote}>{run.record.note}</p>
             </div>
           </div>
         </div>
@@ -319,7 +319,6 @@ export default function V2Beyond() {
               {court.record.printed}
             </p>
             <p className={styles.recLine}>{court.record.reading}</p>
-            <p className={styles.recNote}>{court.record.note}</p>
           </div>
         </div>
       </div>
