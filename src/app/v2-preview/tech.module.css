@@ -627,3 +627,28 @@
     display: none;
   }
 }
+
+/* Without JavaScript the map, its tabs and the accordion toggles cannot work, so every area is listed open instead. */
+@media (scripting: none) {
+  .mapWrap,
+  .panel {
+    display: none;
+  }
+
+  .acc {
+    display: grid;
+  }
+
+  .accPanel {
+    grid-template-rows: 1fr;
+  }
+
+  .accInner {
+    visibility: visible;
+    padding-bottom: 22px;
+  }
+
+  .accHead svg {
+    display: none;
+  }
+}

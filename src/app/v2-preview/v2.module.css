@@ -30,6 +30,26 @@
   outline-offset: 3px;
 }
 
+/* Keyboard access to scroll-revealed content. GSAP's autoAlpha writes inline "visibility: hidden" at opacity 0, which removes controls from
+   the tab order until the visitor scrolls to them. Keep such elements focusable (they stay invisible through opacity), and the moment one
+   receives focus show it, so a focused control is never invisible. Elements hidden by class (collapsed panels, closed menu) are unaffected. */
+.root :global([style*="visibility: hidden"]) {
+  visibility: visible !important;
+}
+
+.root :global([style*="opacity: 0"]:focus-within) {
+  opacity: 1 !important;
+}
+
+/* Invisible (opacity 0) reveal targets are never clickable either. */
+.root :global([style*="opacity: 0;"]) {
+  pointer-events: none;
+}
+
+.main:focus {
+  outline: none;
+}
+
 /* ---------- Nav ---------- */
 .nav {
   position: absolute;
