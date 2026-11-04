@@ -613,6 +613,34 @@
   opacity: 0.85;
 }
 
+.workActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Primary action: filled. Hover and focus colours for .repoLink are overridden below so the filled state stays legible. */
+.featuredCopy .workActions .caseLink,
+.secondaryCopy .workActions .caseLink,
+.workActions .caseLink {
+  background: var(--vermilion);
+  border-color: var(--vermilion);
+  color: #111112;
+}
+
+.profileLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--vermilion);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
 .repoLink {
   display: inline-flex;
   align-items: center;
@@ -1427,4 +1455,14 @@
   .nav[data-open="true"] .navLinks {
     transition: none;
   }
+}
+
+/* Case-study primary links keep their fill on hover and focus. */
+.featured .workActions .caseLink:hover,
+.secondary .workActions .caseLink:hover,
+.featured .workActions .caseLink:focus-visible,
+.secondary .workActions .caseLink:focus-visible {
+  background: #f7f1e6;
+  border-color: #f7f1e6;
+  color: #111112;
 }

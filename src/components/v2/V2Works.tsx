@@ -2,15 +2,15 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ArrowUpRight } from "lucide-react";
 import styles from "@/app/v2-preview/v2.module.css";
 import V2Chars from "./V2Chars";
-import evoltDashboard from "../../../public/projects/evolt-dashboard.png";
-import evoltLanding from "../../../public/projects/evolt-landing.png";
-import smartInvoice from "../../../public/projects/smartinvoice-aws-architecture.png";
+import V2ProjectIndex from "./V2ProjectIndex";
+import { cardDiagram, featuredProjects, githubProfile, type Project } from "./projects";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -26,10 +26,78 @@ function Pills({ items }: { items: string[] }) {
 
 function RepoLink({ href, label }: { href: string; label: string }) {
   return (
-    <a href={href} className={styles.repoLink} target="_blank" rel="noopener noreferrer" data-w="copy">
+    <a href={href} className={styles.repoLink} target="_blank" rel="noopener noreferrer">
       {label} <ArrowUpRight size={18} aria-hidden="true" />
       <span className={styles.srOnly}> (opens in a new tab)</span>
     </a>
+  );
+}
+
+/** Primary action is the case study; the repository link is secondary and only rendered when the project has a public one. */
+function Actions({ p }: { p: Project }) {
+  return (
+    <div className={styles.workActions} data-w="copy">
+      <Link href={`/v2-preview/projects/${p.slug}`} className={`${styles.repoLink} ${styles.caseLink}`}>
+        View Case Study <ArrowUpRight size={18} aria-hidden="true" />
+      </Link>
+      {p.visibility === "public" && p.repository && <RepoLink href={p.repository} label="Source" />}
+    </div>
+  );
+}
+
+const kicker = (p: Project, i: number) => `${String(i + 1).padStart(2, "0")} — ${p.role} · ${p.period}`;
+
+/** Card with screenshots: copy on one side, two layered screenshots (back and front) on the other. */
+function ShotsCard({ p, i }: { p: Project; i: number }) {
+  const [back, front] = p.screens ?? [];
+  return (
+    <article className={styles.featured} data-w="featured">
+      <div className={styles.featuredCopy}>
+        <p className={styles.kicker} data-w="copy">
+          {kicker(p, i)}
+        </p>
+        <Pills items={p.cardTags ?? p.stack.slice(0, 3)} />
+        <h3 data-w="copy">{p.title}</h3>
+        <p data-w="copy">{p.summary}</p>
+        <Actions p={p} />
+      </div>
+      <div className={styles.shots}>
+        {back && (
+          <div className={styles.shotBack} data-w="back">
+            <Image src={back.image} alt={back.alt} sizes="(min-width: 1024px) 40vw, 80vw" />
+          </div>
+        )}
+        {front && (
+          <div className={styles.shotFront} data-w="front">
+            <Image src={front.image} alt={front.alt} sizes="(min-width: 1024px) 44vw, 90vw" />
+          </div>
+        )}
+      </div>
+    </article>
+  );
+}
+
+/** Card with a single diagram (or video poster). */
+function DiagramCard({ p, i }: { p: Project; i: number }) {
+  const d = cardDiagram(p);
+  return (
+    <article className={styles.secondary} data-w="secondary">
+      {d && (
+        <div className={styles.diagram} data-w="diagram">
+          <Image src={d.image} alt={d.alt} sizes="(min-width: 1024px) 30vw, 90vw" />
+          {d.label && <span>{d.label}</span>}
+        </div>
+      )}
+      <div className={styles.secondaryCopy}>
+        <p className={styles.kicker} data-w="copy">
+          {kicker(p, i)}
+        </p>
+        <Pills items={p.cardTags ?? p.stack.slice(0, 3)} />
+        <h3 data-w="copy">{p.title}</h3>
+        <p data-w="copy">{p.summary}</p>
+        <Actions p={p} />
+      </div>
+    </article>
   );
 }
 
@@ -84,6 +152,7 @@ export default function V2Works() {
         // 3) Media depth: back/front layers drift at different rates while the card scrolls through.
         const drift = (sel: string, from: number, to: number, trigger: string) =>
           q(sel).forEach((t) =>
+            q(trigger)[0] &&
             gsap.fromTo(
               t,
               { yPercent: from },
@@ -97,11 +166,12 @@ export default function V2Works() {
         // 4) Pointer depth on desktop: the screenshot layers counter-move inside the featured card.
         if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
         const card = q('[data-w="featured"]')[0];
+        if (!card) return;
         const lay: [Element, number, number][] = [
           [q('[data-w="back"]')[0], 14, 8],
           [q('[data-w="front"]')[0], -12, -7],
         ];
-        const m = lay.map(([t, dx, dy]) => ({
+        const m = lay.filter(([t]) => t).map(([t, dx, dy]) => ({
           dx,
           dy,
           x: gsap.quickTo(t, "x", { duration: 0.9, ease: "power3.out" }),
@@ -156,59 +226,17 @@ export default function V2Works() {
           A collection of real projects where I design, build, and deploy backend systems, with a focus on
           reliability, scalability, and real-world impact.
         </p>
+        <a href={githubProfile} className={styles.profileLink} target="_blank" rel="noopener noreferrer" data-w="lede">
+          All repositories on GitHub <ArrowUpRight size={16} aria-hidden="true" />
+          <span className={styles.srOnly}> (opens in a new tab)</span>
+        </a>
       </div>
 
       <div className={styles.projects}>
-        <article className={styles.featured} data-w="featured">
-          <div className={styles.featuredCopy}>
-            <p className={styles.kicker} data-w="copy">01 — Backend Developer · Sep 2025 – Nov 2025</p>
-            <Pills items={[".NET", "AWS", "Real-time"]} />
-            <h3 data-w="copy">EV Station Management System</h3>
-            <p data-w="copy">
-              A real-time platform for charging sessions, reservations, payments, and day-to-day station
-              operations.
-            </p>
-            <RepoLink href="https://github.com/nhatanh-dev/EVoltStation_BE" label="View source" />
-          </div>
-          <div className={styles.shots}>
-            <div className={styles.shotBack} data-w="back">
-              <Image
-                src={evoltLanding}
-                alt="EVoltStation public landing page"
-                sizes="(min-width: 1024px) 40vw, 80vw"
-              />
-            </div>
-            <div className={styles.shotFront} data-w="front">
-              <Image
-                src={evoltDashboard}
-                alt="EVoltStation dashboard showing a station map and charging information"
-                sizes="(min-width: 1024px) 44vw, 90vw"
-              />
-            </div>
-          </div>
-        </article>
-
-        <article className={styles.secondary} data-w="secondary">
-          <div className={styles.diagram} data-w="diagram">
-            <Image
-              src={smartInvoice}
-              alt="SmartInvoice Shield AWS architecture diagram"
-              sizes="(min-width: 1024px) 30vw, 90vw"
-            />
-            <span>AWS architecture</span>
-          </div>
-          <div className={styles.secondaryCopy}>
-            <p className={styles.kicker} data-w="copy">02 — Cloud &amp; Backend Developer · Jan 2026 – Apr 2026</p>
-            <Pills items={[".NET", "AWS", "OCR"]} />
-            <h3 data-w="copy">SmartInvoice Shield</h3>
-            <p data-w="copy">
-              A multi-tenant invoice platform combining OCR, tax-risk checks, approval workflows, and AWS
-              deployment.
-            </p>
-            <RepoLink href="https://github.com/nhatanh-dev/SmartInvoice" label="View source" />
-          </div>
-        </article>
+        {featuredProjects.map((p, i) => (p.screens?.length ? <ShotsCard key={p.slug} p={p} i={i} /> : <DiagramCard key={p.slug} p={p} i={i} />))}
       </div>
+
+      <V2ProjectIndex />
     </section>
   );
 }
