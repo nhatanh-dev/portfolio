@@ -143,11 +143,13 @@ export default function V2Experience() {
         // 4) Milestone copy: numerals and headings rise through masks as each node is reached (plays and rewinds).
         items.forEach((m) => {
           const n = m.querySelectorAll('[data-x="num"]');
-          gsap
+          const chips = m.querySelectorAll('[data-x="chip"]');
+          const tl = gsap
             .timeline({ defaults: { ease: "expo.out" }, scrollTrigger: { trigger: m, start: "top 78%", toggleActions: "play none none reverse" } })
             .fromTo(n, { yPercent: 110 }, { yPercent: 0, duration: 0.9 }, 0)
-            .fromTo(m.querySelectorAll('[data-x="h"], [data-x="p"]'), { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.1 }, 0.1)
-            .fromTo(m.querySelectorAll('[data-x="chip"]'), { autoAlpha: 0, y: 14, scale: 0.9 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.06 }, 0.35);
+            .fromTo(m.querySelectorAll('[data-x="h"], [data-x="p"]'), { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.1 }, 0.1);
+          // Only some milestones list services; tweening an empty set logs GSAP "target not found" warnings.
+          if (chips.length) tl.fromTo(chips, { autoAlpha: 0, y: 14, scale: 0.9 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.06 }, 0.35);
         });
 
         // 5) Photos: wipe-reveal with depth (frames drift at different rates, images settle from a zoom).

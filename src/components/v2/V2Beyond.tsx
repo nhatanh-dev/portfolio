@@ -200,11 +200,21 @@ export default function V2Beyond() {
         <div className={styles.stage}>
           <span className={styles.thread} data-b="thread" aria-hidden="true" />
 
+          {/* First in DOM so the section heading (h2) precedes the chapter headings (h3); it is absolutely positioned above them. */}
+          <header className={styles.head} data-b="head">
+            <p className={styles.kicker}>
+              <b>07</b> Beyond the Code · Three rounds
+            </p>
+            <h2 id="v2-beyond" className={styles.sectionTitle}>
+              Beyond the Code
+            </h2>
+          </header>
+
           <div className={styles.box} data-b="box1" aria-hidden="true">
             <div className={styles.layer} data-b="bg1">
               <div className={styles.frame}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className={styles.bgImg} src={dRun.full.src} width={dRun.full.w} height={dRun.full.h} alt="" />
+                <img loading="lazy" className={styles.bgImg} src={dRun.full.src} width={dRun.full.w} height={dRun.full.h} alt="" />
                 <span className={styles.spot} style={atStyle} />
               </div>
             </div>
@@ -226,20 +236,12 @@ export default function V2Beyond() {
               <div className={styles.frame}>
                 <div className={styles.cut} style={atStyle} data-b="cut1">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={cutouts.run.img.src} width={cutouts.run.img.w} height={cutouts.run.img.h} alt={cutouts.run.alt} />
+                  <img loading="lazy" src={cutouts.run.img.src} width={cutouts.run.img.w} height={cutouts.run.img.h} alt={cutouts.run.alt} />
                 </div>
               </div>
             </div>
           </div>
 
-          <header className={styles.head} data-b="head">
-            <p className={styles.kicker}>
-              <b>07</b> Beyond the Code · Three rounds
-            </p>
-            <h2 id="v2-beyond" className={styles.sectionTitle}>
-              Beyond the Code
-            </h2>
-          </header>
         </div>
 
         <div className={styles.foot}>
@@ -300,7 +302,7 @@ export default function V2Beyond() {
           <div data-b="player-e" className={styles.playerE}>
             <div data-b="player-p" className={styles.playerP}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={cutouts.court.img.src} width={cutouts.court.img.w} height={cutouts.court.img.h} alt={cutouts.court.alt} />
+              <img loading="lazy" src={cutouts.court.img.src} width={cutouts.court.img.w} height={cutouts.court.img.h} alt={cutouts.court.alt} />
             </div>
           </div>
         </div>
@@ -348,7 +350,7 @@ export default function V2Beyond() {
         </div>
         <div className={styles.speaker} data-b="speaker">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={cutouts.voice.img.src} width={cutouts.voice.img.w} height={cutouts.voice.img.h} alt={cutouts.voice.alt} />
+          <img loading="lazy" src={cutouts.voice.img.src} width={cutouts.voice.img.w} height={cutouts.voice.img.h} alt={cutouts.voice.alt} />
         </div>
       </div>
 

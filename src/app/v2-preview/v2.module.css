@@ -46,7 +46,8 @@
   pointer-events: none;
 }
 
-.main:focus {
+.main:focus,
+.root [tabindex="-1"]:focus {
   outline: none;
 }
 

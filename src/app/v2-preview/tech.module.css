@@ -425,7 +425,7 @@
 }
 
 .related button {
-  min-height: 40px;
+  min-height: 44px;
   padding: 0 16px;
   border: 1.5px solid var(--vermilion);
   border-radius: 999px;
