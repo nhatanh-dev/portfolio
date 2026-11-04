@@ -383,9 +383,14 @@
   margin-bottom: 0.3em;
 }
 
+/* Mobile: the slab group shares the player's grid row (full-bleed), so its percentages are relative to the player and it can never reach up
+   behind the paragraph (the paragraph is the same black as the slab). Desktop positions it over the whole scene again, below. */
 .geo {
-  position: absolute;
-  inset: 0;
+  grid-row: 3;
+  grid-column: 1;
+  position: relative;
+  align-self: stretch;
+  margin-inline: calc(var(--gut) * -1);
   z-index: 0;
   pointer-events: none;
 }
@@ -398,9 +403,9 @@
 .slabA {
   position: absolute;
   left: -10%;
-  top: 27%;
+  top: 0;
   width: 92%;
-  height: 40%;
+  height: 92%;
   background: var(--ink-black);
   clip-path: polygon(16% 0, 100% 0, 84% 100%, 0 100%);
 }
@@ -408,9 +413,9 @@
 .slabB {
   position: absolute;
   left: 30%;
-  top: 56%;
+  top: 62%;
   width: 78%;
-  height: 12%;
+  height: 28%;
   background: var(--paper);
   clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
 }
@@ -427,21 +432,22 @@
 }
 
 .lineA {
-  top: 62%;
+  top: 76%;
   width: 70%;
 }
 
 .lineB {
-  top: 66%;
+  top: 85%;
   width: 54%;
 }
 
 .lineC {
-  top: 70%;
+  top: 94%;
   width: 82%;
 }
 
 .courtWord {
+  grid-row: 1;
   position: relative;
   z-index: 1;
 }
@@ -454,6 +460,8 @@
   position: relative;
   z-index: 3;
   justify-self: center;
+  grid-row: 3;
+  grid-column: 1;
   order: 3;
   /* Sized from a height budget but never wider than the column, so the cutout is never cropped or squeezed on narrow phones. */
   width: min(100%, calc(min(66svh, 520px) * 480 / 656));
@@ -474,7 +482,10 @@
 .courtLede {
   position: relative;
   z-index: 4;
+  grid-row: 2;
   order: 2;
+  /* Room for the player's scroll drift (it moves up to 4% of its height) so the cutout never reaches the last line. */
+  margin-bottom: 14px;
   max-width: 24ch;
   font-weight: 800;
   font-style: italic;
@@ -485,6 +496,7 @@
 .record {
   position: relative;
   z-index: 4;
+  grid-row: 4;
   order: 4;
   display: grid;
   grid-template-columns: 132px 1fr;
@@ -722,6 +734,12 @@
     padding: clamp(56px, 8vh, 96px) var(--gut) max(5svh, 36px) var(--left);
   }
 
+  .geo {
+    position: absolute;
+    inset: 0;
+    margin-inline: 0;
+  }
+
   .courtWord .word {
     --word: clamp(8rem, min(21vw, 36svh, calc((var(--pl) - var(--left) + 36px) / 2.3)), 24rem);
   }
@@ -764,6 +782,7 @@
   }
 
   .courtLede {
+    margin-bottom: 0;
     max-width: 16ch;
   }
 

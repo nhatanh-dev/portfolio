@@ -15,13 +15,26 @@ function docTop(el: HTMLElement): number {
   return y;
 }
 
+/**
+ * Distance from the top of the viewport to the introduction. It is the bottom of the fixed chrome (the floating dock on desktop, the menu
+ * button on mobile) plus a small clearance, so content that runs under the chrome (Works' first project card sits in the dock's column)
+ * is never covered, with a minimum of 8.5% of the screen height for comfort on tall screens. The chrome is measured, with its designed
+ * bottom edge (62px dock, 58px button) as the fallback while it is hidden or mid-transition.
+ */
+function introGap(): number {
+  const desk = window.innerWidth >= 1024;
+  const el = document.querySelector<HTMLElement>(desk ? "[class*='dock']" : "button[aria-controls='v2-menu']");
+  const measured = el?.getBoundingClientRect().bottom ?? 0;
+  const bottom = measured > 20 && measured < 120 ? measured : desk ? 62 : 58;
+  return Math.round(Math.min(100, Math.max(bottom + (desk ? 14 : 12), window.innerHeight * 0.085)));
+}
+
 /** Scroll position (px) for the element with this id, or null if it does not exist. */
 export function landingY(id: string): number | null {
   const el = document.getElementById(id);
   if (!el) return null;
   if (id === "hero") return 0;
-  // Breathing room above the introduction: clear of the floating dock / menu button, scaled a little with the screen height.
-  const gap = window.innerWidth >= 1024 ? Math.min(130, Math.max(88, window.innerHeight * 0.12)) : 88;
+  const gap = introGap();
 
   // Beyond the Code: the scenes are full-bleed, so the scene itself starts at the top edge. The Voice scene has a slanted top edge, which
   // is scrolled past so that the previous (vermilion) scene does not show above it.
